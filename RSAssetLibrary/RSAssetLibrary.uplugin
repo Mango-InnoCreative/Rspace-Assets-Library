@@ -1,0 +1,42 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "RSAssetLibrary",
+	"Description": "RSAssetLibrary",
+	"Category": "Other",
+	"CreatedBy": "Hunan MangoXR Tech Co,ltd ",
+	"CreatedByURL": "https://meta.mg.xyz/",
+	"DocsURL": "https://meta.mg.xyz/",
+	"MarketplaceURL": "",
+	"SupportURL": "https://meta.mg.xyz/",
+	"EngineVersion": "5.2.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "UserSessionManager",
+			"Type": "Editor",
+			"LoadingPhase": "PreDefault",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "RSAssetLibrary",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "RSpaceAssetLibApi",
+			"Type": "Editor",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}
