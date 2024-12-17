@@ -10,8 +10,9 @@
 // #include "MediaSoundComponent.h"
 #include "SVideoPlayerWidget.generated.h"
 
-
 class UMediaPlayerHandler;
+class UMediaPlayerHandler2;
+
 
 class FMediaPlayerManager
 {
@@ -71,7 +72,8 @@ private:
 
 	bool bIsSliderBeingDragged = false;
 
-
+	UMediaPlayerHandler* VideoHandler = nullptr;
+	
 	bool bIsPlaying;
 
 	bool bISVideoPlayer = true;
@@ -117,6 +119,8 @@ public:
 
 private:
 	UMediaPlayer* MediaPlayer;
+
+	UMediaPlayerHandler2* AudioHandler = nullptr;
 
 	UMediaSoundComponent* MediaSound = nullptr;
 

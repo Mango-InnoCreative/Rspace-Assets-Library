@@ -221,6 +221,8 @@ void SVideoPlayerWidget::Construct(const FArguments& InArgs)
     MediaSound->Activate();
     bIsPlaying = false;
     
+    VideoHandler = NewObject<UMediaPlayerHandler>();
+    VideoHandler->Initialize(MediaPlayer, SharedThis(this));
   
     if (GEditor && GEditor->GetEditorWorldContext().World())
     {
@@ -233,7 +235,7 @@ void SVideoPlayerWidget::Construct(const FArguments& InArgs)
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to initialize audio update timer!"));
+        //UE_LOG(LogTemp, Error, TEXT("Failed to initialize audio update timer!"));
     }
     
     
@@ -364,14 +366,14 @@ void SVideoPlayerWidget::OnMediaEndReached()
 
     bIsPlaying = false;
 
-    UE_LOG(LogTemp, Log, TEXT("Media playback completed, UI updated."));
+    //UE_LOG(LogTemp, Log, TEXT("Media playback completed, UI updated."));
 }
 
 void SVideoPlayerWidget::OnMouseCaptureBegin()
 {
     bIsSliderBeingDragged = true;
 
-    UE_LOG(LogTemp, Warning, TEXT("开始拖动进度条-----"));
+    //UE_LOG(LogTemp, Warning, TEXT("开始拖动进度条-----"));
 
 
     if (MediaPlayer && MediaPlayer->IsPlaying())
@@ -390,7 +392,7 @@ void SVideoPlayerWidget::OnMouseCaptureEnd()
 {
     bIsSliderBeingDragged = false;
 
-    UE_LOG(LogTemp, Warning, TEXT("松开拖动进度条！！！"));
+    //UE_LOG(LogTemp, Warning, TEXT("松开拖动进度条！！！"));
 
 
     if (MediaPlayer)
@@ -469,7 +471,7 @@ void SVideoPlayerWidget::OnSliderValueChanged(float NewValue)
         float NewTime = NewValue * MediaPlayer->GetDuration().GetTotalSeconds();
         MediaPlayer->Seek(FTimespan::FromSeconds(NewTime));
 
-        UE_LOG(LogTemp, Warning, TEXT("进度条位置更新到: %f 秒"), NewTime);
+        //UE_LOG(LogTemp, Warning, TEXT("进度条位置更新到: %f 秒"), NewTime);
     }
 }
 
@@ -510,7 +512,9 @@ void SAudioPlayerWidget::Construct(const FArguments& InArgs)
     MediaSound->bAutoActivate = true;
     MediaSound->Activate();
     bIsPlaying = false;
-
+    
+    AudioHandler = NewObject<UMediaPlayerHandler2>();
+    AudioHandler->Initialize(MediaPlayer, SharedThis(this));
 
     if (GEditor && GEditor->GetEditorWorldContext().World())
     {
@@ -523,7 +527,7 @@ void SAudioPlayerWidget::Construct(const FArguments& InArgs)
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to initialize audio update timer!"));
+        //UE_LOG(LogTemp, Error, TEXT("Failed to initialize audio update timer!"));
     }
     
     ImageBox = SNew(SBox)
@@ -643,7 +647,7 @@ void SAudioPlayerWidget::OnMediaEndReached()
 
     bIsPlaying = false;
 
-    UE_LOG(LogTemp, Log, TEXT("Media playback completed, UI updated."));
+    //UE_LOG(LogTemp, Log, TEXT("Media playback completed, UI updated."));
 }
 
 
@@ -652,7 +656,7 @@ void SAudioPlayerWidget::OnMouseCaptureBegin()
 {
     bIsSliderBeingDragged = true;
 
-    UE_LOG(LogTemp, Warning, TEXT("开始拖动进度条-----"));
+    //UE_LOG(LogTemp, Warning, TEXT("开始拖动进度条-----"));
 
     if (MediaPlayer && MediaPlayer->IsPlaying())
     {
@@ -670,7 +674,7 @@ void SAudioPlayerWidget::OnMouseCaptureEnd()
 {
     bIsSliderBeingDragged = false;
 
-    UE_LOG(LogTemp, Warning, TEXT("松开拖动进度条！！！"));
+    //UE_LOG(LogTemp, Warning, TEXT("松开拖动进度条！！！"));
 
     if (MediaPlayer)
     {

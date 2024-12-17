@@ -1,4 +1,4 @@
-﻿/// Copyright (c) 2024 Hunan MangoXR Tech Co., Ltd. All Rights Reserved.
+﻿// Copyright (c) 2024 Hunan MangoXR Tech Co., Ltd. All Rights Reserved.
 
 
 #include "Login/SLoginWidget.h"
@@ -8,7 +8,6 @@
 #include "Login/LoginApi.h"
 #include "Login/QrLoginApi.h"
 #include "RSAssetLibraryStyle.h"
-#include "ProjectContent/SProjectWidget.h"
 #include "RSpaceAssetLibApi/Public/Login/GetCaptchaApi.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Widgets/Input/SEditableTextBox.h"
@@ -16,7 +15,7 @@
 #include "Widgets/Layout/SBorder.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Images/SImage.h"
-#include "ImageWrapper/Public/IImageWrapperModule.h"
+#include "IImageWrapperModule.h"
 #include "SlateExtras.h"
 #include "Subsystem/USMSubsystem.h"
 

@@ -41,7 +41,7 @@ const FVector2D Icon20x20(20.0f, 20.0f);
 TSharedRef< FSlateStyleSet > FRSAssetLibraryStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("RSAssetLibraryStyle"));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("RSAssetLibrary")->GetBaseDir() / TEXT("Content") / TEXT("Icons"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("RSAssetLibrary")->GetBaseDir() / TEXT("Resources"));
 
 	Style->Set("RSAssetLibrary.LoginBackground", new IMAGE_BRUSH(TEXT("MainBackground"), FVector2D(1920,1080)));
 
