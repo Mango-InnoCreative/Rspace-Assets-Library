@@ -7,8 +7,6 @@
 #include "Widgets/Input/SSlider.h"
 #include "MediaPlayer.h"
 #include "MediaSoundComponent.h"
-#include "IMediaEventSink.h"
-#include "AudioDevice.h"
 #include "AudioParameter.h"
 #include "RSAssetLibraryStyle.h"
 #include "Engine/Engine.h"
