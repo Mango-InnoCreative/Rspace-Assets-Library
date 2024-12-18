@@ -47,7 +47,7 @@ This plugin provides a comprehensive solution for managing and interacting with 
 
 ## Dependencies
 
-- Unreal Engine 5.2.1
+- Unreal Engine 5.2.0
 - `Media Player`, `Media Texture`, and `Media Sound` components are used for playback.
 - `FAssetRegistryModule` for asset management.
 
