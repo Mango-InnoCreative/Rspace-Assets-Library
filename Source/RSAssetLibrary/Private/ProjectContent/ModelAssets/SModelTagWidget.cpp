@@ -11,6 +11,8 @@
 #include "Subsystem/USMSubsystem.h"
 #include "Widgets/Layout/SSeparator.h"
 
+#define LOCTEXT_NAMESPACE "SModelTagWidget"
+
 void SModelTagWidget::Construct(const FArguments& InArgs)
 {
     ModelAssetsWidget = InArgs._ModelAssetsWidget;
@@ -38,7 +40,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
             [
                 SNew(STextBlock)
                 .Justification(ETextJustify::Left)
-                .Text(FText::FromString(TEXT("已选择：")))
+                .Text(LOCTEXT("SelectedText", "已选择："))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SHorizontalBox::Slot()
@@ -75,7 +77,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
             .Padding(5)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("条件类型：")))
+                .Text(LOCTEXT("ConditionTypeLabel", "条件类型："))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SVerticalBox::Slot()
@@ -116,7 +118,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
                      .Padding(0, 5, 5, 5)
                      [
                          SNew(STextBlock)
-                         .Text(FText::FromString(TEXT("清空筛选")))
+                         .Text(LOCTEXT("ClearFilter", "清空筛选"))
                          .Justification(ETextJustify::Center)
                          .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
                          .ColorAndOpacity(FSlateColor(FLinearColor::White))

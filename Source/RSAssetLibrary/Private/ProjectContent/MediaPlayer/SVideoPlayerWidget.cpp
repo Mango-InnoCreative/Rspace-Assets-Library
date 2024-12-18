@@ -43,7 +43,7 @@ void FMediaPlayerManager::PlayMediaWithSystemPlayer(const FString& InPath)
     SharedVideoPlayerWidget->PlayVideo(InPath);
 
     TSharedRef<SWindow> VideoPlayerWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("视频播放")))
+        .Title(FText::FromString(TEXT("Video Player")))
         .ClientSize(FVector2D(1280, 720))
         .SupportsMaximize(true)
         .SupportsMinimize(true)
@@ -103,7 +103,7 @@ void FMediaPlayerManager::PlayAudioWithSystemPlayer(const FString& InPath)
     SharedAudioPlayerWidget->PlayVideo(InPath);
 
     TSharedRef<SWindow> AudioPlayerWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("音频播放")))
+        .Title(FText::FromString(TEXT("Audio Player")))
         .ClientSize(FVector2D(530, 360))
         .SupportsMaximize(true)
         .SupportsMinimize(true)
@@ -166,7 +166,7 @@ void FMediaPlayerManager::ShowImageInWindow(const FString& ImagePath)
     SharedImageDisplayWidget->LoadImage(ImagePath);
 
     TSharedRef<SWindow> ImageWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("图片预览")))
+        .Title(FText::FromString(TEXT("Image Preview")))
         .AutoCenter(EAutoCenter::PreferredWorkArea) 
         .SizingRule(ESizingRule::UserSized)         
         .SupportsMaximize(true)

@@ -10,6 +10,7 @@
 #include "Widgets/Layout/SSeparator.h"
 #include "Subsystem/USMSubsystem.h"
 
+#define LOCTEXT_NAMESPACE "SAudioTagWidget"
 
 void SAudioTagWidget::Construct(const FArguments& InArgs)
 {
@@ -35,7 +36,7 @@ void SAudioTagWidget::Construct(const FArguments& InArgs)
             [
                 SNew(STextBlock)
                 .Justification(ETextJustify::Left)
-                .Text(FText::FromString(TEXT("已选择：")))
+                .Text(LOCTEXT("SelectedText", "已选择："))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SHorizontalBox::Slot()
@@ -70,7 +71,7 @@ void SAudioTagWidget::Construct(const FArguments& InArgs)
             .Padding(5)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("条件类型：")))
+                .Text(LOCTEXT("ConditionTypeLabel", "条件类型："))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SVerticalBox::Slot()
@@ -112,7 +113,7 @@ void SAudioTagWidget::Construct(const FArguments& InArgs)
                     .Padding(0, 5, 5, 5)
                     [
                         SNew(STextBlock)
-                        .Text(FText::FromString(TEXT("清空筛选")))
+                        .Text(LOCTEXT("ClearFilter", "清空筛选"))
                         .Justification(ETextJustify::Center)
                         .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -347,3 +348,5 @@ FReply SAudioTagWidget::ClearSelectedTags()
 
     return FReply::Handled();
 }
+
+#undef LOCTEXT_NAMESPACE

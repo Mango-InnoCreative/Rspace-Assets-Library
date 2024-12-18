@@ -288,7 +288,7 @@ private:
 
 	TSharedPtr<SVerticalBox> ProjectListContainer;
 
-	FString CurrentProjectName = TEXT("未选择项目"); 
+	FString CurrentProjectName = TEXT(""); 
 
 	// Button Style
 	FButtonStyle ConceptButtonStyle;

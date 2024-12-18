@@ -12,6 +12,9 @@
 #include "HAL/PlatformFilemanager.h"
 #include "HAL/FileManager.h"
 
+
+#define LOCTEXT_NAMESPACE "SDownloadCompleteWidget"
+
 void SDownloadCompleteWidget::Construct(const FArguments& InArgs)
 {
     // Create the vertical box to hold the completed download entries
@@ -89,7 +92,7 @@ void SDownloadCompleteWidget::AddCompletedDownload(const FString& FileName, cons
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&SearchButtonStyle)
                 .ContentPadding(0) 
-                .ToolTipText(FText::FromString(TEXT("查看本地缓存")))
+                .ToolTipText(LOCTEXT("ViewLocalCacheToolTip", "查看本地缓存"))
                 .OnClicked_Lambda([FilePath]() -> FReply
                 {
                     // Default path: The RspaceAssetsLibrary folder in the project Saved folder 默认路径：项目 Saved 文件夹下的 RspaceAssetsLibrary 文件夹
@@ -215,3 +218,6 @@ void SDownloadCompleteWidget::LoadCompletedDownloadsFromFolder()
         AddCompletedDownload(FileName, FilePath, FileSizeText);
     }
 }
+
+
+#undef LOCTEXT_NAMESPACE

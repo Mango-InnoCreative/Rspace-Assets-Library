@@ -12,6 +12,7 @@
 #include "Framework/Notifications/NotificationManager.h"
 #include "Widgets/Notifications/SNotificationList.h"
 
+#define LOCTEXT_NAMESPACE "SAssetDownloadWidget"
 
 static const int32 MaxConcurrentDownloads = 10;
 FCriticalSection SAssetDownloadWidget::ActiveTasksMutex;
@@ -75,7 +76,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&BeginButtonStyle) 
                 .ContentPadding(0) 
-                .ToolTipText(FText::FromString(TEXT("下载")))
+                .ToolTipText(LOCTEXT("DownloadTooltip", "下载"))
                 .OnClicked(this, &SAssetDownloadWidget::OnStartOrResumeClicked)
                 .IsEnabled_Lambda([this]() { return bIsPaused; }) 
             ]
@@ -87,7 +88,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&PauseButtonStyle) 
                 .ContentPadding(0) 
-                .ToolTipText(FText::FromString(TEXT("暂停")))
+                .ToolTipText(LOCTEXT("PauseTooltip", "暂停"))
                 .OnClicked(this, &SAssetDownloadWidget::OnPauseClicked)
                 .IsEnabled_Lambda([this]() { return !bIsPaused; }) 
             ]
@@ -99,7 +100,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&CancelButtonStyle)
                 .ContentPadding(0) 
-                .ToolTipText(FText::FromString(TEXT("取消")))
+                .ToolTipText(LOCTEXT("CancelTooltip", "取消"))
                 .OnClicked(this, &SAssetDownloadWidget::OnCancelClicked)
             ]
         ]
@@ -110,7 +111,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
           .VAlign(VAlign_Center)
         [
             SAssignNew(DownloadStatusText, STextBlock)
-            .Text(FText::FromString(TEXT("等待下载..."))) 
+            .Text(LOCTEXT("WaitingForDownload", "等待下载..."))
         ]
         
         + SHorizontalBox::Slot()
@@ -192,7 +193,7 @@ FReply SAssetDownloadWidget::OnStartOrResumeClicked()
         PendingTasks.Enqueue(SharedThis(this));
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(FText::FromString(TEXT("等待中...")));
+            DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "等待中..."));
         }
     }
     else
@@ -217,7 +218,7 @@ void SAssetDownloadWidget::StartDownload()
     if (AssetDownloader->IsPaused())
     {
         AssetDownloader->ResumeDownload();
-        DownloadStatusText->SetText(FText::FromString(TEXT("继续下载...")));
+        DownloadStatusText->SetText(LOCTEXT("ContinueDownload", "继续下载..."));
     }
     else
     {
@@ -235,7 +236,7 @@ void SAssetDownloadWidget::StartDownload()
         }
 
         AssetDownloader->StartChunkDownload(AssetURL, AssetFileName, AssetMD5);
-        DownloadStatusText->SetText(FText::FromString(TEXT("开始下载...")));
+        DownloadStatusText->SetText(LOCTEXT("StartDownload", "开始下载..."));
     }
     {
         FScopeLock Lock(&ActiveTasksMutex);
@@ -253,7 +254,7 @@ FReply SAssetDownloadWidget::OnPauseClicked()
         
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(FText::FromString(TEXT("下载已暂停")));
+            DownloadStatusText->SetText(LOCTEXT("DownloadPaused", "下载已暂停"));
         }
         {
             FScopeLock Lock(&ActiveTasksMutex);
@@ -285,7 +286,7 @@ FReply SAssetDownloadWidget::OnCancelClicked()
         
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(FText::FromString(TEXT("下载已取消")));
+            DownloadStatusText->SetText(LOCTEXT("DownloadCancelled", "下载已取消"));
         }
         
         if (DownloadProgressBar.IsValid())
@@ -322,28 +323,37 @@ void SAssetDownloadWidget::OnDownloadProgress(float Progress, int64 BytesDownloa
 
     if (DownloadStatusText.IsValid())
     {
+        // 本地化部分 - 只本地化 "下载中："
+        FText DownloadingText = LOCTEXT("Downloading", "下载中：");
+
+        // 进度计算部分
         FString Status;
         if (TotalBytes >= 1024 * 1024 * 1024)
         {
-            Status = FString::Printf(TEXT("下载中：%.2f/%.2f GB"),
+            Status = FString::Printf(TEXT("%.2f/%.2f GB"),
                                      BytesDownloaded / 1024.0 / 1024.0 / 1024.0,
                                      TotalBytes / 1024.0 / 1024.0 / 1024.0);
         }
         else if (TotalBytes >= 1024 * 1024)
         {
-            Status = FString::Printf(TEXT("下载中：%.2f/%.2f MB"),
+            Status = FString::Printf(TEXT("%.2f/%.2f MB"),
                                      BytesDownloaded / 1024.0 / 1024.0,
                                      TotalBytes / 1024.0 / 1024.0);
         }
         else
         {
-            Status = FString::Printf(TEXT("下载中：%.2f/%.2f KB"),
+            Status = FString::Printf(TEXT("%.2f/%.2f KB"),
                                      BytesDownloaded / 1024.0,
                                      TotalBytes / 1024.0);
         }
 
-        DownloadStatusText->SetText(FText::FromString(Status)); 
+        // 组合本地化文本和进度
+        FText FinalStatus = FText::Format(FText::FromString("{0} {1}"), DownloadingText, FText::FromString(Status));
+
+        // 更新文本
+        DownloadStatusText->SetText(FinalStatus);
     }
+
 }
 
 
@@ -351,7 +361,7 @@ void SAssetDownloadWidget::OnDownloadComplete()
 {
     if (DownloadStatusText.IsValid())
     {
-        DownloadStatusText->SetText(FText::FromString(TEXT("下载完成！")));
+        DownloadStatusText->SetText(LOCTEXT("DownloadCompleted", "下载完成！"));
     }
     if (ActiveTasks.Contains(SharedThis(this)))
     {
@@ -402,7 +412,7 @@ void SAssetDownloadWidget::OnDownloadComplete()
         // UE_LOG(LogTemp, Error, TEXT("DownloadCompleteWidget is invalid!"));
     }
     
-    FNotificationInfo Info(FText::FromString(TEXT("下载已完成！点击打开保存位置")));
+    FNotificationInfo Info(LOCTEXT("DownloadComplete", "下载已完成！点击打开保存位置"));
     Info.bFireAndForget = true; 
     Info.FadeOutDuration = 2.0f; 
     Info.ExpireDuration = 5.0f; 
@@ -426,7 +436,7 @@ void SAssetDownloadWidget::OnDownloadError()
 {
     if (DownloadStatusText.IsValid())
     {
-        DownloadStatusText->SetText(FText::FromString(TEXT("下载失败！")));
+        DownloadStatusText->SetText(LOCTEXT("DownloadFailed", "下载失败！"));
     }
     ActiveTasks.Remove(SharedThis(this));
     FailedTasks.Add(SharedThis(this));
@@ -435,7 +445,7 @@ void SAssetDownloadWidget::OnDownloadError()
         ProcessPendingTasks();
     }
     
-    FNotificationInfo Info(FText::FromString(TEXT("下载失败！")));
+    FNotificationInfo Info(LOCTEXT("DownloadFailed", "下载失败！"));
     Info.bFireAndForget = true; 
     Info.FadeOutDuration = 2.0f;
     Info.ExpireDuration = 5.0f; 
@@ -485,7 +495,7 @@ void SAssetDownloadWidget::ProcessPendingTasks()
             {
                 if (NextTask->DownloadStatusText.IsValid())
                 {
-                    NextTask->DownloadStatusText->SetText(FText::FromString(TEXT("等待中...")));
+                    NextTask->DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "等待中..."));
                 }
                 PendingTasks.Enqueue(NextTask);
             }
@@ -560,3 +570,4 @@ bool SAssetDownloadWidget::IsFileDownloading(const FString& FilePath)
 
 
 
+#undef LOCTEXT_NAMESPACE

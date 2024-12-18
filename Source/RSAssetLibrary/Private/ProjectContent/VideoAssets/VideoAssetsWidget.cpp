@@ -14,6 +14,7 @@
 #include "VideoLibrary/GetVideoVersionFileInfoApi.h"
 #include "Widgets/Layout/SScaleBox.h"
 
+#define LOCTEXT_NAMESPACE "SVideoAssetsWidget"
 
 void SVideoAssetsWidget::Construct(const FArguments& InArgs)
 {
@@ -275,7 +276,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(FText::FromString(TEXT("评论加载中...")))
+            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
         ];
 
     // Logic for requesting comment data 请求评论数据的逻辑
@@ -363,7 +364,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无评论")))
+                    .Text(LOCTEXT("NoComments", "暂无评论"))
                     .AutoWrapText(true)
                 ];
             }
@@ -390,650 +391,646 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
         .Padding(0)
         .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailsBorder"))
         [
-                    SNew(SVerticalBox)
+            SNew(SVerticalBox)
+            + SVerticalBox::Slot()
+            .AutoHeight()
+            .Padding(0)
+            [
+                SNew(SBox)
+                .WidthOverride(390) 
+                .HeightOverride(240) 
+                [
+                    SNew(SOverlay)
                     
-                        + SVerticalBox::Slot()
-                        .AutoHeight()
-                        .Padding(0)
-                        [
-                            SNew(SBox)
-                            .WidthOverride(390) 
-                            .HeightOverride(240) 
-                            [
-                                SNew(SOverlay)
-                                
-                                + SOverlay::Slot()
-                                .HAlign(HAlign_Fill)
-                                .VAlign(VAlign_Fill)
-                                [
-                                    ConstructImageItem(VideoImage)
-                                ]
-                                
-                                + SOverlay::Slot()
-                                .HAlign(HAlign_Right)
-                                .VAlign(VAlign_Bottom)
-                                .Padding(10)  
-                                [
-                                   SNew(SButton)
-                                   .Cursor(EMouseCursor::Hand)
-                                    .ButtonStyle(&PlayCircleButtonStyle) 
-                                    .ContentPadding(0)
-                                   .OnClicked_Lambda([this]() -> FReply {
-                                       //// UE_LOG(LogTemp, Log, TEXT("VideoImage: %s"), *VideoImage);
-                                       return PlayMediaWithSystemPlayer(Videourl);
-                                   })
-                                 
-                                ]
-                            ]
-                        ]
-                        
-                        + SVerticalBox::Slot()
-                        .AutoHeight()
-                        .Padding(0, 0, 0, 0)
-                        [
-                            SNew(SBox)
-                           .HeightOverride(50)
-                           [
-                               SNew(SBorder)
-                               .Padding(FMargin(0))
-                               .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailsNameBorder"))  
-                               [
-                                   SNew(SBox)
-                                   .Padding(15, 15, 0, 0)
-                                   [
-                                       SNew(STextBlock)
-                                       .Text(FText::FromString(TruncateText(VideoFileName, 26)))
-                                       .Font(FCoreStyle::GetDefaultFontStyle("Bold", 15))
-                                       .Justification(ETextJustify::Left)
-                                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                   ]
-                               ]
-                           ]
-                        ]
-                        
-                    + SVerticalBox::Slot()
-                    .FillHeight(1)
-                    .Padding(0, 20, 0, 0)
+                    + SOverlay::Slot()
+                    .HAlign(HAlign_Fill)
+                    .VAlign(VAlign_Fill)
                     [
-              
-                        SNew(SScrollBox)
-                        + SScrollBox::Slot()
-                        [
-                            SNew(SVerticalBox)
-
-            
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 0, 0, 15)
-                            [
-                                SNew(STextBlock)
-                                .Text(FText::FromString(TEXT("基本信息")))
-                                .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                 SNew(SHorizontalBox)
-
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("格式")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)  
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileFormat))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White)) 
-                                ]
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                    SNew(SHorizontalBox)
-    
-                                   + SHorizontalBox::Slot()
-                                   .AutoWidth()
-                                   [
-                                       SNew(STextBlock)
-                                       .Text(FText::FromString(TEXT("上传者")))
-                                       .Justification(ETextJustify::Left)
-                                   ]
-
-                                   + SHorizontalBox::Slot()
-                                   .FillWidth(1.0f)  
-                                   .HAlign(HAlign_Right)
-                                   [
-                                       SNew(STextBlock)
-                                       .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.CreateUserName))
-                                       .Justification(ETextJustify::Right)
-                                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                   ]
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                SNew(SHorizontalBox)
-        
-                                  + SHorizontalBox::Slot()
-                                  .AutoWidth()
-                                  [
-                                      SNew(STextBlock)
-                                      .Text(FText::FromString(TEXT("上传时间")))
-                                      .Justification(ETextJustify::Left)
-                                  ]
-
-                                  + SHorizontalBox::Slot()
-                                  .FillWidth(1.0f)  
-                                  .HAlign(HAlign_Right)
-                                  [
-                                      SNew(STextBlock)
-                                      .Text(FText::FromString(VideoVersionFileDetail->data.CreateTime))
-                                      .Justification(ETextJustify::Right)
-                                      .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                  ]
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                SNew(SHorizontalBox)
-            
-                                 + SHorizontalBox::Slot()
-                                 .AutoWidth()
-                                 [
-                                     SNew(STextBlock)
-                                     .Text(FText::FromString(TEXT("文件大小")))
-                                     .Justification(ETextJustify::Left)
-                                 ]
-
-                                 + SHorizontalBox::Slot()
-                                 .FillWidth(1.0f) 
-                                 .HAlign(HAlign_Right)
-                                 [
-                                     SNew(STextBlock)
-                                     .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileSize))
-                                     .Justification(ETextJustify::Right)
-                                     .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                 ]
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                SNew(SHorizontalBox)
-            
-                                 + SHorizontalBox::Slot()
-                                 .AutoWidth()
-                                 [
-                                     SNew(STextBlock)
-                                     .Text(FText::FromString(TEXT("分辨率")))
-                                     .Justification(ETextJustify::Left)
-                                 ]
-
-                                 + SHorizontalBox::Slot()
-                                 .FillWidth(1.0f)  
-                                 .HAlign(HAlign_Right)
-                                 [
-                                     SNew(STextBlock)
-                                     .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.SampleRate))
-                                     .Justification(ETextJustify::Right)
-                                     .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                 ]
-                            ]
-         
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("帧率")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)  
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FrameRate))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-             
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("视频-比特率")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)  
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.VideoBiteRate))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                    
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("时长")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f) 
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileTime))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                 
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("编码")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.VideoEncoder))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                   
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("声道")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)  
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(FString::FromInt(VideoVersionFileDetail->data.FileInfo.AudioChannel)))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                          
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("采集率")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f) 
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioHarvestRate))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                      
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("音频-比特率")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f)  
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioBiteRate))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-                       
-                           + SVerticalBox::Slot()
-                           .AutoHeight()
-                           .Padding(25, 15, 25, 15)
-                           [
-                               SNew(SHorizontalBox)
-            
-                                + SHorizontalBox::Slot()
-                                .AutoWidth()
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(TEXT("音频编码")))
-                                    .Justification(ETextJustify::Left)
-                                ]
-
-                                + SHorizontalBox::Slot()
-                                .FillWidth(1.0f) 
-                                .HAlign(HAlign_Right)
-                                [
-                                    SNew(STextBlock)
-                                    .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioEncoder))
-                                    .Justification(ETextJustify::Right)
-                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                ]
-                           ]
-
-                           + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f)) 
-                            [
-                                SNew(SBox)
-                                [
-                                    SNew(SImage)
-                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                                ]
-                            ]
-
-                            + SVerticalBox::Slot()
-                            .AutoHeight()
-                            .Padding(25, 15, 25, 15)
-                            [
-                                SNew(SBox)
-                                .Padding(0)
-                                [
-                                    SNew(SVerticalBox)
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    [
-                                        SNew(STextBlock)
-                                        .Text(FText::FromString(TEXT("评论")))
-                                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                        .Justification(ETextJustify::Left)
-                                    ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    [
-                                        CommentContainer.ToSharedRef()
-                                    ]
-                                ]
-                            ]
-                        ]  
+                        ConstructImageItem(VideoImage)
                     ]
-
-                    + SVerticalBox::Slot()
-                  
-                    .AutoHeight()
+                    
+                    + SOverlay::Slot()
+                    .HAlign(HAlign_Right)
                     .VAlign(VAlign_Bottom)
-                    .Padding(0)
+                    .Padding(10)  
                     [
-                        SNew(SBorder)
-                        .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DownloadBarBorder"))  
+                       SNew(SButton)
+                       .Cursor(EMouseCursor::Hand)
+                        .ButtonStyle(&PlayCircleButtonStyle) 
+                        .ContentPadding(0)
+                       .OnClicked_Lambda([this]() -> FReply {
+                           //// UE_LOG(LogTemp, Log, TEXT("VideoImage: %s"), *VideoImage);
+                           return PlayMediaWithSystemPlayer(Videourl);
+                       })
+                     
+                    ]
+                ]
+            ]
+                
+            + SVerticalBox::Slot()
+            .AutoHeight()
+            .Padding(0, 0, 0, 0)
+            [
+                SNew(SBox)
+               .HeightOverride(50)
+               [
+                   SNew(SBorder)
+                   .Padding(FMargin(0))
+                   .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailsNameBorder"))  
+                   [
+                       SNew(SBox)
+                       .Padding(15, 15, 0, 0)
+                       [
+                           SNew(STextBlock)
+                           .Text(FText::FromString(TruncateText(VideoFileName, 26)))
+                           .Font(FCoreStyle::GetDefaultFontStyle("Bold", 15))
+                           .Justification(ETextJustify::Left)
+                           .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                       ]
+                   ]
+               ]
+            ]
+                    
+                + SVerticalBox::Slot()
+                .FillHeight(1)
+                .Padding(0, 20, 0, 0)
+                [
+                    SNew(SScrollBox)
+                    + SScrollBox::Slot()
+                    [
+                        SNew(SVerticalBox)
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 0, 0, 15)
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("BasicInfo", "基本信息"))
+                            .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
                         [
                             SNew(SHorizontalBox)
 
-                             + SHorizontalBox::Slot()
-                           .FillWidth(1.0f)
-                           .HAlign(HAlign_Left)
-                           .Padding(10, 2, 10, 2)
-                           [
-                               SNew(SBox)
-                               .HeightOverride(40)
-                               .WidthOverride(210)
-                               [
-                                    SAssignNew(VersionComboBox, SComboBox<TSharedPtr<FString>>)  
-                                    .OptionsSource(&VersionOptions)  // Set the option source for the drop-down box 设置下拉框的选项源
-                                    .OnGenerateWidget_Lambda([](TSharedPtr<FString> InOption)
-                                    {
-                                       // Precede the options with a "V" 在选项内容前面加上 "V"
-                                       FString DisplayText = FString::Printf(TEXT("%s"), **InOption);
-                                       return SNew(STextBlock)
-                                           .Text(FText::FromString(DisplayText));  // Display content for each option 每个选项的显示内容
-                                    })
-                                    .OnSelectionChanged(this, &SVideoAssetsWidget::OnVersionSelected)  // Version selection event 版本选择事件
-                                    .InitiallySelectedItem(nullptr)  // InitiallySelectedItem is not dependent 不依赖 InitiallySelectedItem
-                                    .Content()
-                                    [
-                                       SNew(STextBlock)
-                                       .Text_Lambda([this]()
-                                        {
-                                            // If any item is selected, the selected item is displayed. Otherwise, the default text is displayed 如果有选中项，则显示选中项；否则显示默认文字
-                                           return FText::FromString(
-                                                SelectedVersion.IsValid() ? **SelectedVersion : *InitialVideoVersion
-                                            );
-                                        })
-                                    ]
-                                ]
-                           ]
-                           
                             + SHorizontalBox::Slot()
-                            .HAlign(HAlign_Right) 
-                            .FillWidth(1.0f)
+                            .AutoWidth()
                             [
-                                 SNew(SHorizontalBox)
-                                 + SHorizontalBox::Slot()
-                                 .AutoWidth()
-                                 .Padding(5, 2, 5, 2)
-                                 [
-                                    SAssignNew(DownloadButton, SButton)  
-                                     .Cursor(EMouseCursor::Hand)
-                                     .ButtonStyle(&ImportButtonStyle) 
-                                     .ContentPadding(0) 
-                                     .IsEnabled_Lambda([this]() { return bIsButtonEnabled && !IsFileDownloaded(VideoFileName); })
-                                     .OnClicked_Lambda([this, VideoVersionFileDetail]()-> FReply
-                                    {
-                                       float CurrentTime = FPlatformTime::Seconds();
-                                         
-                                       if (CurrentTime - LastClickTime < ClickCooldownTime)
-                                       {
-                                           return FReply::Handled(); 
-                                       }
-                                         
-                                       LastClickTime = CurrentTime;
-                                         
-                                    bIsButtonEnabled = false;  
-                                        
-                                    AnimationProgress = 0.0f;
-                                    const float AnimationDuration = 1.0f;
-                                         
-                                    FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([this, AnimationDuration](float DeltaTime) -> bool
-                                    {
-                                        AnimationProgress += DeltaTime / AnimationDuration;
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Format", "格式"))
+                                .Justification(ETextJustify::Left)
+                            ]
 
-                                        if (AnimationProgress >= 1.0f)
-                                        {
-                                            AnimationProgress = 1.0f;
-
-                                            return false; 
-                                        }
-
-                                        return true;
-                                    }));
-                                         
-                                   SelectedVideoFileInfo.FileName = VideoVersionFileDetail->data.VideoFileName;
-                                     SelectedVideoFileInfo.FileUrl = VideoVersionFileDetail->data.VideoFilePath;
-                                   SelectedVideoFileInfo.FileMd5 = VideoVersionFileDetail->data.FileInfo.FileMd5;
-
-                                   if (VideoVersionFileDetail->data.FileInfo.FileSize == "0")
-                                   {
-                                       return FReply::Handled();
-                                   }
-                                         
-                                   OnDownloadVideoButtonClicked(SelectedVideoFileInfo);
-
-                                   bool bIsFileDownloaded = IsFileDownloaded(VideoFileName);
-
-                                   if (bIsFileDownloaded)
-                                   {
-                                       bIsButtonEnabled = false;
-                                   }
-                                   else
-                                   {
-                                       bIsButtonEnabled = true;
-                                   }
-                                         
-                                   return FReply::Handled();
-                                    
-                                })
-                                     [
-                                         SNew(SBox)
-                                         .WidthOverride(70)
-                                         .HeightOverride(40)
-                                         [
-                                             SNew(SHorizontalBox)
-                                             + SHorizontalBox::Slot()
-                                             .VAlign(VAlign_Center)
-                                             .HAlign(HAlign_Center)
-                                             .Padding(5, 5, 5, 5)
-                                             [
-                                                 SNew(SOverlay)
-                                                + SOverlay::Slot() 
-                                                [
-                                                    SNew(SImage)
-                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
-                                                ]
-                                                + SOverlay::Slot()
-                                                [
-                                                    SNew(SImage)
-                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
-                                                    .RenderTransform_Lambda([this]()
-                                                    {
-                                                        return FSlateRenderTransform(FVector2D(0.0f, -200.0f * AnimationProgress));
-                                                    })
-                                                    .ColorAndOpacity_Lambda([this]()
-                                                    {
-                                                        return FSlateColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f - AnimationProgress));
-                                                    })
-                                                ]
-                                             ]
-                                             + SHorizontalBox::Slot()
-                                             .VAlign(VAlign_Center)
-                                             .HAlign(HAlign_Center)
-                                             .Padding(0, 5, 5, 5)
-                                             [
-                                                 SNew(STextBlock)
-                                                 .Text(FText::FromString(TEXT("下载")))
-                                                 .Justification(ETextJustify::Center)
-                                                 .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                                 .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
-                                             ]
-                                         ]
-                                     ]
-                                 ]
-                                  + SHorizontalBox::Slot()
-                                 .AutoWidth()
-                                 .Padding(5, 2, 5, 2)
-                                 [
-                                     SNew(SButton)
-                                     .Cursor(EMouseCursor::Hand)
-                                     .ButtonStyle(&ImportButtonStyle) 
-                                     .OnClicked(this, &SVideoAssetsWidget::OnImportVideoFileButtonClicked)
-                                     .ContentPadding(0) 
-                                     [
-                                         SNew(SBox)
-                                         .WidthOverride(70)
-                                         .HeightOverride(40)
-                                         [
-                                             SNew(SHorizontalBox)
-                                             + SHorizontalBox::Slot()
-                                             .VAlign(VAlign_Center)
-                                             .HAlign(HAlign_Center)
-                                             .Padding(5, 5, 5, 5)
-                                             [
-                                                 SNew(SImage)
-                                                 .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon")) 
-                                             ]
-                                             + SHorizontalBox::Slot()
-                                             .VAlign(VAlign_Center)
-                                             .HAlign(HAlign_Center)
-                                             .Padding(0, 5, 5, 5)
-                                             [
-                                                 SNew(STextBlock)
-                                                 .Text(FText::FromString(TEXT("导入")))
-                                                 .Justification(ETextJustify::Center)
-                                                 .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                                 .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
-                                             ]
-                                         ]
-                                     ]
-                                 ]
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileFormat))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White)) 
                             ]
                         ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Uploader", "上传者"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.CreateUserName))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("UploadTime", "上传时间"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.CreateTime))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("FileSize", "文件大小"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f) 
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileSize))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Resolution", "分辨率"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.SampleRate))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("FrameRate", "帧率"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FrameRate))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("VideoBitRate", "视频-比特率"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.VideoBiteRate))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Duration", "时长"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f) 
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.FileTime))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Codec", "编码"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                               + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.VideoEncoder))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("AudioChannel", "声道"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(FString::FromInt(VideoVersionFileDetail->data.FileInfo.AudioChannel)))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("AudioSampleRate", "采集率"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f) 
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioHarvestRate))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("AudioBitRate", "音频-比特率"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f)  
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioBiteRate))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SHorizontalBox)
+
+                            + SHorizontalBox::Slot()
+                            .AutoWidth()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("AudioCodec", "音频编码"))
+                                .Justification(ETextJustify::Left)
+                            ]
+
+                            + SHorizontalBox::Slot()
+                            .FillWidth(1.0f) 
+                            .HAlign(HAlign_Right)
+                            [
+                                SNew(STextBlock)
+                                .Text(FText::FromString(VideoVersionFileDetail->data.FileInfo.AudioEncoder))
+                                .Justification(ETextJustify::Right)
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f)) 
+                        [
+                            SNew(SBox)
+                            [
+                                SNew(SImage)
+                                .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
+                            ]
+                        ]
+
+                        + SVerticalBox::Slot()
+                        .AutoHeight()
+                        .Padding(25, 15, 25, 15)
+                        [
+                            SNew(SBox)
+                            .Padding(0)
+                            [
+                                SNew(SVerticalBox)
+                                + SVerticalBox::Slot()
+                                .AutoHeight()
+                                [
+                                    SNew(STextBlock)
+                                    .Text(LOCTEXT("Comments", "评论"))
+                                    .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                    .Justification(ETextJustify::Left)
+                                ]
+                                + SVerticalBox::Slot()
+                                .AutoHeight()
+                                [
+                                    CommentContainer.ToSharedRef()
+                                ]
+                            ]
+                        ]
+                ]
+            ]
+
+             + SVerticalBox::Slot()
+            .AutoHeight()
+            .VAlign(VAlign_Bottom)
+            .Padding(0)
+            [
+                SNew(SBorder)
+                .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DownloadBarBorder"))  
+                [
+                    SNew(SHorizontalBox)
+                    + SHorizontalBox::Slot()
+                   .FillWidth(1.0f)
+                   .HAlign(HAlign_Fill)
+                   .Padding(10, 2, 10, 2)
+                   [
+                       SNew(SBox)
+                       .HeightOverride(40)
+                       .WidthOverride(210)
+                       [
+                            SAssignNew(VersionComboBox, SComboBox<TSharedPtr<FString>>)  
+                            .OptionsSource(&VersionOptions)  // Set the option source for the drop-down box 设置下拉框的选项源
+                            .OnGenerateWidget_Lambda([](TSharedPtr<FString> InOption)
+                            {
+                               // Precede the options with a "V" 在选项内容前面加上 "V"
+                               FString DisplayText = FString::Printf(TEXT("%s"), **InOption);
+                               return SNew(STextBlock)
+                                   .Text(FText::FromString(DisplayText));  // Display content for each option 每个选项的显示内容
+                            })
+                            .OnSelectionChanged(this, &SVideoAssetsWidget::OnVersionSelected)  // Version selection event 版本选择事件
+                            .InitiallySelectedItem(nullptr)  // InitiallySelectedItem is not dependent 不依赖 InitiallySelectedItem
+                            .Content()
+                            [
+                               SNew(STextBlock)
+                               .Text_Lambda([this]()
+                                {
+                                    // If any item is selected, the selected item is displayed. Otherwise, the default text is displayed 如果有选中项，则显示选中项；否则显示默认文字
+                                   return FText::FromString(
+                                        SelectedVersion.IsValid() ? **SelectedVersion : *InitialVideoVersion
+                                    );
+                                })
+                            ]
+                        ]
+                   ]
+                   
+                    + SHorizontalBox::Slot()
+                    .HAlign(HAlign_Right) 
+                    .FillWidth(1.0f)
+                    [
+                         SNew(SHorizontalBox)
+                         + SHorizontalBox::Slot()
+                         .AutoWidth()
+                         .Padding(5, 2, 5, 2)
+                         [
+                            SAssignNew(DownloadButton, SButton)  
+                             .Cursor(EMouseCursor::Hand)
+                             .ButtonStyle(&ImportButtonStyle) 
+                             .ContentPadding(0) 
+                             .IsEnabled_Lambda([this]() { return bIsButtonEnabled && !IsFileDownloaded(VideoFileName); })
+                             .OnClicked_Lambda([this, VideoVersionFileDetail]()-> FReply
+                            {
+                               float CurrentTime = FPlatformTime::Seconds();
+                                 
+                               if (CurrentTime - LastClickTime < ClickCooldownTime)
+                               {
+                                   return FReply::Handled(); 
+                               }
+                                 
+                               LastClickTime = CurrentTime;
+                                 
+                            bIsButtonEnabled = false;  
+                                
+                            AnimationProgress = 0.0f;
+                            const float AnimationDuration = 1.0f;
+                                 
+                            FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([this, AnimationDuration](float DeltaTime) -> bool
+                            {
+                                AnimationProgress += DeltaTime / AnimationDuration;
+
+                                if (AnimationProgress >= 1.0f)
+                                {
+                                    AnimationProgress = 1.0f;
+
+                                    return false; 
+                                }
+
+                                return true;
+                            }));
+                                 
+                           SelectedVideoFileInfo.FileName = VideoVersionFileDetail->data.VideoFileName;
+                             SelectedVideoFileInfo.FileUrl = VideoVersionFileDetail->data.VideoFilePath;
+                           SelectedVideoFileInfo.FileMd5 = VideoVersionFileDetail->data.FileInfo.FileMd5;
+
+                           if (VideoVersionFileDetail->data.FileInfo.FileSize == "0")
+                           {
+                               return FReply::Handled();
+                           }
+                                 
+                           OnDownloadVideoButtonClicked(SelectedVideoFileInfo);
+
+                           bool bIsFileDownloaded = IsFileDownloaded(VideoFileName);
+
+                           if (bIsFileDownloaded)
+                           {
+                               bIsButtonEnabled = false;
+                           }
+                           else
+                           {
+                               bIsButtonEnabled = true;
+                           }
+                                 
+                           return FReply::Handled();
+                            
+                        })
+                             [
+                                 SNew(SBox)
+                                 .WidthOverride(40)
+                                 .HeightOverride(40)
+                                 [
+                                     SNew(SHorizontalBox)
+                                     + SHorizontalBox::Slot()
+                                     .VAlign(VAlign_Center)
+                                     .HAlign(HAlign_Center)
+                                     .Padding(5, 5, 5, 5)
+                                     [
+                                         SNew(SOverlay)
+                                        + SOverlay::Slot() 
+                                        [
+                                            SNew(SImage)
+                                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
+                                        ]
+                                        + SOverlay::Slot()
+                                        [
+                                            SNew(SImage)
+                                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
+                                            .RenderTransform_Lambda([this]()
+                                            {
+                                                return FSlateRenderTransform(FVector2D(0.0f, -200.0f * AnimationProgress));
+                                            })
+                                            .ColorAndOpacity_Lambda([this]()
+                                            {
+                                                return FSlateColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f - AnimationProgress));
+                                            })
+                                        ]
+                                     ]
+                                     // + SHorizontalBox::Slot()
+                                     // .VAlign(VAlign_Center)
+                                     // .HAlign(HAlign_Center)
+                                     // .Padding(0, 5, 5, 5)
+                                     // [
+                                     //     SNew(STextBlock)
+                                     //     // .Text(LOCTEXT("Download", "下载"))
+                                     //     .Justification(ETextJustify::Center)
+                                     //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                     //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
+                                     // ]
+                                 ]
+                             ]
+                         ]
+                          + SHorizontalBox::Slot()
+                          .HAlign(HAlign_Right)
+                         .AutoWidth()
+                         .Padding(5, 2, 5, 2)
+                         [
+                             SNew(SButton)
+                             .Cursor(EMouseCursor::Hand)
+                             .ButtonStyle(&ImportButtonStyle) 
+                             .OnClicked(this, &SVideoAssetsWidget::OnImportVideoFileButtonClicked)
+                             .ContentPadding(0) 
+                             [
+                                 SNew(SBox)
+                                 .WidthOverride(40)
+                                 .HeightOverride(40)
+                                 [
+                                     SNew(SHorizontalBox)
+                                     + SHorizontalBox::Slot()
+                                     .VAlign(VAlign_Center)
+                                     .HAlign(HAlign_Center)
+                                     .Padding(5, 5, 5, 5)
+                                     [
+                                         SNew(SImage)
+                                         .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon")) 
+                                     ]
+                                     // + SHorizontalBox::Slot()
+                                     // .VAlign(VAlign_Center)
+                                     // .HAlign(HAlign_Center)
+                                     // .Padding(0, 5, 5, 5)
+                                     // [
+                                     //     SNew(STextBlock)
+                                     //     // .Text(LOCTEXT("Import", "导入"))
+                                     //     .Justification(ETextJustify::Center)
+                                     //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                     //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
+                                     // ]
+                                 ]
+                             ]
+                         ]
                     ]
                 ]
+            ]
+        ]
     ];
     
 }
@@ -1153,7 +1150,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1168,7 +1165,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("资源正在下载中，无法导入！")))
+                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1177,7 +1174,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1209,7 +1206,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1224,7 +1221,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("请先下载该资源！")))
+                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1234,7 +1231,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(FText::FromString(TEXT("确定")))
+                .Text(LOCTEXT("Confirm", "确定"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1326,7 +1323,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("加载中...")))
+                    .Text(LOCTEXT("Loading", "加载中..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1375,7 +1372,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(FText::FromString(TEXT("加载失败")))
+                                .Text(LOCTEXT("LoadFailed", "加载失败"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1408,7 +1405,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("无预览图")))
+                    .Text(LOCTEXT("NoPreview", "无预览图"))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1492,3 +1489,5 @@ void SVideoAssetsWidget::SearchVideoFileByName(const FText& InputFileName)
         VideoFileApi->SendGetVideoAssetLibraryListInfoRequest(Ticket, ProjectNo, ParentId, EncodedSearchFileName, OnGetVideoAssetLibraryListInfoResponse);
     }
 }
+
+#undef LOCTEXT_NAMESPACE

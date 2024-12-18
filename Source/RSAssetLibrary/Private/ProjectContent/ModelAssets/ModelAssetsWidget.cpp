@@ -20,7 +20,7 @@
 #include "Misc/Timespan.h"
 #include "Tickable.h"  // 包含与 FTicker 和 FTSTicker 相关的内容
 
-
+#define LOCTEXT_NAMESPACE "SModelAssetsWidget"
 
 void SModelAssetsWidget::Construct(const FArguments& InArgs)
 {
@@ -328,11 +328,8 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
             .AutoWidth()
             .Padding(5, 0, 5, 15)
             [
-               
-                    SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无标签"))) 
-                    
-                
+                SNew(STextBlock)
+                .Text(LOCTEXT("NoTags", "暂无标签"))
             ]
         ];
     }
@@ -486,152 +483,150 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
             .Padding(0, 20, 0, 0)
             [
                 SNew(SScrollBox)
-               + SScrollBox::Slot()
-               [
-                SNew(SVerticalBox)
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 0, 0, 15)
+                + SScrollBox::Slot()
                 [
-                    SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("基本信息")))
-                    .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
+                    SNew(SVerticalBox)
                     
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("创建时间")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f)  
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(FileDetailsItem.createTime))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 0, 0, 15)
+                    [
+                        SNew(STextBlock)
+                        .Text(LOCTEXT("BasicInfoTitle", "基本信息"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("CreateTimeLabel", "创建时间"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f)  
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(FileDetailsItem.createTime))  // Here you can keep the dynamic text.
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
 
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("LastModifyTimeLabel", "最后修改时间"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(FileDetailsItem.updateTime))  // Here you can keep the dynamic text.
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
                     
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("最后修改时间")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(FileDetailsItem.updateTime))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("CreatorLabel", "创建者"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(FileDetailsItem.createrBy))  // Here you can keep the dynamic text.
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
                     
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("创建者")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(FileDetailsItem.createrBy))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
-                    
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("最后修改者")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(FileDetailsItem.updateBy))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("LastModifyByLabel", "最后修改者"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(FileDetailsItem.updateBy))  // Here you can keep the dynamic text.
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
 
-                + SVerticalBox::Slot()
-               .AutoHeight()
-               .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f)) 
-               [
-                   SNew(SBox)
-                   [
-                       SNew(SImage)
-                       .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine"))
-                   ]
-               ]
-               
-               + SVerticalBox::Slot()
-               .AutoHeight()
-               .Padding(25, 15, 25, 15)
-               [
-                   SNew(STextBlock)
-                   .Text(FText::FromString(TEXT("标签")))
-                   .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                   .ColorAndOpacity(FSlateColor(FLinearColor::White))
-               ]
-               
-               + SVerticalBox::Slot()
-               .AutoHeight()
-               .Padding(20, 0, 25, 15)
-               [
-                    TagContainer.ToSharedRef()
-
-               ]
-               
-               ]
-                
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f)) 
+                    [
+                        SNew(SBox)
+                        [
+                            SNew(SImage)
+                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine"))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(STextBlock)
+                        .Text(LOCTEXT("TagsTitle", "标签"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(20, 0, 25, 15)
+                    [
+                        TagContainer.ToSharedRef()
+                    ]
+                ]
             ]
+
             
             + SVerticalBox::Slot()
             .AutoHeight()
@@ -643,7 +638,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                 [
                      SNew(SHorizontalBox)
                         + SHorizontalBox::Slot()
-                        .HAlign(HAlign_Right) 
+                        .HAlign(HAlign_Fill) 
                         .FillWidth(1.0f) 
                         [
                              SNew(SHorizontalBox)
@@ -682,6 +677,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                                
                              + SHorizontalBox::Slot()
                              .AutoWidth()
+                             .HAlign(HAlign_Right)
                              .Padding(5, 2, 5, 2)
                              [
                                 SAssignNew(DownloadButton, SButton)  
@@ -736,7 +732,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                                     })
                                  [
                                      SNew(SBox)
-                                     .WidthOverride(70)
+                                     .WidthOverride(40)
                                      .HeightOverride(40)
                                      [
                                          SNew(SHorizontalBox)
@@ -765,21 +761,22 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                                                 })
                                             ]
                                          ]
-                                         + SHorizontalBox::Slot()
-                                         .VAlign(VAlign_Center)
-                                         .HAlign(HAlign_Center)
-                                         .Padding(0, 5, 5, 5)
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("下载")))
-                                             .Justification(ETextJustify::Center)
-                                             .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                             .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
-                                         ]
+                                         // + SHorizontalBox::Slot()
+                                         // .VAlign(VAlign_Center)
+                                         // .HAlign(HAlign_Center)
+                                         // .Padding(0, 5, 5, 5)
+                                         // [
+                                         //     SNew(STextBlock)
+                                         //     // .Text(LOCTEXT("Download", "下载"))
+                                         //     .Justification(ETextJustify::Center)
+                                         //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                         //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
+                                         // ]
                                      ]
                                  ]
                              ]
                               + SHorizontalBox::Slot()
+                              .HAlign(HAlign_Right)
                              .AutoWidth()
                              .Padding(5, 2, 5, 2)
                              [
@@ -790,7 +787,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                                  .OnClicked(this, &SModelAssetsWidget::OnImportFBXButtonClicked)
                                  [
                                      SNew(SBox)
-                                     .WidthOverride(70)
+                                     .WidthOverride(40)
                                      .HeightOverride(40)
                                      [
                                          SNew(SHorizontalBox)
@@ -802,17 +799,17 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                                              SNew(SImage)
                                              .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon"))
                                          ]
-                                         + SHorizontalBox::Slot()
-                                         .VAlign(VAlign_Center)
-                                         .HAlign(HAlign_Center)
-                                         .Padding(0, 5, 5, 5)
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("导入")))
-                                             .Justification(ETextJustify::Center)
-                                             .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                             .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
-                                         ]
+                                         // + SHorizontalBox::Slot()
+                                         // .VAlign(VAlign_Center)
+                                         // .HAlign(HAlign_Center)
+                                         // .Padding(0, 5, 5, 5)
+                                         // [
+                                         //     SNew(STextBlock)
+                                         //     //.Text(LOCTEXT("Import", "导入"))
+                                         //     .Justification(ETextJustify::Center)
+                                         //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                         //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
+                                         // ]
                                      ]
                                  ]
                              ]
@@ -987,7 +984,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1002,7 +999,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("资源正在下载中，无法导入！")))
+                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1011,7 +1008,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1045,7 +1042,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
         }
 
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1060,7 +1057,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("请先下载该资源！")))
+                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1070,7 +1067,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(FText::FromString(TEXT("确定")))
+                .Text(LOCTEXT("Confirm", "确定"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1173,7 +1170,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("加载中...")))
+                    .Text(LOCTEXT("Loading", "加载中..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1212,7 +1209,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(FText::FromString(TEXT("图片加载失败")))
+                                .Text(LOCTEXT("ImageLoadFailed", "图片加载失败"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1231,7 +1228,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                         SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                         [
                             SNew(STextBlock)
-                            .Text(FText::FromString(TEXT("图片加载失败")))
+                            .Text(LOCTEXT("ImageLoadFailed", "图片加载失败"))
                             .Justification(ETextJustify::Center)
                         ]
                     ]
@@ -1250,7 +1247,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("无预览图")))
+                    .Text(LOCTEXT("NoPreviewText", "无预览图"))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1263,3 +1260,4 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
 
 
 
+#undef LOCTEXT_NAMESPACE

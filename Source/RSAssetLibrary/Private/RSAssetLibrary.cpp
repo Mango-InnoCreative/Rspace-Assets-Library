@@ -17,13 +17,17 @@ static const FName RSAssetLibraryTabName("RSAssetLibrary");
 
 void FRSAssetLibraryModule::StartupModule()
 {
+	// 初始化时加载本地化文件
+	LoadLocalizationForEditorLanguage();
+	
+	// 监听语言切换事件
+	FInternationalization::Get().OnCultureChanged().AddRaw(this, &FRSAssetLibraryModule::OnCultureChanged);
+
 	if (GEditor)
 	{
 		GEditor->OnEditorClose().AddRaw(this, &FRSAssetLibraryModule::HandleEditorClose);
 	}
 
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
 	FRSAssetLibraryStyle::Initialize();
 	FRSAssetLibraryStyle::ReloadTextures();
 
@@ -42,8 +46,42 @@ void FRSAssetLibraryModule::StartupModule()
 
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner("RSAssetLibrary", FOnSpawnTab::CreateRaw(this, &FRSAssetLibraryModule::OnSpawnPluginTab))
 	.SetDisplayName(FText::FromString("RSpace Asset Library"))
-	.SetMenuType(ETabSpawnerMenuType::Hidden).SetIcon(FSlateIcon(TEXT("RSAssetLibraryStyle"),TEXT("PluginIcon.Icon")));;
+	.SetMenuType(ETabSpawnerMenuType::Hidden).SetIcon(FSlateIcon(TEXT("RSAssetLibraryStyle"),TEXT("PluginIcon.Icon")));
 }
+
+void FRSAssetLibraryModule::LoadLocalizationForEditorLanguage()
+{
+	// 获取当前编辑器的语言
+	FString CurrentCulture = FTextLocalizationManager::Get().GetRequestedLocaleName();
+
+	// 根据当前语言加载插件的本地化资源
+	FString LocalizationPath = FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("RSAssetLibrary"), TEXT("Content"), TEXT("Localization"), TEXT("Game"),CurrentCulture, TEXT("Game.locres"));
+
+	// 确保文件存在
+	if (FPaths::FileExists(LocalizationPath))
+	{
+		// 创建本地化资源对象
+		FTextLocalizationResource LocalizationResource;
+
+		// 设置优先级为 0（您可以根据需求修改）
+		int32 Priority = 0;
+
+		// 加载本地化资源
+		LocalizationResource.LoadFromFile(LocalizationPath, Priority);
+
+		// 使用 `UpdateFromLocalizationResource` 方法更新本地化资源
+		FTextLocalizationManager::Get().UpdateFromLocalizationResource(LocalizationResource);
+	}
+}
+
+// 语言切换事件处理函数
+void FRSAssetLibraryModule::OnCultureChanged()
+{
+	// 当语言发生变化时重新加载本地化资源
+	LoadLocalizationForEditorLanguage();
+}
+
+
 
 void FRSAssetLibraryModule::ShutdownModule()
 {
@@ -82,6 +120,50 @@ void FRSAssetLibraryModule::HandleEditorClose()
 			ProjectWidget->CloseAllOpenedWindows();
 		}
 	}
+
+	TArray<TSharedRef<SWindow>> AllWindows;
+
+	// Get root window 获取根窗口
+	const TArray<TSharedRef<SWindow>>& RootWindows = FSlateApplication::Get().GetTopLevelWindows();
+	for (const TSharedRef<SWindow>& RootWindow : RootWindows)
+	{
+		// Gets all Windows recursively, including minimized Windows 递归获取所有窗口，包括最小化的窗口
+		GetAllWindowsRecursive(AllWindows, RootWindow);
+	}
+
+	for (const TSharedRef<SWindow>& Window : AllWindows)
+	{
+		FText WindowTitle = Window->GetTitle();
+
+		// Determine whether the plug-in is related to the window 判断是否是插件相关窗口
+		if (WindowTitle.EqualTo(FText::FromString(TEXT("传输列表")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("提示")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("Video Player")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("Audio Player")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("Image Preview")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("Download List")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("Tip")))) 
+            
+		{
+			// UE_LOG(LogTemp, Log, TEXT("Closing plugin-related window: %s"), *WindowTitle.ToString());
+
+			FSlateApplication::Get().RequestDestroyWindow(Window);
+		}
+	}
+	
+}
+
+void FRSAssetLibraryModule::GetAllWindowsRecursive(TArray<TSharedRef<SWindow>>& OutWindows, TSharedRef<SWindow> CurrentWindow)
+{
+	// Add the current window (whether visible or minimized) 添加当前窗口（无论是否可见或最小化）
+	OutWindows.Add(CurrentWindow);
+
+	// Traverse the child Windows of the current window 遍历当前窗口的子窗口
+	const TArray<TSharedRef<SWindow>>& WindowChildren = CurrentWindow->GetChildWindows();
+	for (int32 ChildIndex = 0; ChildIndex < WindowChildren.Num(); ++ChildIndex)
+	{
+		GetAllWindowsRecursive(OutWindows, WindowChildren[ChildIndex]);
+	}
 }
 
 void FRSAssetLibraryModule::RegisterMenus()
@@ -108,7 +190,7 @@ void FRSAssetLibraryModule::RegisterMenus()
 				// Set the static Tooltip 设置静态 Tooltip
 				Entry.ToolTip = TAttribute<FText>::Create(TAttribute<FText>::FGetter::CreateLambda([]()
 				{
-					return FText::FromString(TEXT("打开 RSpace 插件面板"));
+					return FText::FromString(TEXT("Open RSpace Plugin"));
 				}));
 			}
 		}

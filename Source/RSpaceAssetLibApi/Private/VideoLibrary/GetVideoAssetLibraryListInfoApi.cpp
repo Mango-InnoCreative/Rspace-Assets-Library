@@ -1,6 +1,7 @@
-﻿#include "VideoLibrary/GetVideoAssetLibraryListInfoApi.h"
+﻿// Copyright (c) 2024 Hunan MangoXR Tech Co., Ltd. All Rights Reserved.
+
+#include "VideoLibrary/GetVideoAssetLibraryListInfoApi.h"
 #include "HttpModule.h"
-#include "JsonUtilities.h"
 #include "JsonObjectConverter.h"
 
 

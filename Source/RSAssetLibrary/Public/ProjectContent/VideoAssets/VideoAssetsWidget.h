@@ -1,4 +1,4 @@
-﻿
+﻿// Copyright (c) 2024 Hunan MangoXR Tech Co., Ltd. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"

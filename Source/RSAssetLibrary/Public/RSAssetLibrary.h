@@ -21,6 +21,8 @@ public:
 	void PluginButtonClicked();
 
 	void HandleEditorClose();
+
+	void GetAllWindowsRecursive(TArray<TSharedRef<SWindow>>& OutWindows, TSharedRef<SWindow> CurrentWindow);
 	
 private:
 
@@ -39,5 +41,7 @@ private:
 
 	void OnPluginTabClosed(TSharedRef<SDockTab> ClosedTab);
 	
-	
+	void LoadLocalizationForEditorLanguage();
+
+	void OnCultureChanged();
 };

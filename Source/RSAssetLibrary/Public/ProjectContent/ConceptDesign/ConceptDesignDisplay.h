@@ -23,7 +23,7 @@ void Construct(const FArguments& InArgs);
     void LoadImage(const FString& ProjectImageUrl);
 
 
-    void ShowErrorMessage(const FString& ErrorMessage);
+    void ShowErrorMessage(const FText& ErrorMessage);
 
 
     void UpdateImageDisplay();

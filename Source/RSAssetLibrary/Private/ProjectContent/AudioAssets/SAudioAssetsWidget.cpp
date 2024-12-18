@@ -15,7 +15,7 @@
 #include "Sound/SoundWave.h"
 #include "EditorFramework/AssetImportData.h"
 
-
+#define LOCTEXT_NAMESPACE "SAudioAssetsWidget"
 
 void SAudioAssetsWidget::Construct(const FArguments& InArgs)
 {
@@ -420,7 +420,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(FText::FromString(TEXT("评论加载中...")))
+            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
         ];
     
     UGetAudioCommentApi* GetAudioCommentApi = NewObject<UGetAudioCommentApi>();
@@ -510,7 +510,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无评论")))
+                    .Text(LOCTEXT("NoComments", "暂无评论"))
                     .AutoWrapText(true) 
                 ];
             }
@@ -557,10 +557,8 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                              .AutoWidth()
                              .Padding(5, 0, 5, 15)
                              [
-                             
-                                     SNew(STextBlock)
-                                     .Text(FText::FromString(TEXT("暂无标签"))) 
-                                 
+                                 SNew(STextBlock)
+                                 .Text(LOCTEXT("NoTags", "暂无标签"))
                              ]
                          ];
                      }
@@ -702,433 +700,414 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                 .Padding(0, 20, 0, 0)
                                 [
                                     SNew(SScrollBox)
-                                   + SScrollBox::Slot()
-                                   [
-                                    SNew(SVerticalBox)
-                                    
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 0, 0, 15)
-                                    [
-                                        SNew(STextBlock)
-                                        .Text(FText::FromString(TEXT("音频信息")))
-                                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                    ]
-                                    
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                         SNew(SHorizontalBox)
-                                        + SHorizontalBox::Slot()
-                                        .AutoWidth()
-                                        [
-                                            SNew(STextBlock)
-                                            .Text(FText::FromString(TEXT("编码器")))
-                                            .Justification(ETextJustify::Left)
-                                        ]
-                                        
-                                        + SHorizontalBox::Slot()
-                                        .FillWidth(1.0f)  
-                                        .HAlign(HAlign_Right)
-                                        [
-                                            SNew(STextBlock)
-                                            .Text(FText::FromString(AudioFileData.AudioEncoder))
-                                            .Justification(ETextJustify::Right)
-                                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                        ]
-                                    ]
-                                    
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                            SNew(SHorizontalBox)
-                                           + SHorizontalBox::Slot()
-                                           .AutoWidth()
-                                           [
-                                               SNew(STextBlock)
-                                               .Text(FText::FromString(TEXT("声道")))
-                                               .Justification(ETextJustify::Left)
-                                           ]
-                                           + SHorizontalBox::Slot()
-                                           .FillWidth(1.0f) 
-                                           .HAlign(HAlign_Right)
-                                           [
-                                               SNew(STextBlock)
-                                               .Text(FText::FromString(AudioFileData.AudioChannel))
-                                               .Justification(ETextJustify::Right)
-                                               .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                           ]
-                                    ]
-                                    
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(SHorizontalBox)
-                                          + SHorizontalBox::Slot()
-                                          .AutoWidth()
-                                          [
-                                              SNew(STextBlock)
-                                              .Text(FText::FromString(TEXT("采样率")))
-                                              .Justification(ETextJustify::Left)
-                                          ]
-                                          + SHorizontalBox::Slot()
-                                          .FillWidth(1.0f)  
-                                          .HAlign(HAlign_Right)
-                                          [
-                                              SNew(STextBlock)
-                                              .Text(FText::FromString(AudioFileData.AudioHarvestRate))
-                                              .Justification(ETextJustify::Right)
-                                              .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                          ]
-                                    ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(SHorizontalBox)
-                                         + SHorizontalBox::Slot()
-                                         .AutoWidth()
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("比特率")))
-                                             .Justification(ETextJustify::Left)
-                                         ]
-                                         + SHorizontalBox::Slot()
-                                         .FillWidth(1.0f)  
-                                         .HAlign(HAlign_Right)
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(AudioFileData.AudioBiteRate))
-                                             .Justification(ETextJustify::Right)
-                                             .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                         ]
-                                    ]
-                                    + SVerticalBox::Slot()
-                                   .AutoHeight()
-                                   .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f)) 
-                                   [
-                                       SNew(SBox)
-                                       [
-                                           SNew(SImage)
-                                           .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                                       ]
-                                   ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(STextBlock)
-                                        .Text(FText::FromString(TEXT("文件信息")))
-                                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                    ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(SHorizontalBox)
-                                        
-                                         + SHorizontalBox::Slot()
-                                         .AutoWidth()
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("文件大小")))
-                                             .Justification(ETextJustify::Left)
-                                         ]
-                                         
-                                         + SHorizontalBox::Slot()
-                                         .FillWidth(1.0f) 
-                                         .HAlign(HAlign_Right)
-                                         [
-                                             SNew(STextBlock)
-                                             .Text(FText::FromString(AudioFileData.FileSize))
-                                             .Justification(ETextJustify::Right)
-                                             .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                         ]
-                                    ]
-
-                                        + SVerticalBox::Slot()
-                                       .AutoHeight()
-                                       .Padding(25, 15, 25, 15)
-                                       [
-                                           SNew(SHorizontalBox)
-                                            + SHorizontalBox::Slot()
-                                            .AutoWidth()
-                                            [
-                                                SNew(STextBlock)
-                                                .Text(FText::FromString(TEXT("上传者")))
-                                                .Justification(ETextJustify::Left)
-                                            ]
-                                            
-                                            + SHorizontalBox::Slot()
-                                            .FillWidth(1.0f) 
-                                            .HAlign(HAlign_Right)
-                                            [
-                                                SNew(STextBlock)
-                                                .Text(FText::FromString(AudioFileData.CreateName))
-                                                .Justification(ETextJustify::Right)
-                                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                            ]
-                                       ]
-
-                                       + SVerticalBox::Slot()
-                                      .AutoHeight()
-                                      .Padding(25, 15, 25, 15)
-                                      [
-                                          SNew(SHorizontalBox)
-                                           + SHorizontalBox::Slot()
-                                           .AutoWidth()
-                                           [
-                                               SNew(STextBlock)
-                                               .Text(FText::FromString(TEXT("创建时间")))
-                                               .Justification(ETextJustify::Left)
-                                           ]
-                                           + SHorizontalBox::Slot()
-                                           .FillWidth(1.0f) 
-                                           .HAlign(HAlign_Right)
-                                           [
-                                               SNew(STextBlock)
-                                               .Text(FText::FromString(AudioFileData.CreateTime))
-                                               .Justification(ETextJustify::Right)
-                                               .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                           ]
-                                      ]
-
-                                      + SVerticalBox::Slot()
-                                       .AutoHeight()
-                                       .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f))
-                                       [
-                                           SNew(SBox)
-                                           [
-                                               SNew(SImage)
-                                               .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                                           ]
-                                       ]
-                                       
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(STextBlock)
-                                        .Text(FText::FromString(TEXT("标签")))
-                                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                    ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(20, 0, 25, 15)
-                                    [
-                                        TagContainer.ToSharedRef()
-                                    ]
-
-                                    
-                                   + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f)) 
-                                    [
-                                        SNew(SBox)
-                                        [
-                                            SNew(SImage)
-                                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                                        ]
-                                    ]
-                                    + SVerticalBox::Slot()
-                                    .AutoHeight()
-                                    .Padding(25, 15, 25, 15)
-                                    [
-                                        SNew(SBox)
-                                        .Padding(0)
+                                        + SScrollBox::Slot()
                                         [
                                             SNew(SVerticalBox)
+
                                             + SVerticalBox::Slot()
                                             .AutoHeight()
+                                            .Padding(25, 0, 0, 15)
                                             [
                                                 SNew(STextBlock)
-                                                .Text(FText::FromString(TEXT("评论")))
+                                                .Text(LOCTEXT("AudioInformation", "音频信息"))
                                                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                                 .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                                                .Justification(ETextJustify::Left)
                                             ]
+                                            
                                             + SVerticalBox::Slot()
                                             .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
                                             [
-                                                CommentContainer.ToSharedRef() 
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("Encoder", "编码器"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f)  
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.AudioEncoder))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("Channels", "声道"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f) 
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.AudioChannel))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("SampleRate", "采样率"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f)  
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.AudioHarvestRate))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("BitRate", "比特率"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f)  
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.AudioBiteRate))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f)) 
+                                            [
+                                                SNew(SBox)
+                                                [
+                                                    SNew(SImage)
+                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(STextBlock)
+                                                .Text(LOCTEXT("FileInformation", "文件信息"))
+                                                .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("FileSize", "文件大小"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f) 
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.FileSize))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("Uploader", "上传者"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f) 
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.CreateName))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(LOCTEXT("CreationTime", "创建时间"))
+                                                    .Justification(ETextJustify::Left)
+                                                ]
+                                                + SHorizontalBox::Slot()
+                                                .FillWidth(1.0f) 
+                                                .HAlign(HAlign_Right)
+                                                [
+                                                    SNew(STextBlock)
+                                                    .Text(FText::FromString(AudioFileData.CreateTime))
+                                                    .Justification(ETextJustify::Right)
+                                                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                ]
+                                            ]
+
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f))
+                                            [
+                                                SNew(SBox)
+                                                [
+                                                    SNew(SImage)
+                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(STextBlock)
+                                                .Text(LOCTEXT("Tags", "标签"))
+                                                .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(20, 0, 25, 15)
+                                            [
+                                                TagContainer.ToSharedRef()
+                                            ]
+
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f)) 
+                                            [
+                                                SNew(SBox)
+                                                [
+                                                    SNew(SImage)
+                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
+                                                ]
+                                            ]
+                                            
+                                            + SVerticalBox::Slot()
+                                            .AutoHeight()
+                                            .Padding(25, 15, 25, 15)
+                                            [
+                                                SNew(SBox)
+                                                .Padding(0)
+                                                [
+                                                    SNew(SVerticalBox)
+                                                    + SVerticalBox::Slot()
+                                                    .AutoHeight()
+                                                    [
+                                                        SNew(STextBlock)
+                                                        .Text(LOCTEXT("Comments", "评论"))
+                                                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                                                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                                        .Justification(ETextJustify::Left)
+                                                    ]
+                                                    + SVerticalBox::Slot()
+                                                    .AutoHeight()
+                                                    [
+                                                        CommentContainer.ToSharedRef() 
+                                                    ]
+                                                ]
                                             ]
                                         ]
-                                    ]
-                                    
-                                   
-                                  ]
-                                   
+
                                 ]
                                
                                 // Part 4: Bottom button (Download and import)
                                 // 第四部分：底部按钮（下载和导入）
                                 + SVerticalBox::Slot()
-                                .AutoHeight()
-                                .VAlign(VAlign_Bottom)
-                                .Padding(0)
-                                [
-                                    SNew(SBorder)
-                                    .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DownloadBarBorder")) 
+                                    .AutoHeight()
+                                    .VAlign(VAlign_Bottom)
+                                    .Padding(0)
                                     [
-                                        SNew(SHorizontalBox)
-                                        + SHorizontalBox::Slot()
-                                        .HAlign(HAlign_Right) 
-                                        .FillWidth(1.0f) 
+                                        SNew(SBorder)
+                                        .BorderImage(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DownloadBarBorder")) 
                                         [
-                                             SNew(SHorizontalBox)
-                                             + SHorizontalBox::Slot()
-                                             .AutoWidth()
-                                             .Padding(5, 2, 5, 2)
-                                             [
-                                                SAssignNew(DownloadButton, SButton) 
-                                                 .Cursor(EMouseCursor::Hand)
-                                                 .ButtonStyle(&ImportButtonStyle) 
-                                                .IsEnabled_Lambda([this]() { return bIsButtonEnabled && !IsFileDownloaded(AudioFileName); }) 
-                                                 .OnClicked_Lambda([this, AudioFileData]()-> FReply
-                                                {
-                                                     // Gets the current timestamp 获取当前时间戳
-                                                      float CurrentTime = FPlatformTime::Seconds();
-                                                        
-                                                      // Check whether the cooling time conditions are met 判断是否满足冷却时间条件
-                                                      if (CurrentTime - LastClickTime < ClickCooldownTime)
-                                                      {
-                                                          return FReply::Handled();  // If you click too often, ignore the current click 如果点击过于频繁，忽略当前点击
-                                                      }
-                                                      LastClickTime = CurrentTime;
-                                                   bIsDownloadButtonEnabled = false;
-                                                     
-                                                    AnimationProgress = 0.0f;
-                                                    const float AnimationDuration = 1.0f; 
-                                                     
-                                                    FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([this, AnimationDuration](float DeltaTime) -> bool
+                                            SNew(SHorizontalBox)
+                                            + SHorizontalBox::Slot()
+                                            .HAlign(HAlign_Right) 
+                                            .FillWidth(1.0f) 
+                                            [
+                                                SNew(SHorizontalBox)
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                .Padding(5, 2, 5, 2)
+                                                [
+                                                    SAssignNew(DownloadButton, SButton) 
+                                                    .Cursor(EMouseCursor::Hand)
+                                                    .ButtonStyle(&ImportButtonStyle) 
+                                                    .IsEnabled_Lambda([this]() { return bIsButtonEnabled && !IsFileDownloaded(AudioFileName); }) 
+                                                    .OnClicked_Lambda([this, AudioFileData]()-> FReply
                                                     {
-                                                        AnimationProgress += DeltaTime / AnimationDuration;
+                                                        // Gets the current timestamp 获取当前时间戳
+                                                        float CurrentTime = FPlatformTime::Seconds();
 
-                                                        if (AnimationProgress >= 1.0f)
+                                                        // Check whether the cooling time conditions are met 判断是否满足冷却时间条件
+                                                        if (CurrentTime - LastClickTime < ClickCooldownTime)
                                                         {
-                                                            AnimationProgress = 1.0f;
-                                                            
-                                                            return false; 
+                                                            return FReply::Handled();  // If you click too often, ignore the current click 如果点击过于频繁，忽略当前点击
                                                         }
+                                                        LastClickTime = CurrentTime;
+                                                        bIsDownloadButtonEnabled = false;
 
-                                                        return true; 
-                                                    }));
-                                                     
-                                                    SelectedAudioFileInfo.FileName = AudioFileData.FileName;
-                                                    SelectedAudioFileInfo.FileUrl = AudioFileData.RelativePath;
-                                                    SelectedAudioFileInfo.FileMd5 = AudioFileData.FileMd5;
+                                                        AnimationProgress = 0.0f;
+                                                        const float AnimationDuration = 1.0f;
 
-                                                    if (AudioFileData.FileSize == "0")
-                                                    {
+                                                        FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateLambda([this, AnimationDuration](float DeltaTime) -> bool
+                                                        {
+                                                            AnimationProgress += DeltaTime / AnimationDuration;
+
+                                                            if (AnimationProgress >= 1.0f)
+                                                            {
+                                                                AnimationProgress = 1.0f;
+
+                                                                return false; 
+                                                            }
+
+                                                            return true; 
+                                                        }));
+
+                                                        SelectedAudioFileInfo.FileName = AudioFileData.FileName;
+                                                        SelectedAudioFileInfo.FileUrl = AudioFileData.RelativePath;
+                                                        SelectedAudioFileInfo.FileMd5 = AudioFileData.FileMd5;
+
+                                                        if (AudioFileData.FileSize == "0")
+                                                        {
+                                                            return FReply::Handled();
+                                                        }
+                                                        OnDownloadAudioButtonClicked(SelectedAudioFileInfo);
+
+                                                        bool bIsFileDownloaded = IsFileDownloaded(AudioFileName);
+
+                                                        if (bIsFileDownloaded)
+                                                        {
+                                                            bIsDownloadButtonEnabled = false;
+                                                        }
+                                                        else
+                                                        {
+                                                            bIsDownloadButtonEnabled = true;
+                                                        }
                                                         return FReply::Handled();
-                                                    }
-                                                    OnDownloadAudioButtonClicked(SelectedAudioFileInfo);
-                                                     
-                                                     bool bIsFileDownloaded = IsFileDownloaded(AudioFileName);
-
-                                                     if (bIsFileDownloaded)
-                                                     {
-                                                         bIsDownloadButtonEnabled = false;
-                                                     }
-                                                     else
-                                                     {
-                                                         bIsDownloadButtonEnabled = true;
-                                                     }
-                                                    return FReply::Handled();
-                                                                                                        
-                                                })
-                                                 .ContentPadding(0) 
-                                                 [
-                                                     SNew(SBox)
-                                                     .WidthOverride(70)
-                                                     .HeightOverride(40)
-                                                     [
-                                                         SNew(SHorizontalBox)
-                                                         + SHorizontalBox::Slot()
-                                                         .VAlign(VAlign_Center)
-                                                         .HAlign(HAlign_Center)
-                                                         .Padding(5, 5, 5, 5)
-                                                         [
-                                                             SNew(SOverlay) 
-                                                              + SOverlay::Slot() 
-                                                              [
-                                                                  SNew(SImage)
-                                                                  .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
-                                                              ]
-                                                              + SOverlay::Slot()
-                                                              [
-                                                                  SNew(SImage)
-                                                                  .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
-                                                                  .RenderTransform_Lambda([this]()
-                                                                  {
-                                                                      return FSlateRenderTransform(FVector2D(0.0f, -200.0f * AnimationProgress));
-                                                                  })
-                                                                  .ColorAndOpacity_Lambda([this]()
-                                                                  {
-                                                                      return FSlateColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f - AnimationProgress));
-                                                                  })
-                                                              ]
-                                                         ]
-                                                         + SHorizontalBox::Slot()
-                                                         .VAlign(VAlign_Center)
-                                                         .HAlign(HAlign_Center)
-                                                         .Padding(0, 5, 5, 5)
-                                                         [
-                                                             SNew(STextBlock)
-                                                             .Text(FText::FromString(TEXT("下载")))
-                                                             .Justification(ETextJustify::Center)
-                                                             .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                                             .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
-                                                         ]
-                                                     ]
-                                                 ]
-                                             ]
-                                              + SHorizontalBox::Slot()
-                                             .AutoWidth()
-                                             .Padding(5, 2, 5, 2)
-                                             [
-                                                 SNew(SButton)
-                                                 .Cursor(EMouseCursor::Hand)
-                                                 .ButtonStyle(&ImportButtonStyle) 
-                                                 .OnClicked(this, &SAudioAssetsWidget::OnImportAudioFileButtonClicked)
-                                                 .ContentPadding(0) 
-                                                 [
-                                                     SNew(SBox)
-                                                     .WidthOverride(70)
-                                                     .HeightOverride(40)
-                                                     [
-                                                         SNew(SHorizontalBox)
-                                                         + SHorizontalBox::Slot()
-                                                         .VAlign(VAlign_Center)
-                                                         .HAlign(HAlign_Center)
-                                                         .Padding(5, 5, 5, 5)
-                                                         [
-                                                             SNew(SImage)
-                                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon")) 
-                                                         ]
-                                                         + SHorizontalBox::Slot()
-                                                         .VAlign(VAlign_Center)
-                                                         .HAlign(HAlign_Center)
-                                                         .Padding(0, 5, 5, 5)
-                                                         [
-                                                             SNew(STextBlock)
-                                                             .Text(FText::FromString(TEXT("导入")))
-                                                             .Justification(ETextJustify::Center)
-                                                             .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                                             .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
-                                                         ]
-                                                     ]
-                                                 ]
-                                             ]
+                                                    })
+                                                    .ContentPadding(0) 
+                                                    [
+                                                        SNew(SBox)
+                                                        .WidthOverride(40)
+                                                        .HeightOverride(40)
+                                                        [
+                                                            SNew(SHorizontalBox)
+                                                            + SHorizontalBox::Slot()
+                                                            .VAlign(VAlign_Center)
+                                                            .HAlign(HAlign_Center)
+                                                            .Padding(5, 5, 5, 5)
+                                                            [
+                                                                SNew(SOverlay) 
+                                                                + SOverlay::Slot() 
+                                                                [
+                                                                    SNew(SImage)
+                                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
+                                                                ]
+                                                                + SOverlay::Slot()
+                                                                [
+                                                                    SNew(SImage)
+                                                                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.DetailDownloadIcon"))
+                                                                    .RenderTransform_Lambda([this]()
+                                                                    {
+                                                                        return FSlateRenderTransform(FVector2D(0.0f, -200.0f * AnimationProgress));
+                                                                    })
+                                                                    .ColorAndOpacity_Lambda([this]()
+                                                                    {
+                                                                        return FSlateColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f - AnimationProgress));
+                                                                    })
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                                + SHorizontalBox::Slot()
+                                                .AutoWidth()
+                                                .Padding(5, 2, 5, 2)
+                                                [
+                                                    SNew(SButton)
+                                                    .Cursor(EMouseCursor::Hand)
+                                                    .ButtonStyle(&ImportButtonStyle) 
+                                                    .OnClicked(this, &SAudioAssetsWidget::OnImportAudioFileButtonClicked)
+                                                    .ContentPadding(0) 
+                                                    [
+                                                        SNew(SBox)
+                                                        .WidthOverride(40)
+                                                        .HeightOverride(40)
+                                                        [
+                                                            SNew(SHorizontalBox)
+                                                            + SHorizontalBox::Slot()
+                                                            .VAlign(VAlign_Center)
+                                                            .HAlign(HAlign_Center)
+                                                            .Padding(5, 5, 5, 5)
+                                                            [
+                                                                SNew(SImage)
+                                                                .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon")) 
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
                                         ]
                                     ]
-                                ]
+
                             ]
                         ]
                     ]
@@ -1220,7 +1199,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1235,7 +1214,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("资源正在下载中，无法导入！")))
+                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1244,7 +1223,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1274,7 +1253,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
         }
  
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100)) 
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1289,7 +1268,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("请先下载该资源！")))
+                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1299,7 +1278,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(FText::FromString(TEXT("确定")))
+                .Text(LOCTEXT("Confirm", "确定"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1482,3 +1461,4 @@ void SAudioAssetsWidget::ImportWithFileMediaSource(const FString& FilePath)
     }
 }
 
+#undef LOCTEXT_NAMESPACE

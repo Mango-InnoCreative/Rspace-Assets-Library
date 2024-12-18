@@ -136,7 +136,7 @@ void SProjectWidget::Construct(const FArguments& InArgs)
 								.HAlign(HAlign_Center)
 								[
 									SNew(STextBlock)
-									.Text(FText::FromString(TEXT("未选择资产")))
+									.Text(LOCTEXT("NoAssetSelected1", "未选择资产"))
 									.Justification(ETextJustify::Center)
 								]
 							]
@@ -242,7 +242,15 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 						SNew(STextBlock)
 						.Text_Lambda([this]() -> FText
 						{
-							return FText::FromString(CurrentProjectName);
+							// 如果 CurrentProjectName 为空，则显示本地化文本 "No project selected"
+							if (CurrentProjectName == "")
+							{
+								return LOCTEXT("CurrentProjectName", "未选择项目");  // 本地化文本
+							}
+							else
+							{
+								return FText::FromString(CurrentProjectName);  // 显示项目名称
+							}
 						})
 						.Font(MidFont)
 					]
@@ -288,7 +296,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 								 [
 									SNew(SBox)
 									.HeightOverride(60)
-									.WidthOverride(200)
+									.WidthOverride(250)
 									.Padding(FMargin(43, 0, 0, 0))  
 									[
 										SNew(SHorizontalBox)
@@ -346,7 +354,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 								[
 									SNew(SBox)
 									.HeightOverride(60)
-									.WidthOverride(200)
+									.WidthOverride(250)
 								   .Padding(FMargin(43, 0, 0, 0)) 
 								   [
 										SNew(SHorizontalBox)
@@ -404,7 +412,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 								[
 									SNew(SBox)
 									.HeightOverride(60)
-									.WidthOverride(200)
+									.WidthOverride(250)
 								   .Padding(FMargin(43, 0, 0, 0)) 
 								   [
 																	
@@ -462,7 +470,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 								[
 									SNew(SBox)
 									.HeightOverride(60)
-									.WidthOverride(200)
+									.WidthOverride(250)
 								   .Padding(FMargin(43, 0, 0, 0)) 
 								   [
 										SNew(SHorizontalBox)
@@ -579,8 +587,8 @@ bool SProjectWidget::CheckProjectIsSelected()
         {
             // 创建新的窗口
             ProjectSelectedNotificationWindow = SNew(SWindow)
-                .Title(FText::FromString(TEXT("提示")))
-                .ClientSize(FVector2D(200.f, 100.f)) 
+        		.Title(LOCTEXT("TipTitle", "提示"))
+                .ClientSize(FVector2D(200.f, 100.f))		
                 .FocusWhenFirstShown(true)
                 .SupportsMaximize(false)
                 .SupportsMinimize(false)
@@ -594,7 +602,7 @@ bool SProjectWidget::CheckProjectIsSelected()
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("请先选择一个项目！")))
+                    .Text(LOCTEXT("SelectProjectWarning", "请先选择一个项目！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -604,7 +612,7 @@ bool SProjectWidget::CheckProjectIsSelected()
                 [
                     SNew(SButton)
                     .VAlign(VAlign_Bottom)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([this]() -> FReply
                     {
                         // Close the prompt window 关闭提示窗口
@@ -668,7 +676,7 @@ TSharedRef<SWidget> SProjectWidget::MakeSearchBar()
                     .Padding(5,5,10,5)
                     [
                         SNew(SEditableTextBox)
-                        .HintText(FText::FromString(TEXT("按回车键搜索，支持模糊查询")))
+                        .HintText(LOCTEXT("SearchHint", "按回车键搜索，支持模糊查询"))
                         .OnTextCommitted(this, &SProjectWidget::OnSearchTextCommitted)
                     ]
 
@@ -2002,7 +2010,7 @@ void SProjectWidget::ResetSlateWidgets()
 				.HAlign(HAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(FText::FromString(TEXT("未选择资产")))
+					.Text(LOCTEXT("NoAssetSelected2", "未选择资产"))
 					.Justification(ETextJustify::Center)
 				]
 			]
@@ -2034,7 +2042,7 @@ void SProjectWidget::ResetDetailBar()
 				.HAlign(HAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(FText::FromString(TEXT("未选择资产")))
+					.Text(LOCTEXT("NoAssetSelected3", "未选择资产"))
 					.Justification(ETextJustify::Center)
 				]
 			]
@@ -2487,7 +2495,7 @@ FReply SProjectWidget::OnTagButtonClicked()
         {
             
             ExistingNotificationWindow = SNew(SWindow)
-                .Title(FText::FromString(TEXT("提示")))
+        		.Title(LOCTEXT("TipTitle", "提示"))
                 .ClientSize(FVector2D(200, 100)) 
                 .FocusWhenFirstShown(true)
                 .SupportsMaximize(false)
@@ -2502,7 +2510,7 @@ FReply SProjectWidget::OnTagButtonClicked()
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无标签！")))
+                    .Text(LOCTEXT("NoTags", "暂无标签"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -2512,7 +2520,7 @@ FReply SProjectWidget::OnTagButtonClicked()
                 [
                     SNew(SButton)
                     .VAlign(VAlign_Bottom)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([this]() -> FReply
                     {
                         if (ExistingNotificationWindow.IsValid())
@@ -2713,7 +2721,7 @@ FReply SProjectWidget::OnUserInfoButtonClicked()
 				.VAlign(VAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(FText::FromString(TEXT("退出登录")))
+					.Text(LOCTEXT("Logout", "退出登录"))
 					.Justification(ETextJustify::Center)
 					.ColorAndOpacity(FSlateColor(FLinearColor::Black)) 
 					.Font(FCoreStyle::GetDefaultFontStyle("Regular", 9))
@@ -2909,7 +2917,7 @@ void SProjectWidget::ShowDownloadQueue()
     }
 
     DownloadQueueWindow = SNew(SWindow)
-		.Title(FText::FromString(TEXT("传输列表")))  
+		.Title(LOCTEXT("TransferListTitle", "传输列表"))
         .FocusWhenFirstShown(true)
 		.IsTopmostWindow(false)
         .ClientSize(FVector2D(700, 900))
@@ -2930,7 +2938,7 @@ void SProjectWidget::ShowDownloadQueue()
                     .Padding(0, 0, 20, 0)
                     [
                     	SNew(SBox)
-                    	.WidthOverride(96.0)
+                    	.WidthOverride(132.0)
                     	.HeightOverride(32.0)
                     	[
 	                        SNew(SButton)
@@ -2948,7 +2956,7 @@ void SProjectWidget::ShowDownloadQueue()
 								.VAlign(VAlign_Center) 
 								[
 									SNew(STextBlock)
-									.Text(FText::FromString(TEXT("下载")))
+									.Text(LOCTEXT("DownloadText", "下载中"))
 									.Justification(ETextJustify::Center)
 									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 15))
 									.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -2960,7 +2968,7 @@ void SProjectWidget::ShowDownloadQueue()
                     .AutoWidth()
                     [
 	                    SNew(SBox)
-						.WidthOverride(96.0)
+						.WidthOverride(132.0)
 						.HeightOverride(32.0)
 						[
 	                        SNew(SButton)
@@ -2978,7 +2986,7 @@ void SProjectWidget::ShowDownloadQueue()
 								.VAlign(VAlign_Center)
 								[
 									SNew(STextBlock)
-									.Text(FText::FromString(TEXT("已完成")))
+									.Text(LOCTEXT("CompletedText", "已完成"))
 									.Justification(ETextJustify::Center)
 									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 15))
 									.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -3007,7 +3015,7 @@ void SProjectWidget::ShowDownloadQueue()
 					.HAlign(HAlign_Left)
 					[
 						SNew(STextBlock)
-						.Text(FText::FromString(TEXT("名称")))
+						.Text(LOCTEXT("NameText", "名称"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3017,11 +3025,11 @@ void SProjectWidget::ShowDownloadQueue()
 					
 					+ SHorizontalBox::Slot()
 					.AutoWidth()
-					.Padding(96, 0, 0, 0)
+					.Padding(90, 0, 0, 0)
 					.HAlign(HAlign_Center)
 					[
 						SNew(STextBlock)
-						.Text(FText::FromString(TEXT("大小")))
+						.Text(LOCTEXT("SizeText", "大小"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3031,11 +3039,11 @@ void SProjectWidget::ShowDownloadQueue()
 					
 					+ SHorizontalBox::Slot()
 					.AutoWidth()
-					.Padding(0, 0, 90, 0)
+					.Padding(0, 0, 50, 0)
 					.HAlign(HAlign_Right)
 					[
 						SNew(STextBlock)
-						.Text(FText::FromString(TEXT("状态")))
+						.Text(LOCTEXT("StatusText", "状态"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3086,11 +3094,17 @@ void SProjectWidget::ShowDownloadQueue()
                                      [
                                          SNew(SHorizontalBox)
                                          + SHorizontalBox::Slot()
+                                         .AutoWidth()
                                          .VAlign(VAlign_Center)
                                          .Padding(5, 5, 5, 5)
                                          [
-                                             SNew(SImage)
-                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.BeginClicked"))
+	                                         SNew(SBox)
+											 .WidthOverride(20)
+											 .HeightOverride(20)
+											 [
+	                                             SNew(SImage)
+	                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.BeginClicked"))
+	                                        ]
                                          ]
                                          + SHorizontalBox::Slot()
                                          .AutoWidth()
@@ -3098,7 +3112,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("全部开始")))
+                                             .Text(LOCTEXT("AllStartText", "全部开始"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3130,11 +3144,22 @@ void SProjectWidget::ShowDownloadQueue()
                                      [
                                          SNew(SHorizontalBox)
                                          + SHorizontalBox::Slot()
+                                         .AutoWidth()
                                          .VAlign(VAlign_Center)
                                          .Padding(5, 5, 5, 5)
                                          [
-                                             SNew(SImage)
-                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.PauseClicked"))
+	                                         SNew(SBox)
+											 .WidthOverride(21)
+											 .HeightOverride(21)
+											 [
+													 SNew(SBox)
+												 .WidthOverride(20)
+												 .HeightOverride(20)
+												 [
+		                                             SNew(SImage)
+		                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.PauseClicked"))
+		                                        ]
+                                             ]
                                          ]
                                          + SHorizontalBox::Slot()
                                          .AutoWidth()
@@ -3142,7 +3167,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("全部暂停")))
+                                             .Text(LOCTEXT("AllPauseText", "全部暂停"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3173,11 +3198,17 @@ void SProjectWidget::ShowDownloadQueue()
                                      [
                                          SNew(SHorizontalBox)
                                          + SHorizontalBox::Slot()
+                                         .AutoWidth()
                                          .VAlign(VAlign_Center)
                                          .Padding(5, 5, 5, 5)
                                          [
-                                             SNew(SImage)
-                                             .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.CancelClicked")) 
+	                                         SNew(SBox)
+											  .WidthOverride(20)  // 固定宽度为20
+											  .HeightOverride(20) // 固定高度为20
+											  [
+												  SNew(SImage)
+												  .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.CancelClicked"))
+											  ]
                                          ]
                                          + SHorizontalBox::Slot()
                                          .AutoWidth()
@@ -3185,7 +3216,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(FText::FromString(TEXT("全部取消")))
+                                             .Text(LOCTEXT("AllCancelText", "全部取消"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3430,10 +3461,12 @@ void SProjectWidget::CloseAllOpenedWindows()
 
         // Determine whether the plug-in is related to the window 判断是否是插件相关窗口
         if (WindowTitle.EqualTo(FText::FromString(TEXT("传输列表")))
-            || WindowTitle.EqualTo(FText::FromString(TEXT("视频播放")))
-            || WindowTitle.EqualTo(FText::FromString(TEXT("音频播放")))
-            || WindowTitle.EqualTo(FText::FromString(TEXT("提示")))
-            || WindowTitle.EqualTo(FText::FromString(TEXT("图片预览")))) 
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("提示")))
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Video Player")))
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Audio Player")))
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Image Preview")))
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Download List")))
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Tip")))) 
             	
         {
             // UE_LOG(LogTemp, Log, TEXT("Closing plugin-related window: %s"), *WindowTitle.ToString());

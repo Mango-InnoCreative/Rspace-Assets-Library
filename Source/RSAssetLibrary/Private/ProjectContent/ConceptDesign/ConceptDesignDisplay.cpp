@@ -8,6 +8,7 @@
 #include "Widgets/Text/STextBlock.h"
 #include "Misc/Paths.h"
 
+#define LOCTEXT_NAMESPACE "SImageDisplayWindow"
 
 void SImageDisplayWindow::Construct(const FArguments& InArgs)
 {
@@ -51,14 +52,14 @@ void SImageDisplayWindow::LoadImage(const FString& ProjectImageUrl)
         // 设置占位符内容，避免显示旧的错误信息
         ImageBox->SetContent(
             SNew(STextBlock)
-            .Text(FText::FromString(TEXT("加载中...")))
+            .Text(LOCTEXT("Loading", "加载中..."))
             .Justification(ETextJustify::Center)
         );
     }
 
     if (ProjectImageUrl.IsEmpty())
     {
-        ShowErrorMessage(TEXT("无预览图"));
+        ShowErrorMessage(LOCTEXT("NoPreview", "无预览图"));
         return;
     }
 
@@ -73,36 +74,37 @@ void SImageDisplayWindow::LoadImage(const FString& ProjectImageUrl)
             }
             else
             {
-                ShowErrorMessage(TEXT("加载失败"));
+                ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
             }
         }
         else
         {
             // ShowErrorMessage(FString::Printf(TEXT("Failed to download image from URL: %s"), *ProjectImageUrl));
-            ShowErrorMessage(TEXT("加载失败"));
+            ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
         }
     }));
 }
 
 
-void SImageDisplayWindow::ShowErrorMessage(const FString& ErrorMessage)
+void SImageDisplayWindow::ShowErrorMessage(const FText& ErrorMessage)
 {
     if (ImageBox.IsValid())
     {
         ImageBox->SetContent(
             SNew(STextBlock)
-            .Text(FText::FromString(ErrorMessage))
+            .Text(ErrorMessage)
             .Justification(ETextJustify::Center)
         );
     }
 }
+
 
 void SImageDisplayWindow::UpdateImageDisplay()
 {
     if (!LoadedTexture || !ImageBox.IsValid())
     {
         // ShowErrorMessage(TEXT("Failed to display image"));
-        ShowErrorMessage(TEXT("加载失败"));
+        ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
         return;
     }
 
@@ -128,7 +130,7 @@ void SImageDisplayWindow::UpdateImageDisplay()
     }
     else
     {
-        ShowErrorMessage(TEXT("显示图片失败"));
+        ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
     }
 }
 
@@ -225,5 +227,5 @@ FReply SImageDisplayWindow::OnMouseButtonUp(const FGeometry& MyGeometry, const F
 
 
 
-
+#undef LOCTEXT_NAMESPACE
 

@@ -1,8 +1,9 @@
-﻿#include "ModelLibrary/GetModelLibrary.h"
+﻿// Copyright (c) 2024 Hunan MangoXR Tech Co., Ltd. All Rights Reserved.
+
+#include "ModelLibrary/GetModelLibrary.h"
 #include "HttpModule.h"
 #include "Interfaces/IHttpResponse.h"
 #include "Json.h"
-#include "JsonUtilities.h"
 
 FCriticalSection ModelActiveRequestsLock;
 TSet<FString> ModelActiveRequests;

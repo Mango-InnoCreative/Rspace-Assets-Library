@@ -17,6 +17,7 @@
 #include "UObject/SavePackage.h"
 #include "Widgets/Layout/SScaleBox.h"
 
+#define LOCTEXT_NAMESPACE "SConceptDesignWidget"
 
 void SConceptDesignWidget::Construct(const FArguments& InArgs)
 {
@@ -477,7 +478,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(FText::FromString(TEXT("评论加载中...")))
+            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
         ];
 
     UGetConceptDesignPictureCommentApi* SelectPicFileComment = NewObject<UGetConceptDesignPictureCommentApi>();
@@ -566,7 +567,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无评论")))
+                    .Text(LOCTEXT("NoComments", "暂无评论"))
                     .AutoWrapText(true) 
                 ];
             }
@@ -593,7 +594,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
             .Padding(5, 0, 5, 15)
             [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("暂无标签"))) 
+                    .Text(LOCTEXT("NoTags", "暂无标签"))
             ]
         ];
     }
@@ -727,204 +728,206 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
             .FillHeight(1)
             .Padding(0, 20, 0, 0)
             [
-            SNew(SScrollBox)
-            + SScrollBox::Slot()
-            [
-                SNew(SVerticalBox)
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 0, 0, 15)
+                SNew(SScrollBox)
+                + SScrollBox::Slot()
                 [
-                    SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("基本信息")))
-                    .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                    .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
+                    SNew(SVerticalBox)
                     
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("尺寸")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(ConceptDesignFileItem.FileSize))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("文件大小")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(FormatFileSize(ConceptDesignFileItem.FileLength))) 
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("文件类型")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f) 
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(ConceptDesignFileItem.FileSuffix))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
-                   + SHorizontalBox::Slot()
-                   .AutoWidth()
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(TEXT("创建时间")))
-                       .Justification(ETextJustify::Left)
-                   ]
-                   + SHorizontalBox::Slot()
-                   .FillWidth(1.0f)  
-                   .HAlign(HAlign_Right)
-                   [
-                       SNew(STextBlock)
-                       .Text(FText::FromString(ConceptDesignFileItem.CreateTime))
-                       .Justification(ETextJustify::Right)
-                       .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                   ]
-                ]
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SHorizontalBox)
-                  + SHorizontalBox::Slot()
-                  .AutoWidth()
-                  [
-                      SNew(STextBlock)
-                      .Text(FText::FromString(TEXT("修改时间")))
-                      .Justification(ETextJustify::Left)
-                  ]
-                  
-                  + SHorizontalBox::Slot()
-                  .FillWidth(1.0f)  
-                  .HAlign(HAlign_Right)
-                  [
-                      SNew(STextBlock)
-                      .Text(FText::FromString(ConceptDesignFileItem.CreateTime))
-                      .Justification(ETextJustify::Right)
-                      .ColorAndOpacity(FSlateColor(FLinearColor::White))
-                  ]
-                ]
-                
-                + SVerticalBox::Slot()
-               .AutoHeight()
-               .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f))
-               [
-                   SNew(SBox)
-                   [
-                       SNew(SImage)
-                       .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                   ]
-               ]
-               
-              + SVerticalBox::Slot()
-              .AutoHeight()
-              .Padding(25, 15, 25, 15)
-              [
-                  SNew(STextBlock)
-                  .Text(FText::FromString(TEXT("标签")))
-                  .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                  .ColorAndOpacity(FSlateColor(FLinearColor::White))
-              ]
-              
-              + SVerticalBox::Slot()
-              .AutoHeight()
-              .Padding(20, 0, 25, 15)
-              [
-                   TagContainer.ToSharedRef() 
-
-              ]
-
-              + SVerticalBox::Slot()
-            .AutoHeight()
-            .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f)) 
-            [
-                SNew(SBox)
-                [
-                    SNew(SImage)
-                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine")) 
-                ]
-            ]
-            
-                + SVerticalBox::Slot()
-                .AutoHeight()
-                .Padding(25, 15, 25, 15)
-                [
-                    SNew(SBox)
-                    .Padding(0)
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 0, 0, 15)
                     [
-                        SNew(SVerticalBox)
-                        + SVerticalBox::Slot()
-                        .AutoHeight()
+                        SNew(STextBlock)
+                        .Text(LOCTEXT("BasicInformation", "基本信息"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(FText::FromString(TEXT("评论")))
-                            .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
-                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                            .Text(LOCTEXT("Size", "尺寸"))
                             .Justification(ETextJustify::Left)
                         ]
-                        + SVerticalBox::Slot()
-                        .AutoHeight()
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
                         [
-                            CommentContainer.ToSharedRef() 
+                            SNew(STextBlock)
+                            .Text(FText::FromString(ConceptDesignFileItem.FileSize))
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("FileSize", "文件大小"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(FormatFileSize(ConceptDesignFileItem.FileLength))) 
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("FileType", "文件类型"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f) 
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(ConceptDesignFileItem.FileSuffix))
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("CreationTime", "创建时间"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f)  
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(ConceptDesignFileItem.CreateTime))
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SHorizontalBox)
+                        + SHorizontalBox::Slot()
+                        .AutoWidth()
+                        [
+                            SNew(STextBlock)
+                            .Text(LOCTEXT("ModificationTime", "修改时间"))
+                            .Justification(ETextJustify::Left)
+                        ]
+                        
+                        + SHorizontalBox::Slot()
+                        .FillWidth(1.0f)  
+                        .HAlign(HAlign_Right)
+                        [
+                            SNew(STextBlock)
+                            .Text(FText::FromString(ConceptDesignFileItem.CreateTime))
+                            .Justification(ETextJustify::Right)
+                            .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(FMargin(20.0f, 10.0f, 20.0f, 5.0f))
+                    [
+                        SNew(SBox)
+                        [
+                            SNew(SImage)
+                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine"))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(STextBlock)
+                        .Text(LOCTEXT("Tags", "标签"))
+                        .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                        .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(20, 0, 25, 15)
+                    [
+                        TagContainer.ToSharedRef()
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(FMargin(16.0f, 10.0f, 20.0f, 5.0f))
+                    [
+                        SNew(SBox)
+                        [
+                            SNew(SImage)
+                            .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ProjectLine"))
+                        ]
+                    ]
+                    
+                    + SVerticalBox::Slot()
+                    .AutoHeight()
+                    .Padding(25, 15, 25, 15)
+                    [
+                        SNew(SBox)
+                        .Padding(0)
+                        [
+                            SNew(SVerticalBox)
+                            + SVerticalBox::Slot()
+                            .AutoHeight()
+                            [
+                                SNew(STextBlock)
+                                .Text(LOCTEXT("Comments", "评论"))
+                                .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
+                                .ColorAndOpacity(FSlateColor(FLinearColor::White))
+                                .Justification(ETextJustify::Left)
+                            ]
+                            + SVerticalBox::Slot()
+                            .AutoHeight()
+                            [
+                                CommentContainer.ToSharedRef()
+                            ]
                         ]
                     ]
                 ]
-               ] 
             ]
+
             
             + SVerticalBox::Slot()
             .AutoHeight()
@@ -1005,7 +1008,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                              .ContentPadding(0) 
                              [
                                  SNew(SBox)
-                                 .WidthOverride(70)
+                                 .WidthOverride(40)
                                  .HeightOverride(40)
                                  [
                                      SNew(SHorizontalBox)
@@ -1034,22 +1037,23 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                                              })
                                          ]
                                      ]
-                                     + SHorizontalBox::Slot()
-                                     .VAlign(VAlign_Center)
-                                     .HAlign(HAlign_Center)
-                                     .Padding(0, 5, 5, 5)
-                                     [
-                                         SNew(STextBlock)
-                                         .Text(FText::FromString(TEXT("下载")))
-                                         .Justification(ETextJustify::Center)
-                                         .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                         .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
-                                     ]
+                                     // + SHorizontalBox::Slot()
+                                     // .VAlign(VAlign_Center)
+                                     // .HAlign(HAlign_Center)
+                                     // .Padding(0, 5, 5, 5)
+                                     // [
+                                     //     SNew(STextBlock)
+                                     //     // .Text(LOCTEXT("Download", "下载"))
+                                     //     .Justification(ETextJustify::Center)
+                                     //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                     //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f)))
+                                     // ]
                                  ]
                              ]
                          ]
                           + SHorizontalBox::Slot()
                          .AutoWidth()
+                         .HAlign(HAlign_Right)
                          .Padding(5, 2, 5, 2)
                          [
                              SNew(SButton)
@@ -1067,7 +1071,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                              .ContentPadding(0) 
                              [
                                  SNew(SBox)
-                                 .WidthOverride(70)
+                                 .WidthOverride(40)
                                  .HeightOverride(40)
                                  [
                                      SNew(SHorizontalBox)
@@ -1079,17 +1083,17 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                                          SNew(SImage)
                                          .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportIcon")) 
                                      ]
-                                     + SHorizontalBox::Slot()
-                                     .VAlign(VAlign_Center)
-                                     .HAlign(HAlign_Center)
-                                     .Padding(0, 5, 5, 5)
-                                     [
-                                         SNew(STextBlock)
-                                         .Text(FText::FromString(TEXT("导入")))
-                                         .Justification(ETextJustify::Center)
-                                         .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
-                                         .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
-                                     ]
+                                     // + SHorizontalBox::Slot()
+                                     // .VAlign(VAlign_Center)
+                                     // .HAlign(HAlign_Center)
+                                     // .Padding(0, 5, 5, 5)
+                                     // [
+                                     //     SNew(STextBlock)
+                                     //     // .Text(LOCTEXT("Import", "导入"))
+                                     //     .Justification(ETextJustify::Center)
+                                     //     .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+                                     //     .ColorAndOpacity(FSlateColor(FLinearColor(0.0f, 0.6f, 0.45f))) 
+                                     // ]
                                  ]
                              ]
                          ]
@@ -1191,7 +1195,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("加载中...")))
+                    .Text(LOCTEXT("Loading", "加载中..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1242,7 +1246,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(FText::FromString(TEXT("加载失败")))
+                                .Text(LOCTEXT("LoadFailed", "加载失败"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1258,7 +1262,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                         SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                         [
                             SNew(STextBlock)
-                            .Text(FText::FromString(TEXT("加载失败")))
+                            .Text(LOCTEXT("LoadFailed", "加载失败"))
                             .Justification(ETextJustify::Center)
                         ]
                     ]
@@ -1276,7 +1280,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("无预览图")))
+                    .Text(LOCTEXT("NoPreview", "无预览图"))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1325,7 +1329,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1340,7 +1344,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(FText::FromString(TEXT("资源正在下载中，无法导入！")))
+                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1349,7 +1353,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(FText::FromString(TEXT("确定")))
+                    .Text(LOCTEXT("Confirm", "确定"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1382,7 +1386,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(FText::FromString(TEXT("提示")))
+            .Title(LOCTEXT("TipTitle", "提示"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1397,7 +1401,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(FText::FromString(TEXT("请先下载该资源！")))
+                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1407,7 +1411,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(FText::FromString(TEXT("确定")))
+                .Text(LOCTEXT("Confirm", "确定"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1539,4 +1543,4 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
 
 
 
-
+#undef LOCTEXT_NAMESPACE
