@@ -266,7 +266,7 @@ TSharedRef<SWidget> SLoginWidget::CreateLoginUI()
                         [
                             SAssignNew(SwitchLoginButton, SButton)
                             .ButtonStyle(&QRLoginButtonStyle)
-                            .OnClicked(this, &SLoginWidget::OnSwitchLoginClicked)  // 点击切换到二维码登录
+                            .OnClicked(this, &SLoginWidget::OnSwitchLoginClicked)
                         ]
 
                         + SVerticalBox::Slot()
@@ -461,12 +461,31 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
                 .WidthOverride(240.f)
                 .HeightOverride(240.f)
                 [
-                    SNew(SImage)
-                    .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.NetError"))
-                    .Visibility(TAttribute<EVisibility>::Create([this]() -> EVisibility
-                    {
-                        return bIsQrCodeValid ? EVisibility::Collapsed : EVisibility::Visible;
-                    }))
+                    SNew(SOverlay)
+                    + SOverlay::Slot()
+                    .HAlign(HAlign_Center)
+                    .VAlign(VAlign_Center)
+                    [
+                        SNew(SImage)
+                        .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.NetError"))
+                        .Visibility(TAttribute<EVisibility>::Create([this]() -> EVisibility
+                        {
+                            return bIsQrCodeValid ? EVisibility::Collapsed : EVisibility::Visible;
+                        }))
+                    ]
+                    + SOverlay::Slot()
+                    .HAlign(HAlign_Center)
+                    .VAlign(VAlign_Center)
+                    [
+                        SNew(STextBlock)
+                        .Font(AgreementFont)
+                        .Text(LOCTEXT("NetworkLoading", "网络加载中..."))
+                        .ColorAndOpacity(FLinearColor::White)
+                        .Visibility(TAttribute<EVisibility>::Create([this]() -> EVisibility
+                        {
+                            return bIsQrCodeValid ? EVisibility::Collapsed : EVisibility::Visible;
+                        }))
+                    ]
                 ]
             ]
             
@@ -503,14 +522,14 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
 
 void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginResponseData)
 {
-    FText StatusMessage;  // 将 FString 改为 FText
+    FText StatusMessage;
 
     FQrUserInfoDetails UserInfo;
     FQrTokenInfo TokenInfo;
 
     if (!bIsQrCodeValid)
     {
-        StatusMessage = LOCTEXT("QRCodeInvalid", "");  // 使用 LOCTEXT 初始化 FText
+        StatusMessage = LOCTEXT("QRCodeInvalid", "");
         
         if (LoginStatusMessageText.IsValid())
         {
