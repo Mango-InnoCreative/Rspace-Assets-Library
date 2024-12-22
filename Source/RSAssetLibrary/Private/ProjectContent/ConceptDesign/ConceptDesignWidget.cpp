@@ -478,7 +478,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
+            .Text(LOCTEXT("LoadingComments", "Loading comments..."))
         ];
 
     UGetConceptDesignPictureCommentApi* SelectPicFileComment = NewObject<UGetConceptDesignPictureCommentApi>();
@@ -567,7 +567,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoComments", "暂无评论"))
+                    .Text(LOCTEXT("NoComments", "No comments"))
                     .AutoWrapText(true) 
                 ];
             }
@@ -594,7 +594,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
             .Padding(5, 0, 5, 15)
             [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoTags", "暂无标签"))
+                    .Text(LOCTEXT("NoTags", "No Tags"))
             ]
         ];
     }
@@ -738,7 +738,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                     .Padding(25, 0, 0, 15)
                     [
                         SNew(STextBlock)
-                        .Text(LOCTEXT("BasicInformation", "基本信息"))
+                        .Text(LOCTEXT("BasicInformation", "Base Info"))
                         .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
                     ]
@@ -753,7 +753,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("Size", "尺寸"))
+                            .Text(LOCTEXT("Size", "Size"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -777,7 +777,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("FileSize", "文件大小"))
+                            .Text(LOCTEXT("FileSize", "File Size"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -801,7 +801,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("FileType", "文件类型"))
+                            .Text(LOCTEXT("FileType", "File Type"))
                             .Justification(ETextJustify::Left)
                         ]
                         + SHorizontalBox::Slot()
@@ -824,7 +824,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("CreationTime", "创建时间"))
+                            .Text(LOCTEXT("CreationTime", "Creation Time"))
                             .Justification(ETextJustify::Left)
                         ]
                         + SHorizontalBox::Slot()
@@ -847,7 +847,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("ModificationTime", "修改时间"))
+                            .Text(LOCTEXT("ModificationTime", "Last Modified Time"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -878,7 +878,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                     .Padding(25, 15, 25, 15)
                     [
                         SNew(STextBlock)
-                        .Text(LOCTEXT("Tags", "标签"))
+                        .Text(LOCTEXT("Tags", "Tags"))
                         .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
                     ]
@@ -913,7 +913,7 @@ TSharedRef<SWidget> SConceptDesignWidget::GenerateDetailsWidget(const FConceptDe
                             .AutoHeight()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Comments", "评论"))
+                                .Text(LOCTEXT("Comments", "Comments"))
                                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                 .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                 .Justification(ETextJustify::Left)
@@ -1195,7 +1195,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("Loading", "加载中..."))
+                    .Text(LOCTEXT("Loading", "Loading..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1246,7 +1246,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("LoadFailed", "加载失败"))
+                                .Text(LOCTEXT("LoadFailed", "Load Failed"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1262,7 +1262,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                         SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("LoadFailed", "加载失败"))
+                            .Text(LOCTEXT("LoadFailed", "Load Failed"))
                             .Justification(ETextJustify::Center)
                         ]
                     ]
@@ -1280,7 +1280,7 @@ TSharedRef<SWidget> SConceptDesignWidget::ConstructImageItem(const FString& Proj
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoPreview", "无预览图"))
+                    .Text(LOCTEXT("NoPreview", "No Preview"))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1329,7 +1329,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1344,7 +1344,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
+                    .Text(LOCTEXT("ResourceDownloading", "Resource is downloading！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1353,7 +1353,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1386,7 +1386,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1401,7 +1401,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
+                .Text(LOCTEXT("DownloadResourceMessage", "Download the resource first!"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1411,7 +1411,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(LOCTEXT("Confirm", "确定"))
+                .Text(LOCTEXT("Confirm", "OK"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())

@@ -52,14 +52,14 @@ void SImageDisplayWindow::LoadImage(const FString& ProjectImageUrl)
         // 设置占位符内容，避免显示旧的错误信息
         ImageBox->SetContent(
             SNew(STextBlock)
-            .Text(LOCTEXT("Loading", "加载中..."))
+            .Text(LOCTEXT("Loading", "Loading..."))
             .Justification(ETextJustify::Center)
         );
     }
 
     if (ProjectImageUrl.IsEmpty())
     {
-        ShowErrorMessage(LOCTEXT("NoPreview", "无预览图"));
+        ShowErrorMessage(LOCTEXT("NoPreview", "No Preview"));
         return;
     }
 
@@ -74,13 +74,13 @@ void SImageDisplayWindow::LoadImage(const FString& ProjectImageUrl)
             }
             else
             {
-                ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
+                ShowErrorMessage(LOCTEXT("LoadFailed", "Load Failed"));
             }
         }
         else
         {
             // ShowErrorMessage(FString::Printf(TEXT("Failed to download image from URL: %s"), *ProjectImageUrl));
-            ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
+            ShowErrorMessage(LOCTEXT("LoadFailed", "Load Failed"));
         }
     }));
 }
@@ -104,7 +104,7 @@ void SImageDisplayWindow::UpdateImageDisplay()
     if (!LoadedTexture || !ImageBox.IsValid())
     {
         // ShowErrorMessage(TEXT("Failed to display image"));
-        ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
+        ShowErrorMessage(LOCTEXT("LoadFailed", "Load Failed"));
         return;
     }
 
@@ -130,7 +130,7 @@ void SImageDisplayWindow::UpdateImageDisplay()
     }
     else
     {
-        ShowErrorMessage(LOCTEXT("LoadFailed", "加载失败"));
+        ShowErrorMessage(LOCTEXT("LoadFailed", "Load Failed"));
     }
 }
 

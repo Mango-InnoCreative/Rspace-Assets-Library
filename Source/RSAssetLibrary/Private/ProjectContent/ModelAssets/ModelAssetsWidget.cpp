@@ -329,7 +329,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
             .Padding(5, 0, 5, 15)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("NoTags", "暂无标签"))
+                .Text(LOCTEXT("NoTags", "No tags"))
             ]
         ];
     }
@@ -492,7 +492,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                     .Padding(25, 0, 0, 15)
                     [
                         SNew(STextBlock)
-                        .Text(LOCTEXT("BasicInfoTitle", "基本信息"))
+                        .Text(LOCTEXT("BasicInfoTitle", "Basic Info"))
                         .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
                     ]
@@ -507,7 +507,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("CreateTimeLabel", "创建时间"))
+                            .Text(LOCTEXT("CreateTimeLabel", "Creation Time"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -532,7 +532,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("LastModifyTimeLabel", "最后修改时间"))
+                            .Text(LOCTEXT("LastModifyTimeLabel", "Last Modified Time"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -557,7 +557,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("CreatorLabel", "创建者"))
+                            .Text(LOCTEXT("CreatorLabel", "Create By"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -582,7 +582,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                         .AutoWidth()
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("LastModifyByLabel", "最后修改者"))
+                            .Text(LOCTEXT("LastModifyByLabel", "Last Modifier"))
                             .Justification(ETextJustify::Left)
                         ]
                         
@@ -613,7 +613,7 @@ TSharedRef<SWidget> SModelAssetsWidget::GenerateDetailsWidget(const FModelFileDe
                     .Padding(25, 15, 25, 15)
                     [
                         SNew(STextBlock)
-                        .Text(LOCTEXT("TagsTitle", "标签"))
+                        .Text(LOCTEXT("TagsTitle", "Tags"))
                         .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
                     ]
@@ -984,7 +984,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -999,7 +999,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
+                    .Text(LOCTEXT("ResourceDownloading", "Resource is downloading！"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1008,7 +1008,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1042,7 +1042,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
         }
 
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1057,7 +1057,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
+                .Text(LOCTEXT("DownloadResourceMessage", "Download the resource first!"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1067,7 +1067,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(LOCTEXT("Confirm", "确定"))
+                .Text(LOCTEXT("Confirm", "OK"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1170,7 +1170,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("Loading", "加载中..."))
+                    .Text(LOCTEXT("Loading", "Loading..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1209,7 +1209,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("ImageLoadFailed", "图片加载失败"))
+                                .Text(LOCTEXT("ImageLoadFailed", "Load Failed"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1228,7 +1228,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                         SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("ImageLoadFailed", "图片加载失败"))
+                            .Text(LOCTEXT("ImageLoadFailed", "Load Failed"))
                             .Justification(ETextJustify::Center)
                         ]
                     ]
@@ -1247,7 +1247,7 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoPreviewText", "无预览图"))
+                    .Text(LOCTEXT("NoPreviewText", "No Preview"))
                     .Justification(ETextJustify::Center)
                 ]
             ]

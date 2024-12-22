@@ -76,7 +76,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&BeginButtonStyle) 
                 .ContentPadding(0) 
-                .ToolTipText(LOCTEXT("DownloadTooltip", "下载"))
+                .ToolTipText(LOCTEXT("DownloadTooltip", "Start"))
                 .OnClicked(this, &SAssetDownloadWidget::OnStartOrResumeClicked)
                 .IsEnabled_Lambda([this]() { return bIsPaused; }) 
             ]
@@ -88,7 +88,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&PauseButtonStyle) 
                 .ContentPadding(0) 
-                .ToolTipText(LOCTEXT("PauseTooltip", "暂停"))
+                .ToolTipText(LOCTEXT("PauseTooltip", "Pause"))
                 .OnClicked(this, &SAssetDownloadWidget::OnPauseClicked)
                 .IsEnabled_Lambda([this]() { return !bIsPaused; }) 
             ]
@@ -100,7 +100,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&CancelButtonStyle)
                 .ContentPadding(0) 
-                .ToolTipText(LOCTEXT("CancelTooltip", "取消"))
+                .ToolTipText(LOCTEXT("CancelTooltip", "Cancel"))
                 .OnClicked(this, &SAssetDownloadWidget::OnCancelClicked)
             ]
         ]
@@ -111,7 +111,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
           .VAlign(VAlign_Center)
         [
             SAssignNew(DownloadStatusText, STextBlock)
-            .Text(LOCTEXT("WaitingForDownload", "等待中..."))
+            .Text(LOCTEXT("WaitingForDownload", "Waiting..."))
         ]
         
         + SHorizontalBox::Slot()
@@ -193,7 +193,7 @@ FReply SAssetDownloadWidget::OnStartOrResumeClicked()
         PendingTasks.Enqueue(SharedThis(this));
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "等待中..."));
+            DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "Waiting..."));
         }
     }
     else
@@ -218,7 +218,7 @@ void SAssetDownloadWidget::StartDownload()
     if (AssetDownloader->IsPaused())
     {
         AssetDownloader->ResumeDownload();
-        DownloadStatusText->SetText(LOCTEXT("ContinueDownload", "继续下载..."));
+        DownloadStatusText->SetText(LOCTEXT("ContinueDownload", "Download..."));
     }
     else
     {
@@ -236,7 +236,7 @@ void SAssetDownloadWidget::StartDownload()
         }
 
         AssetDownloader->StartChunkDownload(AssetURL, AssetFileName, AssetMD5);
-        DownloadStatusText->SetText(LOCTEXT("StartDownload", "开始下载..."));
+        DownloadStatusText->SetText(LOCTEXT("StartDownload", "Starting Download..."));
     }
     {
         FScopeLock Lock(&ActiveTasksMutex);
@@ -254,7 +254,7 @@ FReply SAssetDownloadWidget::OnPauseClicked()
         
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(LOCTEXT("DownloadPaused", "下载已暂停"));
+            DownloadStatusText->SetText(LOCTEXT("DownloadPaused", "Download Paused"));
         }
         {
             FScopeLock Lock(&ActiveTasksMutex);
@@ -286,7 +286,7 @@ FReply SAssetDownloadWidget::OnCancelClicked()
         
         if (DownloadStatusText.IsValid())
         {
-            DownloadStatusText->SetText(LOCTEXT("DownloadCancelled", "下载已取消"));
+            DownloadStatusText->SetText(LOCTEXT("DownloadCancelled", "Download Cancelled"));
         }
         
         if (DownloadProgressBar.IsValid())
@@ -324,7 +324,7 @@ void SAssetDownloadWidget::OnDownloadProgress(float Progress, int64 BytesDownloa
     if (DownloadStatusText.IsValid())
     {
         // 本地化部分 - 只本地化 "下载中："
-        FText DownloadingText = LOCTEXT("Downloading", "下载中：");
+        FText DownloadingText = LOCTEXT("Downloading", "Progress: ");
 
         // 进度计算部分
         FString Status;
@@ -361,7 +361,7 @@ void SAssetDownloadWidget::OnDownloadComplete()
 {
     if (DownloadStatusText.IsValid())
     {
-        DownloadStatusText->SetText(LOCTEXT("DownloadCompleted", "下载完成！"));
+        DownloadStatusText->SetText(LOCTEXT("DownloadCompleted", "Download Completed!"));
     }
     if (ActiveTasks.Contains(SharedThis(this)))
     {
@@ -412,11 +412,11 @@ void SAssetDownloadWidget::OnDownloadComplete()
         // UE_LOG(LogTemp, Error, TEXT("DownloadCompleteWidget is invalid!"));
     }
     
-    FNotificationInfo Info(LOCTEXT("DownloadComplete", "下载已完成！点击打开保存位置"));
+    FNotificationInfo Info(LOCTEXT("DownloadComplete", "Download complete! Click to open the save location."));
     Info.bFireAndForget = true; 
     Info.FadeOutDuration = 2.0f; 
     Info.ExpireDuration = 5.0f; 
-    // Set the hyperlink to open the saved path  设置超链接以打开保存路径
+
     Info.Hyperlink = FSimpleDelegate::CreateLambda([SavePath]()
     {
         FPlatformProcess::ExploreFolder(*SavePath);
@@ -436,7 +436,7 @@ void SAssetDownloadWidget::OnDownloadError()
 {
     if (DownloadStatusText.IsValid())
     {
-        DownloadStatusText->SetText(LOCTEXT("DownloadFailed", "下载失败！"));
+        DownloadStatusText->SetText(LOCTEXT("DownloadFailed", "Download failed!"));
     }
     ActiveTasks.Remove(SharedThis(this));
     FailedTasks.Add(SharedThis(this));
@@ -445,7 +445,7 @@ void SAssetDownloadWidget::OnDownloadError()
         ProcessPendingTasks();
     }
     
-    FNotificationInfo Info(LOCTEXT("DownloadFailed", "下载失败！"));
+    FNotificationInfo Info(LOCTEXT("DownloadFailed", "Download failed!"));
     Info.bFireAndForget = true; 
     Info.FadeOutDuration = 2.0f;
     Info.ExpireDuration = 5.0f; 
@@ -495,7 +495,7 @@ void SAssetDownloadWidget::ProcessPendingTasks()
             {
                 if (NextTask->DownloadStatusText.IsValid())
                 {
-                    NextTask->DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "等待中..."));
+                    NextTask->DownloadStatusText->SetText(LOCTEXT("WaitingForDownload", "Waiting..."));
                 }
                 PendingTasks.Enqueue(NextTask);
             }

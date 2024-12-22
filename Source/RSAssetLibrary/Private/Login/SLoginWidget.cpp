@@ -131,7 +131,7 @@ FReply SLoginWidget::OnLoginButtonClicked()
                     LoginButton->SetEnabled(false);
                     if (LoginStatusMessageText.IsValid())
                     {
-                        FString StatusMessage = TEXT("登录成功");
+                        FString StatusMessage = TEXT("Login successful");
                         LoginStatusMessageText->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f, 1.0f)));
                         LoginStatusMessageText->SetText(FText::FromString(StatusMessage));
                         LoginStatusMessageText->SetVisibility(EVisibility::Visible);
@@ -179,7 +179,7 @@ FReply SLoginWidget::OnLoginButtonClicked()
                 {
                     if (LoginStatusMessageText.IsValid())
                     {
-                        FString StatusMessage = TEXT("验证失败，请重新登录");
+                        FString StatusMessage = TEXT("Login failed. Retry.");
                         LoginStatusMessageText->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f)));
                         LoginStatusMessageText->SetText(FText::FromString(StatusMessage));
                         LoginStatusMessageText->SetVisibility(EVisibility::Visible);
@@ -266,7 +266,7 @@ TSharedRef<SWidget> SLoginWidget::CreateLoginUI()
                         [
                             SAssignNew(SwitchLoginButton, SButton)
                             .ButtonStyle(&QRLoginButtonStyle)
-                            .OnClicked(this, &SLoginWidget::OnSwitchLoginClicked)
+                            .OnClicked(this, &SLoginWidget::OnSwitchLoginClicked)  // 点击切换到二维码登录
                         ]
 
                         + SVerticalBox::Slot()
@@ -413,7 +413,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
         .Padding(FMargin(0, 30, 0, 30))
         [
             SNew(STextBlock)
-            .Text(LOCTEXT("ScanToLogin", "扫码登录"))
+            .Text(LOCTEXT("ScanToLogin", "QR Login"))
             .Justification(ETextJustify::Center)
             .Font(TitleFont)
         ]
@@ -430,7 +430,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("QRCodeAgreement", "我已阅读并同意"))
+                .Text(LOCTEXT("QRCodeAgreement", "I Agreed"))
                 .Font(AgreementFont)
             ]
             
@@ -440,7 +440,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
             .HAlign(HAlign_Center)
             [
                 SNew(SHyperlink)
-                .Text(LOCTEXT("QRCodeUserAgreement", "《R空间用户协议》"))
+                .Text(LOCTEXT("QRCodeUserAgreement", " R-Space User Agreement"))
                 .OnNavigate(this, &SLoginWidget::OnUserAgreementClicked)
                 .TextStyle(&HyperFontStyle)
             ]
@@ -466,6 +466,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
                     .HAlign(HAlign_Center)
                     .VAlign(VAlign_Center)
                     [
+                        // 添加图片
                         SNew(SImage)
                         .Image(FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.NetError"))
                         .Visibility(TAttribute<EVisibility>::Create([this]() -> EVisibility
@@ -479,7 +480,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
                     [
                         SNew(STextBlock)
                         .Font(AgreementFont)
-                        .Text(LOCTEXT("NetworkLoading", "网络加载中..."))
+                        .Text(LOCTEXT("NetworkLoading", "Loading..."))
                         .ColorAndOpacity(FLinearColor::White)
                         .Visibility(TAttribute<EVisibility>::Create([this]() -> EVisibility
                         {
@@ -513,7 +514,7 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
         .VAlign(VAlign_Top)
         [
             SNew(STextBlock)
-            .Text(LOCTEXT("ScanWithApp", "使用R空间App扫码"))
+            .Text(LOCTEXT("ScanWithApp", "Scan with R-Space App"))
             .Font(AgreementFont)
         ]
     ];
@@ -522,14 +523,14 @@ TSharedRef<SWidget> SLoginWidget::CreateQRCodeLoginUI()
 
 void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginResponseData)
 {
-    FText StatusMessage;
+    FText StatusMessage;  // 将 FString 改为 FText
 
     FQrUserInfoDetails UserInfo;
     FQrTokenInfo TokenInfo;
 
     if (!bIsQrCodeValid)
     {
-        StatusMessage = LOCTEXT("QRCodeInvalid", "");
+        StatusMessage = LOCTEXT("QRCodeInvalid", "");  // 使用 LOCTEXT 初始化 FText
         
         if (LoginStatusMessageText.IsValid())
         {
@@ -544,7 +545,7 @@ void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginR
     switch (QrLoginResponseData.state)
     {
     case 0:
-        StatusMessage = LOCTEXT("QRCodeNotScanned", "二维码未被扫描");
+        StatusMessage = LOCTEXT("QRCodeNotScanned", "QR code not scanned");
         
         if (LoginStatusMessageText.IsValid())
         {
@@ -555,7 +556,7 @@ void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginR
         break;
 
     case 1:
-        StatusMessage = LOCTEXT("ConfirmLoginOnMobile", "请在手机上确认登录");
+        StatusMessage = LOCTEXT("ConfirmLoginOnMobile", "Confirm login on your phone");
         
         if (LoginStatusMessageText.IsValid())
         {
@@ -570,7 +571,7 @@ void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginR
             UserInfo = QrLoginResponseData.userInfo.userInfo;
             TokenInfo = QrLoginResponseData.userInfo.tokenInfo;
 
-            StatusMessage = LOCTEXT("LoginSuccess", "登录成功");
+            StatusMessage = LOCTEXT("LoginSuccess", "Login successful");
             
             if (LoginStatusMessageText.IsValid())
             {
@@ -622,7 +623,7 @@ void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginR
         }
 
     case 4:
-        StatusMessage = LOCTEXT("UserRejectedLogin", "用户拒绝登录");
+        StatusMessage = LOCTEXT("UserRejectedLogin", "User denied login");
         
         if (LoginStatusMessageText.IsValid())
         {
@@ -634,7 +635,7 @@ void SLoginWidget::HandleQrCodeStateChanged(const FQrLoginResponseData& QrLoginR
         break;
 
     default:
-        StatusMessage = LOCTEXT("UnknownQRCodeState", "未知二维码状态");
+        StatusMessage = LOCTEXT("UnknownQRCodeState", "Unknown QR code status");
         break;
     }
 
@@ -733,7 +734,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
             + SVerticalBox::Slot().VAlign(VAlign_Center).HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("WelcomeBackText", "欢迎回来，M-Creator"))
+                .Text(LOCTEXT("WelcomeBackText", "Welcome，M-Creator"))
                 .Justification(ETextJustify::Center)
                 .Font(DefaultFont)
             ]
@@ -758,7 +759,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
                 [
                     SAssignNew(PhoneNumberTextBox, SEditableTextBox)
                     .Style(&FEditableTextBoxStyle::GetDefault())
-                    .HintText(LOCTEXT("PhoneNumberHint", "请输入手机号"))
+                    .HintText(LOCTEXT("PhoneNumberHint", "Phone Number"))
                     .Padding(FMargin(40, 0, 10, 0))
                     .ForegroundColor(FSlateColor(FLinearColor::Gray))
                     .BackgroundColor(FLinearColor(0.f, 0.f, 0.f, 0.f))
@@ -772,7 +773,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
     .Padding(FMargin(65, 0, 65, 5))
     [
         SNew(STextBlock)
-        .Text(LOCTEXT("PhoneNumberError", "手机号不能为空"))
+        .Text(LOCTEXT("PhoneNumberError", "Phone number cannot be empty"))
         .Font(FCoreStyle::GetDefaultFontStyle("Regular", 8))
         .ColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f)))
         .Visibility_Lambda([this]() { return bIsPhoneNumberEmpty ? EVisibility::Visible : EVisibility::Hidden; })
@@ -795,7 +796,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
                 [
                     SAssignNew(VerificationCodeTextBox, SEditableTextBox)
                     .Style(&FEditableTextBoxStyle::GetDefault())
-                    .HintText(LOCTEXT("EnterCaptchaHint", "请输入验证码"))
+                    .HintText(LOCTEXT("EnterCaptchaHint", "Verification Code"))
                     .Padding(FMargin(40, 0, 10, 0))
                     .ForegroundColor(FSlateColor(FLinearColor::Gray))
                     .BackgroundColor(FLinearColor(0.f, 0.f, 0.f, 0.f))
@@ -812,12 +813,12 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
                         .ContentPadding(FMargin(0, 0))
                         .HAlign(HAlign_Center)
                         .VAlign(VAlign_Center)
-                        .Text(LOCTEXT("GetCaptcha", "获取验证码"))
+                        .Text(LOCTEXT("GetCaptcha", "Get Code"))
                         .TextStyle(&CodeTextStyle)
                         .ForegroundColor(FSlateColor(FLinearColor::Gray))
                         .ButtonColorAndOpacity(FSlateColor(FLinearColor(0.2f, 0.2f, 0.2f, 0.0f)))
                         .Text_Lambda([this]() -> FText {
-                           return bIsCountdownActive ? FText::FromString(FString::Printf(TEXT(" %ds"), CountdownTime)) : LOCTEXT("GetCaptcha2", "获取验证码");})
+                           return bIsCountdownActive ? FText::FromString(FString::Printf(TEXT(" %ds"), CountdownTime)) : LOCTEXT("GetCaptcha2", "Get Code");})
                         .IsEnabled_Lambda([this]() -> bool {
                            return !bIsCountdownActive;
                        })
@@ -833,7 +834,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
     .Padding(FMargin(65, 0, 65, 5))
     [
         SNew(STextBlock)
-        .Text(LOCTEXT("CaptchaRequired", "验证码不能为空"))
+        .Text(LOCTEXT("CaptchaRequired", "Verification code cannot be empty"))
         .Font(FCoreStyle::GetDefaultFontStyle("Regular",8))
         .ColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f)))
         .Visibility_Lambda([this]() { return bIsVerificationCodeEmpty ? EVisibility::Visible : EVisibility::Hidden; })
@@ -852,7 +853,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
             .AutoWidth()
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("AgreementText", "我已阅读并同意"))
+                .Text(LOCTEXT("AgreementText", "I Agreed"))
                 .Font(FCoreStyle::GetDefaultFontStyle("Regular", 8))
                 .ColorAndOpacity(FSlateColor(FLinearColor(0.5f, 0.5f, 0.5f, 0.8f)))
             ]
@@ -861,7 +862,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
             .AutoWidth()
             [
                 SNew(SHyperlink)
-                .Text(LOCTEXT("UserAgreement", "《R空间用户协议》"))
+                .Text(LOCTEXT("UserAgreement", " R-Space User Agreement"))
                 .OnNavigate(this, &SLoginWidget::OnUserAgreementClicked)
                 .TextStyle(&HyperFontStyle)
             ]
@@ -873,7 +874,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
     .Padding(FMargin(65, 0, 65, 10))
     [
         SNew(STextBlock)
-        .Text(LOCTEXT("AgreeToTerms", "请同意用户协议"))
+        .Text(LOCTEXT("AgreeToTerms", "Please agree to the user agreement"))
         .Font(FCoreStyle::GetDefaultFontStyle("Regular",8))
         .ColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f)))
         .Visibility_Lambda([this]() { return bIsAgreementUnchecked ? EVisibility::Visible : EVisibility::Hidden; })
@@ -891,7 +892,7 @@ TSharedRef<SWidget> SLoginWidget::CreateAccountLoginUI()
             .HAlign(HAlign_Center)
             .VAlign(VAlign_Center)
             .OnClicked(this, &SLoginWidget::OnLoginButtonClicked)
-            .Text(LOCTEXT("SignIn/SignUp", "登录/注册"))
+            .Text(LOCTEXT("SignIn/SignUp", "Sign In/Sign Up"))
             
         ]
     ];
