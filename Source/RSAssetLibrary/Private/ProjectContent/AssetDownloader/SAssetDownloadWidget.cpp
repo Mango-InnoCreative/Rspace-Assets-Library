@@ -111,7 +111,7 @@ void SAssetDownloadWidget::Construct(const FArguments& InArgs)
           .VAlign(VAlign_Center)
         [
             SAssignNew(DownloadStatusText, STextBlock)
-            .Text(LOCTEXT("WaitingForDownload", "等待下载..."))
+            .Text(LOCTEXT("WaitingForDownload", "等待中..."))
         ]
         
         + SHorizontalBox::Slot()

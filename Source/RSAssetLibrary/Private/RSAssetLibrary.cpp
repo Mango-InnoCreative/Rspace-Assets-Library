@@ -18,7 +18,23 @@ static const FName RSAssetLibraryTabName("RSAssetLibrary");
 void FRSAssetLibraryModule::StartupModule()
 {
 	// 初始化时加载本地化文件
-	LoadLocalizationForEditorLanguage();
+	FString LocalizationPath = FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("RSAssetLibrary"), TEXT("Content"), TEXT("Localization"), TEXT("Game"), TEXT("en"), TEXT("Game.locres"));
+
+	// 确保文件存在
+	if (FPaths::FileExists(LocalizationPath))
+	{
+		// 创建本地化资源对象
+		FTextLocalizationResource LocalizationResource;
+
+		// 设置优先级为 0（您可以根据需求修改）
+		int32 Priority = 0;
+
+		// 加载本地化资源
+		LocalizationResource.LoadFromFile(LocalizationPath, Priority);
+
+		// 使用 `UpdateFromLocalizationResource` 方法更新本地化资源
+		FTextLocalizationManager::Get().UpdateFromLocalizationResource(LocalizationResource);
+	}
 	
 	// 监听语言切换事件
 	FInternationalization::Get().OnCultureChanged().AddRaw(this, &FRSAssetLibraryModule::OnCultureChanged);
@@ -51,12 +67,15 @@ void FRSAssetLibraryModule::StartupModule()
 
 void FRSAssetLibraryModule::LoadLocalizationForEditorLanguage()
 {
-	// 获取当前编辑器的语言
 	FString CurrentCulture = FTextLocalizationManager::Get().GetRequestedLocaleName();
+	
+	TArray<FString> SupportedCultures = {TEXT("zh-TW"), TEXT("zh-HK"), TEXT("zh-MO"), TEXT("zh-CN"), TEXT("zh-SG"), TEXT("zh-Hans"), TEXT("zh-Hant")};
+	if (SupportedCultures.Contains(CurrentCulture))
+	{
+		CurrentCulture = TEXT("zh");
+	}
 
-	// 根据当前语言加载插件的本地化资源
-	FString LocalizationPath = FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("RSAssetLibrary"), TEXT("Content"), TEXT("Localization"), TEXT("Game"),CurrentCulture, TEXT("Game.locres"));
-
+	FString LocalizationPath = FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("RSAssetLibrary"), TEXT("Content"), TEXT("Localization"), TEXT("Game"), CurrentCulture, TEXT("Game.locres"));
 	// 确保文件存在
 	if (FPaths::FileExists(LocalizationPath))
 	{
