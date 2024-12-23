@@ -40,7 +40,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
             [
                 SNew(STextBlock)
                 .Justification(ETextJustify::Left)
-                .Text(LOCTEXT("SelectedText", "已选择："))
+                .Text(LOCTEXT("SelectedText", "Selected: "))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SHorizontalBox::Slot()
@@ -77,7 +77,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
             .Padding(5)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("ConditionTypeLabel", "条件类型："))
+                .Text(LOCTEXT("ConditionTypeLabel", "Filter: "))
                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
             ]
             + SVerticalBox::Slot()
@@ -118,7 +118,7 @@ void SModelTagWidget::Construct(const FArguments& InArgs)
                      .Padding(0, 5, 5, 5)
                      [
                          SNew(STextBlock)
-                         .Text(LOCTEXT("ClearFilter", "清空筛选"))
+                         .Text(LOCTEXT("ClearFilter", "Clear"))
                          .Justification(ETextJustify::Center)
                          .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
                          .ColorAndOpacity(FSlateColor(FLinearColor::White))

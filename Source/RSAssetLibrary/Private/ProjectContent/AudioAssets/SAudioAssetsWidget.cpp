@@ -420,7 +420,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
+            .Text(LOCTEXT("LoadingComments", "Loading comments..."))
         ];
     
     UGetAudioCommentApi* GetAudioCommentApi = NewObject<UGetAudioCommentApi>();
@@ -498,8 +498,6 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                     ]
                     ];
 
-                    // UE_LOG(LogTemp, Error, TEXT("视频评论接口响应成功：视频编号: %s; 评论内容：%s"), *Comment.AppId, *Comment.Content);
-
                     Index++; // 增加计数
                 }
             }
@@ -510,7 +508,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoComments", "暂无评论"))
+                    .Text(LOCTEXT("NoComments", "No comments"))
                     .AutoWrapText(true) 
                 ];
             }
@@ -558,7 +556,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                              .Padding(5, 0, 5, 15)
                              [
                                  SNew(STextBlock)
-                                 .Text(LOCTEXT("NoTags", "暂无标签"))
+                                 .Text(LOCTEXT("NoTags", "No Tags"))
                              ]
                          ];
                      }
@@ -709,7 +707,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                             .Padding(25, 0, 0, 15)
                                             [
                                                 SNew(STextBlock)
-                                                .Text(LOCTEXT("AudioInformation", "音频信息"))
+                                                .Text(LOCTEXT("AudioInformation", "Audio Info"))
                                                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                                 .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                             ]
@@ -723,7 +721,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("Encoder", "编码器"))
+                                                    .Text(LOCTEXT("Encoder", "Encoder"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 
@@ -747,7 +745,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("Channels", "声道"))
+                                                    .Text(LOCTEXT("Channels", "Channels"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 + SHorizontalBox::Slot()
@@ -770,7 +768,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("SampleRate", "采样率"))
+                                                    .Text(LOCTEXT("SampleRate", "Sample Rate"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 + SHorizontalBox::Slot()
@@ -793,7 +791,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("BitRate", "比特率"))
+                                                    .Text(LOCTEXT("BitRate", "Bit Rate"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 + SHorizontalBox::Slot()
@@ -823,7 +821,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                             .Padding(25, 15, 25, 15)
                                             [
                                                 SNew(STextBlock)
-                                                .Text(LOCTEXT("FileInformation", "文件信息"))
+                                                .Text(LOCTEXT("FileInformation", "File Info"))
                                                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                                 .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                             ]
@@ -838,7 +836,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("FileSize", "文件大小"))
+                                                    .Text(LOCTEXT("FileSize", "File Size"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 
@@ -862,7 +860,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("Uploader", "上传者"))
+                                                    .Text(LOCTEXT("Uploader", "Upload By"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 
@@ -886,7 +884,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                 .AutoWidth()
                                                 [
                                                     SNew(STextBlock)
-                                                    .Text(LOCTEXT("CreationTime", "创建时间"))
+                                                    .Text(LOCTEXT("CreationTime", "Creation Time"))
                                                     .Justification(ETextJustify::Left)
                                                 ]
                                                 + SHorizontalBox::Slot()
@@ -916,7 +914,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                             .Padding(25, 15, 25, 15)
                                             [
                                                 SNew(STextBlock)
-                                                .Text(LOCTEXT("Tags", "标签"))
+                                                .Text(LOCTEXT("Tags", "Tags"))
                                                 .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                                 .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                             ]
@@ -951,7 +949,7 @@ TSharedRef<SWidget> SAudioAssetsWidget::GenerateDetailsWidget(const FAudioFileDa
                                                     .AutoHeight()
                                                     [
                                                         SNew(STextBlock)
-                                                        .Text(LOCTEXT("Comments", "评论"))
+                                                        .Text(LOCTEXT("Comments", "Comments"))
                                                         .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                                         .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                                         .Justification(ETextJustify::Left)
@@ -1199,7 +1197,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1214,7 +1212,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
+                    .Text(LOCTEXT("ResourceDownloading", "Resource is downloading!"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1223,7 +1221,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1253,7 +1251,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
         }
  
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100)) 
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1268,7 +1266,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
+                .Text(LOCTEXT("DownloadResourceMessage", "Download the resource first!"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1278,7 +1276,7 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(LOCTEXT("Confirm", "确定"))
+                .Text(LOCTEXT("Confirm", "OK"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())

@@ -92,7 +92,7 @@ void SDownloadCompleteWidget::AddCompletedDownload(const FString& FileName, cons
                 .Cursor(EMouseCursor::Hand)
                 .ButtonStyle(&SearchButtonStyle)
                 .ContentPadding(0) 
-                .ToolTipText(LOCTEXT("ViewLocalCacheToolTip", "查看本地缓存"))
+                .ToolTipText(LOCTEXT("ViewLocalCacheToolTip", "View Local File"))
                 .OnClicked_Lambda([FilePath]() -> FReply
                 {
                     // Default path: The RspaceAssetsLibrary folder in the project Saved folder 默认路径：项目 Saved 文件夹下的 RspaceAssetsLibrary 文件夹

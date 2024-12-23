@@ -136,7 +136,7 @@ void SProjectWidget::Construct(const FArguments& InArgs)
 								.HAlign(HAlign_Center)
 								[
 									SNew(STextBlock)
-									.Text(LOCTEXT("NoAssetSelected1", "未选择资产"))
+									.Text(LOCTEXT("NoAssetSelected1", "No asset selected"))
 									.Justification(ETextJustify::Center)
 								]
 							]
@@ -245,7 +245,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 							// 如果 CurrentProjectName 为空，则显示本地化文本 "No project selected"
 							if (CurrentProjectName == "")
 							{
-								return LOCTEXT("CurrentProjectName", "未选择项目");  // 本地化文本
+								return LOCTEXT("CurrentProjectName", "No project selected");
 							}
 							else
 							{
@@ -320,7 +320,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 									.Padding(FMargin(0.0, 1.0, 0.0, 0.0))
 									[
 									SNew(STextBlock)
-									.Text(LOCTEXT("ConceptDesignButton", "概念设计"))
+									.Text(LOCTEXT("ConceptDesignButton", "Image Assets"))
 									.Justification(ETextJustify::Center)
 									.Font(FCoreStyle::GetDefaultFontStyle("Bold", 18))
 									.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -379,7 +379,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 										.Padding(FMargin(0.0, 1.0, 0.0, 0.0))
 										[
 											SNew(STextBlock)
-											.Text(LOCTEXT("AudioAssetsButton", "音频资产"))
+											.Text(LOCTEXT("AudioAssetsButton", "Audio Assets"))
 											.Justification(ETextJustify::Center)
 											.Font(FCoreStyle::GetDefaultFontStyle("Bold", 18))
 											.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -437,7 +437,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 										.Padding(FMargin(0.0, 1.0, 0.0, 0.0))
 										[
 											SNew(STextBlock)
-											.Text(LOCTEXT("VideoAssetsButton", "视频资产"))
+											.Text(LOCTEXT("VideoAssetsButton", "Video Assets"))
 											.Justification(ETextJustify::Center)
 											.Font(FCoreStyle::GetDefaultFontStyle("Bold", 18))
 											.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -494,7 +494,7 @@ TSharedRef<SWidget> SProjectWidget::MakeOptionBar()
 										.Padding(FMargin(0.0, 1.0, 0.0, 0.0))
 										[
 											SNew(STextBlock)
-											.Text(LOCTEXT("ModelAssetsButton", "模型资产"))
+											.Text(LOCTEXT("ModelAssetsButton", "Model Assets"))
 											.Justification(ETextJustify::Center)
 											.Font(FCoreStyle::GetDefaultFontStyle("Bold", 18))
 											.ColorAndOpacity(FSlateColor(FLinearColor::White))
@@ -587,7 +587,7 @@ bool SProjectWidget::CheckProjectIsSelected()
         {
             // 创建新的窗口
             ProjectSelectedNotificationWindow = SNew(SWindow)
-        		.Title(LOCTEXT("TipTitle", "提示"))
+        		.Title(LOCTEXT("TipTitle", "Notification"))
                 .ClientSize(FVector2D(200.f, 100.f))		
                 .FocusWhenFirstShown(true)
                 .SupportsMaximize(false)
@@ -602,7 +602,7 @@ bool SProjectWidget::CheckProjectIsSelected()
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("SelectProjectWarning", "请先选择一个项目！"))
+                    .Text(LOCTEXT("SelectProjectWarning", "Select a project first!"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -612,7 +612,7 @@ bool SProjectWidget::CheckProjectIsSelected()
                 [
                     SNew(SButton)
                     .VAlign(VAlign_Bottom)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([this]() -> FReply
                     {
                         // Close the prompt window 关闭提示窗口
@@ -676,7 +676,7 @@ TSharedRef<SWidget> SProjectWidget::MakeSearchBar()
                     .Padding(5,5,10,5)
                     [
                         SNew(SEditableTextBox)
-                        .HintText(LOCTEXT("SearchHint", "按回车键搜索，支持模糊查询"))
+                        .HintText(LOCTEXT("SearchHint", "Press Enter to search, fuzzy search supported"))
                         .OnTextCommitted(this, &SProjectWidget::OnSearchTextCommitted)
                     ]
 
@@ -2010,7 +2010,7 @@ void SProjectWidget::ResetSlateWidgets()
 				.HAlign(HAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(LOCTEXT("NoAssetSelected2", "未选择资产"))
+					.Text(LOCTEXT("NoAssetSelected2", "No asset selected"))
 					.Justification(ETextJustify::Center)
 				]
 			]
@@ -2042,7 +2042,7 @@ void SProjectWidget::ResetDetailBar()
 				.HAlign(HAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(LOCTEXT("NoAssetSelected3", "未选择资产"))
+					.Text(LOCTEXT("NoAssetSelected3", "No asset selected"))
 					.Justification(ETextJustify::Center)
 				]
 			]
@@ -2495,7 +2495,7 @@ FReply SProjectWidget::OnTagButtonClicked()
         {
             
             ExistingNotificationWindow = SNew(SWindow)
-        		.Title(LOCTEXT("TipTitle", "提示"))
+        		.Title(LOCTEXT("TipTitle", "Notification"))
                 .ClientSize(FVector2D(200, 100)) 
                 .FocusWhenFirstShown(true)
                 .SupportsMaximize(false)
@@ -2510,7 +2510,7 @@ FReply SProjectWidget::OnTagButtonClicked()
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoTags", "暂无标签"))
+                    .Text(LOCTEXT("NoTags", "No tags"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -2520,7 +2520,7 @@ FReply SProjectWidget::OnTagButtonClicked()
                 [
                     SNew(SButton)
                     .VAlign(VAlign_Bottom)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([this]() -> FReply
                     {
                         if (ExistingNotificationWindow.IsValid())
@@ -2721,7 +2721,7 @@ FReply SProjectWidget::OnUserInfoButtonClicked()
 				.VAlign(VAlign_Center)
 				[
 					SNew(STextBlock)
-					.Text(LOCTEXT("Logout", "退出登录"))
+					.Text(LOCTEXT("Logout", "Log out"))
 					.Justification(ETextJustify::Center)
 					.ColorAndOpacity(FSlateColor(FLinearColor::Black)) 
 					.Font(FCoreStyle::GetDefaultFontStyle("Regular", 9))
@@ -2917,7 +2917,7 @@ void SProjectWidget::ShowDownloadQueue()
     }
 
     DownloadQueueWindow = SNew(SWindow)
-		.Title(LOCTEXT("TransferListTitle", "传输列表"))
+		.Title(LOCTEXT("TransferListTitle", "Download List"))
         .FocusWhenFirstShown(true)
 		.IsTopmostWindow(false)
         .ClientSize(FVector2D(700, 900))
@@ -2956,9 +2956,9 @@ void SProjectWidget::ShowDownloadQueue()
 								.VAlign(VAlign_Center) 
 								[
 									SNew(STextBlock)
-									.Text(LOCTEXT("DownloadText", "下载中"))
+									.Text(LOCTEXT("DownloadText", "Downloading"))
 									.Justification(ETextJustify::Center)
-									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 15))
+									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 13))
 									.ColorAndOpacity(FSlateColor(FLinearColor::White))
 								]
 	                        ]
@@ -2986,9 +2986,9 @@ void SProjectWidget::ShowDownloadQueue()
 								.VAlign(VAlign_Center)
 								[
 									SNew(STextBlock)
-									.Text(LOCTEXT("CompletedText", "已完成"))
+									.Text(LOCTEXT("CompletedText", "Downloaded"))
 									.Justification(ETextJustify::Center)
-									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 15))
+									.Font(FCoreStyle::GetDefaultFontStyle("Regular", 13))
 									.ColorAndOpacity(FSlateColor(FLinearColor::White))
 								]
 	                        ]
@@ -3015,7 +3015,7 @@ void SProjectWidget::ShowDownloadQueue()
 					.HAlign(HAlign_Left)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("NameText", "名称"))
+						.Text(LOCTEXT("NameText", "File Name"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3029,7 +3029,7 @@ void SProjectWidget::ShowDownloadQueue()
 					.HAlign(HAlign_Center)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("SizeText", "大小"))
+						.Text(LOCTEXT("SizeText", "File Size"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3043,7 +3043,7 @@ void SProjectWidget::ShowDownloadQueue()
 					.HAlign(HAlign_Right)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("StatusText", "状态"))
+						.Text(LOCTEXT("StatusText", "File Status"))
 						.Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
 						.ColorAndOpacity(FSlateColor(FLinearColor::White))
 					]
@@ -3112,7 +3112,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(LOCTEXT("AllStartText", "全部开始"))
+                                             .Text(LOCTEXT("AllStartText", "Start All"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3167,7 +3167,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(LOCTEXT("AllPauseText", "全部暂停"))
+                                             .Text(LOCTEXT("AllPauseText", "Pause All"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3216,7 +3216,7 @@ void SProjectWidget::ShowDownloadQueue()
                                          .Padding(0, 5, 5, 5)
                                          [
                                              SNew(STextBlock)
-                                             .Text(LOCTEXT("AllCancelText", "全部取消"))
+                                             .Text(LOCTEXT("AllCancelText", "Cancel All"))
                                              .Justification(ETextJustify::Center)
                                              .Font(FCoreStyle::GetDefaultFontStyle("Regular", 12))
                                              .ColorAndOpacity(FSlateColor(FLinearColor(0.03922f, 0.55686f, 0.40784f, 1.0f))) 
@@ -3466,7 +3466,7 @@ void SProjectWidget::CloseAllOpenedWindows()
             || WindowTitle.EqualTo(FText::FromString(TEXT("Audio Player")))
             || WindowTitle.EqualTo(FText::FromString(TEXT("Image Preview")))
             || WindowTitle.EqualTo(FText::FromString(TEXT("Download List")))
-            || WindowTitle.EqualTo(FText::FromString(TEXT("Tip")))) 
+            || WindowTitle.EqualTo(FText::FromString(TEXT("Notification")))) 
             	
         {
             // UE_LOG(LogTemp, Log, TEXT("Closing plugin-related window: %s"), *WindowTitle.ToString());

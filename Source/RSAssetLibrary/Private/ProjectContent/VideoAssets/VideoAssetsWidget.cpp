@@ -276,7 +276,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
         .AutoHeight()
         [
             SNew(STextBlock)
-            .Text(LOCTEXT("LoadingComments", "评论加载中..."))
+            .Text(LOCTEXT("LoadingComments", "Loading comments..."))
         ];
 
     // Logic for requesting comment data 请求评论数据的逻辑
@@ -364,7 +364,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                 .Padding(0, 20, 0, 5)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoComments", "暂无评论"))
+                    .Text(LOCTEXT("NoComments", "No comments"))
                     .AutoWrapText(true)
                 ];
             }
@@ -464,7 +464,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                         .Padding(25, 0, 0, 15)
                         [
                             SNew(STextBlock)
-                            .Text(LOCTEXT("BasicInfo", "基本信息"))
+                            .Text(LOCTEXT("BasicInfo", "Base Info"))
                             .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                             .ColorAndOpacity(FSlateColor(FLinearColor::White))
                         ]
@@ -479,7 +479,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Format", "格式"))
+                                .Text(LOCTEXT("Format", "Format"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -504,7 +504,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Uploader", "上传者"))
+                                .Text(LOCTEXT("Uploader", "Upload By"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -529,7 +529,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("UploadTime", "上传时间"))
+                                .Text(LOCTEXT("UploadTime", "Upload Time"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -554,7 +554,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("FileSize", "文件大小"))
+                                .Text(LOCTEXT("FileSize", "File Size"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -579,7 +579,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Resolution", "分辨率"))
+                                .Text(LOCTEXT("Resolution", "Resolution"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -604,7 +604,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("FrameRate", "帧率"))
+                                .Text(LOCTEXT("FrameRate", "Frame Rate"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -629,7 +629,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("VideoBitRate", "视频-比特率"))
+                                .Text(LOCTEXT("VideoBitRate", "Bitrate"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -654,7 +654,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Duration", "时长"))
+                                .Text(LOCTEXT("Duration", "Duration"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -679,7 +679,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("Codec", "编码"))
+                                .Text(LOCTEXT("Codec", "Video Encoding"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -704,7 +704,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("AudioChannel", "声道"))
+                                .Text(LOCTEXT("AudioChannel", "Channels"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -729,7 +729,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("AudioSampleRate", "采集率"))
+                                .Text(LOCTEXT("AudioSampleRate", "Sampling Rate"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -754,7 +754,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("AudioBitRate", "音频-比特率"))
+                                .Text(LOCTEXT("AudioBitRate", "Audio Bitrate"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -779,7 +779,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                             .AutoWidth()
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("AudioCodec", "音频编码"))
+                                .Text(LOCTEXT("AudioCodec", "Audio Encoding"))
                                 .Justification(ETextJustify::Left)
                             ]
 
@@ -817,7 +817,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::GenerateDetailsWidget(UGetVideoVersionFi
                                 .AutoHeight()
                                 [
                                     SNew(STextBlock)
-                                    .Text(LOCTEXT("Comments", "评论"))
+                                    .Text(LOCTEXT("Comments", "Comments"))
                                     .Font(FCoreStyle::GetDefaultFontStyle("Bold", 12))
                                     .ColorAndOpacity(FSlateColor(FLinearColor::White))
                                     .Justification(ETextJustify::Left)
@@ -1150,7 +1150,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
 
         // An error message is displayed indicating that the file is still being downloaded 显示错误消息，提示文件仍在下载中
         ExistingNotificationWindow = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1165,7 +1165,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("ResourceDownloading", "资源正在下载中，无法导入！"))
+                    .Text(LOCTEXT("ResourceDownloading", "Resource is downloading!"))
                     .Justification(ETextJustify::Center)
                 ]
                 + SVerticalBox::Slot()
@@ -1174,7 +1174,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
                 .HAlign(HAlign_Center)
                 [
                     SNew(SButton)
-                    .Text(LOCTEXT("Confirm", "确定"))
+                    .Text(LOCTEXT("Confirm", "OK"))
                     .OnClicked_Lambda([]() -> FReply {
                         if (ExistingNotificationWindow.IsValid())
                         {
@@ -1206,7 +1206,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
         }
         
         ExistingNotificationWindow2 = SNew(SWindow)
-            .Title(LOCTEXT("TipTitle", "提示"))
+            .Title(LOCTEXT("TipTitle", "Notification"))
             .ClientSize(FVector2D(200, 100))
             .FocusWhenFirstShown(true)
             .SupportsMaximize(false)
@@ -1221,7 +1221,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
             .HAlign(HAlign_Center)
             [
                 SNew(STextBlock)
-                .Text(LOCTEXT("DownloadResourceMessage", "请先下载该资源！"))
+                .Text(LOCTEXT("DownloadResourceMessage", "Download the resource first!"))
                 .Justification(ETextJustify::Center)
             ]
             + SVerticalBox::Slot()
@@ -1231,7 +1231,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
             [
                 SNew(SButton)
                 .VAlign(VAlign_Bottom)
-                .Text(LOCTEXT("Confirm", "确定"))
+                .Text(LOCTEXT("Confirm", "OK"))
                 .OnClicked_Lambda([]() -> FReply
                 {
                     if (ExistingNotificationWindow2.IsValid())
@@ -1323,7 +1323,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("Loading", "加载中..."))
+                    .Text(LOCTEXT("Loading", "Loading..."))
                     .Justification(ETextJustify::Center)
                 ]
             ]
@@ -1372,7 +1372,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                             SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                             [
                                 SNew(STextBlock)
-                                .Text(LOCTEXT("LoadFailed", "加载失败"))
+                                .Text(LOCTEXT("LoadFailed", "Load Failed"))
                                 .Justification(ETextJustify::Center)
                             ]
                         ]
@@ -1388,7 +1388,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                         SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                         [
                             SNew(STextBlock)
-                            .Text(FText::FromString(TEXT("加载失败")))
+                            .Text(FText::FromString(TEXT("Load Failed")))
                             .Justification(ETextJustify::Center)
                         ]
                     ]
@@ -1405,7 +1405,7 @@ TSharedRef<SWidget> SVideoAssetsWidget::ConstructImageItem(const FString& Projec
                 SNew(SBox).HAlign(HAlign_Center).VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                    .Text(LOCTEXT("NoPreview", "无预览图"))
+                    .Text(LOCTEXT("NoPreview", "No Preview"))
                     .Justification(ETextJustify::Center)
                 ]
             ]
