@@ -54,6 +54,8 @@ public:
 
 
 	void OnDownloadCompleted(const FString& AssetFileName);
+	
+	void SearchAudioFileByName(const FText& InputFileName);
 
 	void ClearAudioContent(){ AudioAssetsContainer->ClearChildren(); }
 

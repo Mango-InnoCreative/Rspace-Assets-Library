@@ -28,6 +28,7 @@ void FRSAssetLibraryModule::StartupModule()
 	FRSAssetLibraryStyle::ReloadTextures();
 
 	FRSAssetLibraryCommands::Register();
+	LoadLocalizationForEditorLanguage();
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 

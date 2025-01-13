@@ -14,6 +14,7 @@
 #include "ProjectContent/MediaPlayer/SVideoPlayerWidget.h"
 #include "Sound/SoundWave.h"
 #include "EditorFramework/AssetImportData.h"
+#include "GenericPlatform/GenericPlatformHttp.h"
 
 #define LOCTEXT_NAMESPACE "SAudioAssetsWidget"
 
@@ -1312,21 +1313,21 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
         
         if (FPackageName::DoesPackageExist(SavePath))
         {
-            UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
+           // UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
             return;
         }
 
         UPackage* Package = CreatePackage(*SavePath);
         if (!Package)
         {
-            UE_LOG(LogTemp, Error, TEXT("Failed to create package for: %s"), *SavePath);
+           // UE_LOG(LogTemp, Error, TEXT("Failed to create package for: %s"), *SavePath);
             return;
         }
 
         UFileMediaSource* FileMediaSource = NewObject<UFileMediaSource>(Package, UFileMediaSource::StaticClass(), FName(*TargetFileName), RF_Public | RF_Standalone);
         if (!FileMediaSource)
         {
-            UE_LOG(LogTemp, Error, TEXT("Failed to create UFileMediaSource object for: %s"), *FilePath);
+           // UE_LOG(LogTemp, Error, TEXT("Failed to create UFileMediaSource object for: %s"), *FilePath);
             return;
         }
 
@@ -1336,16 +1337,16 @@ void SAudioAssetsWidget::ImportAudioFile(const FString& FilePath)
         // Register assets to the asset registry 注册资产到资产注册表
         FAssetRegistryModule::AssetCreated(FileMediaSource);
 
-        UE_LOG(LogTemp, Log, TEXT("Successfully registered media source: %s"), *SavePath);
+        //UE_LOG(LogTemp, Log, TEXT("Successfully registered media source: %s"), *SavePath);
         
         FString PackageFilePath = FPackageName::LongPackageNameToFilename(SavePath, FPackageName::GetAssetPackageExtension());
         if (UPackage::SavePackage(Package, FileMediaSource, RF_Public | RF_Standalone, *PackageFilePath, GError, nullptr, true, true, SAVE_None))
         {
-            UE_LOG(LogTemp, Log, TEXT("Successfully imported audio file as media source: %s"), *SavePath);
+            //UE_LOG(LogTemp, Log, TEXT("Successfully imported audio file as media source: %s"), *SavePath);
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("Failed to save package for: %s"), *SavePath);
+            //UE_LOG(LogTemp, Error, TEXT("Failed to save package for: %s"), *SavePath);
         }
     }
 }
@@ -1358,7 +1359,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     
     if (FPackageName::DoesPackageExist(SavePath))
     {
-        UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
+        //UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
         return;
     }
 
@@ -1366,7 +1367,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     TArray<uint8> AudioData;
     if (!FFileHelper::LoadFileToArray(AudioData, *FilePath))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load audio file: %s"), *FilePath);
+        //UE_LOG(LogTemp, Error, TEXT("Failed to load audio file: %s"), *FilePath);
         return;
     }
 
@@ -1374,7 +1375,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     FWaveModInfo WaveInfo;
     if (!WaveInfo.ReadWaveInfo(AudioData.GetData(), AudioData.Num()))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to parse audio file: %s"), *FilePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to parse audio file: %s"), *FilePath);
         return;
     }
 
@@ -1383,7 +1384,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     UPackage* Package = CreatePackage(*PackageName);
     if (!Package)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create package: %s"), *SavePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to create package: %s"), *SavePath);
         return;
     }
 
@@ -1391,7 +1392,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     USoundWave* SoundWave = NewObject<USoundWave>(Package, *TargetFileName, RF_Public | RF_Standalone);
     if (!SoundWave)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create USoundWave asset."));
+      //  UE_LOG(LogTemp, Error, TEXT("Failed to create USoundWave asset."));
         return;
     }
 
@@ -1403,7 +1404,7 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
 
     if (BitsPerSample / 8 == 0 || Channels == 0 || SampleRate == 0 || DataSize == 0)
     {
-        UE_LOG(LogTemp, Error, TEXT("Invalid audio file data."));
+      //  UE_LOG(LogTemp, Error, TEXT("Invalid audio file data."));
         return;
     }
 
@@ -1429,11 +1430,11 @@ void SAudioAssetsWidget::ImportSupportedAudioFormats(const FString& FilePath, co
     // Save asset package 保存资产包
     if (!UPackage::SavePackage(Package, SoundWave, EObjectFlags::RF_Public | RF_Standalone, *FPackageName::LongPackageNameToFilename(PackageName, FPackageName::GetAssetPackageExtension())))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to save package: %s"), *SavePath);
+        //UE_LOG(LogTemp, Error, TEXT("Failed to save package: %s"), *SavePath);
     }
     else
     {
-        UE_LOG(LogTemp, Log, TEXT("Successfully imported audio file: %s"), *FilePath);
+        //UE_LOG(LogTemp, Log, TEXT("Successfully imported audio file: %s"), *FilePath);
     }
 }
 
@@ -1445,7 +1446,7 @@ void SAudioAssetsWidget::ImportWithFileMediaSource(const FString& FilePath)
     {
         MediaSource->SetFilePath(FilePath);
 
-        UE_LOG(LogTemp, Log, TEXT("Media source created for non-supported format: %s"), *FilePath);
+       // UE_LOG(LogTemp, Log, TEXT("Media source created for non-supported format: %s"), *FilePath);
 
         // Create a media player and start playing 创建媒体播放器并开始播放
         UMediaPlayer* MediaPlayer = NewObject<UMediaPlayer>();
@@ -1454,8 +1455,83 @@ void SAudioAssetsWidget::ImportWithFileMediaSource(const FString& FilePath)
             MediaPlayer->OpenSource(MediaSource);
             MediaPlayer->Play();
 
-            UE_LOG(LogTemp, Log, TEXT("Media player started for file: %s"), *FilePath);
+            //UE_LOG(LogTemp, Log, TEXT("Media player started for file: %s"), *FilePath);
         }
+    }
+}
+
+void SAudioAssetsWidget::SearchAudioFileByName(const FText& InputFileName)
+{
+    // Convert FText to FString and trim the whitespace 将 FText 转换为 FString 并修剪空格
+    FString SearchFileName = InputFileName.ToString().TrimStartAndEnd();
+
+    // Check that the search text is empty 检查搜索文本是否为空
+    if (SearchFileName.IsEmpty())
+    {
+        // UE_LOG(LogTemp, Warning, TEXT("Search text is empty."));
+        return;
+    }
+
+    // URL encoding of the search file name 对搜索文件名进行 URL 编码
+    //FString EncodedSearchFileName = FGenericPlatformHttp::UrlEncode(SearchFileName);
+    //UE_LOG(LogTemp, Log, TEXT("Video Encoded Search File Name: %s"), *EncodedSearchFileName)
+
+    UGetAudioFileByConditionApi* AudioApi = NewObject<UGetAudioFileByConditionApi>();
+    if (AudioApi)
+    {
+        FOnGetAudioFileByConditionResponse OnResponseDelegate;
+        OnResponseDelegate.BindLambda([this](const FGetAudioFileByConditionResponse& ApiResponse)
+        {
+            if (ApiResponse.data.dataList.Num() > 0)
+            {
+                AudioAssetsContainer->ClearChildren();
+
+                UpdateTagPageAudioAssets(ApiResponse.data.dataList);
+            }
+            else
+            {
+                AudioAssetsContainer->ClearChildren(); 
+                OnAudioNothingToShow.ExecuteIfBound();
+            }
+        });
+        
+        FString CurrentGroupId = GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentAudioGroupID();
+
+        SetUserAndProjectParams();
+        FString AudioChannel = TEXT("");
+        FString AudioHarvestBits = TEXT("");
+        FString AudioHarvestRate = TEXT("");
+        int32 BpmBegin = *"";
+        int32 BpmEnd = *"";
+        int32 CurrentPage = 1;
+        FString FileFormat = TEXT("");
+        //FString GroupId = "";
+        int32 MenuType = 1;
+        int32 PageSize = 1000;
+        FString Sort =  TEXT("DESC");
+        FString SortType =  TEXT("1");
+        int64 TagId =  *"";
+        
+        AudioApi->SendGetAudioFileByConditionRequest(
+        Ticket,
+        Uuid,
+        ProjectNo,
+        CurrentGroupId,
+        AudioChannel,
+        AudioHarvestBits,
+        AudioHarvestRate,
+        BpmBegin,
+        BpmEnd,
+        CurrentPage,
+        FileFormat,
+        MenuType,
+        PageSize,
+        SearchFileName,
+        Sort,
+        SortType,
+        TagId,
+        OnResponseDelegate
+    );
     }
 }
 

@@ -28,6 +28,8 @@ public:
 
 	FReply ClearSelectedTags();
 
+	void ReloadSelectedTags();
+
 private:
 	TSharedPtr<SAudioAssetsWidget> AudioAssetsWidget;
 

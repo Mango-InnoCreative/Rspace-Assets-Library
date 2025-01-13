@@ -12,6 +12,8 @@
 #include "Engine/Engine.h"
 #include "ProjectContent/ConceptDesign/ConceptDesignDisplay.h"
 
+#define LOCTEXT_NAMESPACE "FMediaPlayerManager"
+
 namespace Audio
 {
     struct FCaptureDeviceInfo;
@@ -43,7 +45,7 @@ void FMediaPlayerManager::PlayMediaWithSystemPlayer(const FString& InPath)
     SharedVideoPlayerWidget->PlayVideo(InPath);
 
     TSharedRef<SWindow> VideoPlayerWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("Video Player")))
+        .Title(LOCTEXT("VideoPlayer", "Video Player"))
         .ClientSize(FVector2D(1280, 720))
         .SupportsMaximize(true)
         .SupportsMinimize(true)
@@ -103,7 +105,7 @@ void FMediaPlayerManager::PlayAudioWithSystemPlayer(const FString& InPath)
     SharedAudioPlayerWidget->PlayVideo(InPath);
 
     TSharedRef<SWindow> AudioPlayerWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("Audio Player")))
+        .Title(LOCTEXT("AudioPlayer", "Audio Player"))
         .ClientSize(FVector2D(530, 360))
         .SupportsMaximize(true)
         .SupportsMinimize(true)
@@ -166,7 +168,7 @@ void FMediaPlayerManager::ShowImageInWindow(const FString& ImagePath)
     SharedImageDisplayWidget->LoadImage(ImagePath);
 
     TSharedRef<SWindow> ImageWindow = SNew(SWindow)
-        .Title(FText::FromString(TEXT("Image Preview")))
+        .Title(LOCTEXT("ImagePreview", "Image Preview"))
         .AutoCenter(EAutoCenter::PreferredWorkArea) 
         .SizingRule(ESizingRule::UserSized)         
         .SupportsMaximize(true)

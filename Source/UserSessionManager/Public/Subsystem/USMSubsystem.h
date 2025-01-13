@@ -117,8 +117,12 @@ public:
 	void ResetCurrentFirstPageAudioFolderItems(){ CurrentFirstPageAudioFolderItems.Empty(); }
 
 	void SetCurrentVideoParentID(const FString& InID) { CurrentVideoParentId = InID; }
+	
+	void SetCurrentModelParentID(const int32& InID) { CurrentModelParentId = InID; }
 
 	FString GetCurrentVideoParentID(){ return CurrentVideoParentId; }
+
+	int32 GetCurrentModelParentID(){ return CurrentModelParentId; }
 
 	TArray<FVideoAssetInfo> GetCurrentVideoFolderItems() const { return CurrentVideoFolderItems; }
 
@@ -135,6 +139,18 @@ public:
 	void ClearCurrentSession();
 
 	void ClearCurrentUserAndProjectInfo();
+
+	void SetCurrentModelTagname(FString InTagName) { CurrentModelTagname = InTagName; }
+
+	FString GetCurrentModelTagname() { return CurrentModelTagname; }
+
+	void SetCurrentAudioTagname(FString InTagName) { CurrentAudiolTagname = InTagName; }
+
+	FString GetCurrentAudioTagname() { return CurrentAudiolTagname; }
+
+	void SetCurrentConceptTagname(FString InTagName) { CurrentConceptTagname = InTagName; }
+
+	FString GetCurrentConceptTagname() { return CurrentConceptTagname; }
 
 private:
 	FUserSessionInfo CurrentSessionInfo; 
@@ -160,6 +176,8 @@ private:
 	TArray<FVideoAssetInfo> CurrentVideoFolderItems;
 
 	FString CurrentVideoParentId = "";
+	
+	int32 CurrentModelParentId = 0;
 
 	TArray<FModelFileItem> CurrentModelItems;
 
@@ -168,4 +186,10 @@ private:
 	FString CurrentConceptFolderID;
 
 	FString CurrentAudioGroupID;
+
+	FString CurrentModelTagname;
+	
+	FString CurrentAudiolTagname;
+
+	FString CurrentConceptTagname;
 };

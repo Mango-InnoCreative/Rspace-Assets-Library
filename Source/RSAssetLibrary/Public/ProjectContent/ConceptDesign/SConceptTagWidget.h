@@ -29,6 +29,8 @@ public:
 
 	FReply ClearSelectedTags();
 
+	void ReloadSelectedTags();
+
 
 	// void ConceptSetShouldCallAudioApi(bool bValue);
 
