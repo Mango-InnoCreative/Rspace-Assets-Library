@@ -19,6 +19,8 @@
 #include "ProjectContent/MediaPlayer/SVideoPlayerWidget.h"
 #include "Misc/Timespan.h"
 #include "Tickable.h"  // 包含与 FTicker 和 FTSTicker 相关的内容
+#include "GenericPlatform/GenericPlatformHttp.h"
+#include "ModelLibrary/GetModelLibrary.h"
 
 #define LOCTEXT_NAMESPACE "SModelAssetsWidget"
 
@@ -1116,7 +1118,7 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
     UPackage* ExistingPackage = FindPackage(nullptr, *PackageName);
     if (ExistingPackage)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Package already exists: %s"), *PackageName);
+        //UE_LOG(LogTemp, Warning, TEXT("Package already exists: %s"), *PackageName);
         return;
     }
 
@@ -1148,11 +1150,11 @@ void SModelAssetsWidget::ImportFBXFile(const FString& FilePath)
     // Check whether the import is successful 检查导入是否成功
     if (ImportedAsset && !bOutCanceled)
     {
-        UE_LOG(LogTemp, Log, TEXT("FBX Import Successful!"));
+        //UE_LOG(LogTemp, Log, TEXT("FBX Import Successful!"));
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("FBX Import Failed or Canceled!"));
+        //UE_LOG(LogTemp, Warning, TEXT("FBX Import Failed or Canceled!"));
     }
 }
 
@@ -1255,6 +1257,54 @@ TSharedRef<SWidget> SModelAssetsWidget::LoadImageFromUrl(const FString& GifUrl)
     }
 
     return ImageBox.ToSharedRef();
+}
+
+void SModelAssetsWidget::SearchModelFileByName(const FText& InputFileName)
+{
+    // Convert FText to FString and trim the whitespace 将 FText 转换为 FString 并修剪空格
+    FString SearchFileName = InputFileName.ToString().TrimStartAndEnd();
+
+    // Check that the search text is empty 检查搜索文本是否为空
+    if (SearchFileName.IsEmpty())
+    {
+        // UE_LOG(LogTemp, Warning, TEXT("Search text is empty."));
+        return;
+    }
+
+    // URL encoding of the search file name 对搜索文件名进行 URL 编码
+    //FString EncodedSearchFileName = FGenericPlatformHttp::UrlEncode(SearchFileName);
+    //UE_LOG(LogTemp, Log, TEXT("Model Encoded Search File Name: %s"), *EncodedSearchFileName)
+
+    UGetModelLibrary* GetModelLibraryApi = NewObject<UGetModelLibrary>();
+    if (GetModelLibraryApi)
+
+    {
+        FOnGetModelLibraryResponse OnGetModelLibraryResponseDelegate;
+        OnGetModelLibraryResponseDelegate.BindLambda([this](const UGetModelLibraryResponseData* ModelLibraryData)
+
+        {
+            if (ModelLibraryData && ModelLibraryData->data.Num() > 0)
+            {
+                ModelAssetsContainer->ClearChildren();
+
+                UpdateModelAssets(ModelLibraryData->data);
+            }
+            else
+            {
+                ModelAssetsContainer->ClearChildren(); 
+                OnModelNothingToShow.ExecuteIfBound();
+            }
+        });
+
+        SetUserAndProjectParams();
+        int64 TagId = *"";
+        TagName = "";
+        int32 ParentId = GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentModelParentID();
+
+        //UE_LOG(LogTemp, Log, TEXT("ParentId: %d"), ParentId);
+        
+        GetModelLibraryApi->SendGetModelLibraryRequest(Ticket, Uuid, ParentId, ProjectNo, SearchFileName, TagId, TagName, OnGetModelLibraryResponseDelegate);
+    }
 }
 
 

@@ -52,6 +52,8 @@ public:
 	
 	void OnDownloadCompleted(const FString& AssetFileName);
 
+	void SearchConceptFileByName(const FText& InputFileName);
+
 	void ClearConceptContent();
 
 	TArray<UTexture2D*> LoadedTextures; 

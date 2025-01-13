@@ -12,7 +12,9 @@
 #include "ProjectContent/ConceptDesign/ConceptDesignDisplay.h"
 #include "IImageWrapperModule.h"
 #include "IImageWrapper.h"
+#include "ConceptDesignLibrary/GetConceptDesignLibMenuApi.h"
 #include "ConceptDesignLibrary/GetConceptDesignLibMenuData.h"
+#include "GenericPlatform/GenericPlatformHttp.h"
 #include "ProjectContent/MediaPlayer/SVideoPlayerWidget.h"
 #include "UObject/SavePackage.h"
 #include "Widgets/Layout/SScaleBox.h"
@@ -1440,7 +1442,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     // Check whether assets with the same name already exist 检查是否已经存在同名资产
     if (FPackageName::DoesPackageExist(PackageName))
     {
-        UE_LOG(LogTemp, Log, TEXT("Texture already exists, skipping import: %s"), *PackageName);
+       // UE_LOG(LogTemp, Log, TEXT("Texture already exists, skipping import: %s"), *PackageName);
         return;
     }
 
@@ -1448,7 +1450,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     TArray<uint8> FileData;
     if (!FFileHelper::LoadFileToArray(FileData, *FilePath))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
         return;
     }
 
@@ -1457,7 +1459,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     EImageFormat ImageFormat = ImageWrapperModule.DetectImageFormat(FileData.GetData(), FileData.Num());
     if (ImageFormat == EImageFormat::Invalid)
     {
-        UE_LOG(LogTemp, Error, TEXT("Unrecognized image format: %s"), *FilePath);
+       // UE_LOG(LogTemp, Error, TEXT("Unrecognized image format: %s"), *FilePath);
         return;
     }
 
@@ -1465,7 +1467,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     TSharedPtr<IImageWrapper> ImageWrapper = ImageWrapperModule.CreateImageWrapper(ImageFormat);
     if (!ImageWrapper.IsValid() || !ImageWrapper->SetCompressed(FileData.GetData(), FileData.Num()))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create image wrapper: %s"), *FilePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to create image wrapper: %s"), *FilePath);
         return;
     }
 
@@ -1473,7 +1475,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     TArray<uint8> UncompressedRGBA;
     if (!ImageWrapper->GetRaw(ERGBFormat::BGRA, 8, UncompressedRGBA))
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to decompress image data: %s"), *FilePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to decompress image data: %s"), *FilePath);
         return;
     }
 
@@ -1481,7 +1483,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     UPackage* Package = CreatePackage(*PackageName);
     if (!Package)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create package: %s"), *PackageName);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to create package: %s"), *PackageName);
         return;
     }
 
@@ -1489,7 +1491,7 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
     UTexture2D* LoadedTexture = NewObject<UTexture2D>(Package, FName(*NewFileName), RF_Public | RF_Standalone);
     if (!LoadedTexture)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create texture object: %s"), *NewFileName);
+        //UE_LOG(LogTemp, Error, TEXT("Failed to create texture object: %s"), *NewFileName);
         return;
     }
 
@@ -1530,11 +1532,58 @@ void SConceptDesignWidget::ImportConceptFile(const FString& FilePath)
 
     if (UPackage::SavePackage(Package, nullptr, *PackageFilePath, SaveArgs))
     {
-        UE_LOG(LogTemp, Log, TEXT("Successfully saved texture to package: %s"), *PackageFilePath);
+        //UE_LOG(LogTemp, Log, TEXT("Successfully saved texture to package: %s"), *PackageFilePath);
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to save package: %s"), *PackageFilePath);
+        //UE_LOG(LogTemp, Error, TEXT("Failed to save package: %s"), *PackageFilePath);
+    }
+}
+
+void SConceptDesignWidget::SearchConceptFileByName(const FText& InputFileName)
+{
+    // Convert FText to FString and trim the whitespace 将 FText 转换为 FString 并修剪空格
+    FString SearchFileName = InputFileName.ToString().TrimStartAndEnd();
+
+    // Check that the search text is empty 检查搜索文本是否为空
+    if (SearchFileName.IsEmpty())
+    {
+        // UE_LOG(LogTemp, Warning, TEXT("Search text is empty."));
+        return;
+    }
+
+    // URL encoding of the search file name 对搜索文件名进行 URL 编码
+    //FString EncodedSearchFileName = FGenericPlatformHttp::UrlEncode(SearchFileName);
+    //UE_LOG(LogTemp, Log, TEXT("Video Encoded Search File Name: %s"), *EncodedSearchFileName)
+
+    UGetConceptDesignLibMenuApi* GetConceptDesignLibMenuApi = NewObject<UGetConceptDesignLibMenuApi>();
+    if (GetConceptDesignLibMenuApi)
+    {
+        FOnGetConceptDesignLibMenuResponse OnGetConceptDesignLibMenuResponse;
+        OnGetConceptDesignLibMenuResponse.BindLambda([this](FGetConceptDesignLibMenuData* ConceptDesignMenuData)
+        {
+            if (ConceptDesignMenuData && ConceptDesignMenuData->data.items.Num() > 0)
+            {
+                ConceptDesignAssetsContainer->ClearChildren();
+
+                UpdateConceptDesignTagPageAssets(ConceptDesignMenuData->data.items);
+            }
+            else
+            {
+                ConceptDesignAssetsContainer->ClearChildren(); 
+                OnConceptNothingToShow.ExecuteIfBound();
+            }
+        });
+
+        SetUserAndProjectParams();
+        int32 TCurrentPage = 1;
+        int32 TMenuType = 0;
+        int32 TPageSize = 100;
+        FString CurrentFolderId = GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentConceptFolderID();
+        FString TagId = "";
+        FString ThisTagName = "";
+
+        GetConceptDesignLibMenuApi->SendGetConceptDesignLibMenuRequest(Ticket, TCurrentPage, CurrentFolderId, TMenuType, TPageSize, SearchFileName, ProjectNo, TagId, ThisTagName, Uuid, OnGetConceptDesignLibMenuResponse);
     }
 }
 

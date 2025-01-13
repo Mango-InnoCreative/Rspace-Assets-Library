@@ -29,6 +29,8 @@ public:
 
 	FReply ClearSelectedTags();
 
+	void ReloadSelectedTags();
+
 private:
 	TSharedPtr<SModelAssetsWidget> ModelAssetsWidget;
 

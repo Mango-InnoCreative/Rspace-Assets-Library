@@ -310,6 +310,9 @@ private:
 
 	bool TagButton = true;
 	bool DownloadWindowButton = true;
+	bool BisConceptExpansion;
+	bool BisAudioExpansion;
+	bool BisModelExpansion;
 	
 
 	TSharedPtr<FButtonStyle> SelectedButtonStyle = nullptr;

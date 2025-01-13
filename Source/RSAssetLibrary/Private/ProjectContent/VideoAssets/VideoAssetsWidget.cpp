@@ -1262,7 +1262,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
     // Check whether the package already exists 检查包是否已经存在
     if (FPackageName::DoesPackageExist(SavePath))
     {
-        UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
+       // UE_LOG(LogTemp, Warning, TEXT("Asset already exists at: %s"), *SavePath);
         return;
     }
 
@@ -1270,7 +1270,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
     UPackage* Package = CreatePackage(*SavePath);
     if (!Package)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create package for: %s"), *SavePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to create package for: %s"), *SavePath);
         return;
     }
 
@@ -1278,7 +1278,7 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
     UFileMediaSource* FileMediaSource = NewObject<UFileMediaSource>(Package, UFileMediaSource::StaticClass(), FName(*TargetFileName), RF_Public | RF_Standalone);
     if (!FileMediaSource)
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to create UFileMediaSource object for: %s"), *FilePath);
+      //  UE_LOG(LogTemp, Error, TEXT("Failed to create UFileMediaSource object for: %s"), *FilePath);
         return;
     }
 
@@ -1291,18 +1291,18 @@ void SVideoAssetsWidget::ImportVideoFile(const FString& FilePath)
 
     // Register assets to the asset registry 注册资产到资产注册表
     FAssetRegistryModule::AssetCreated(SavedMediaSource);
-    UE_LOG(LogTemp, Log, TEXT("Successfully registered media source: %s"), *SavePath);
+    //UE_LOG(LogTemp, Log, TEXT("Successfully registered media source: %s"), *SavePath);
 
     // Save package 保存包
     FString PackageFilePath = FPackageName::LongPackageNameToFilename(SavePath, FPackageName::GetAssetPackageExtension());
     if (UPackage::SavePackage(Package, FileMediaSource, RF_Public | RF_Standalone, *PackageFilePath, GError, nullptr, true, true, SAVE_None))
     {
-        UE_LOG(LogTemp, Log, TEXT("Successfully imported video file as asset: %s"), *SavePath);
+       // UE_LOG(LogTemp, Log, TEXT("Successfully imported video file as asset: %s"), *SavePath);
         SavedMediaSource = nullptr;
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("Failed to save package for: %s"), *SavePath);
+       // UE_LOG(LogTemp, Error, TEXT("Failed to save package for: %s"), *SavePath);
         SavedMediaSource = nullptr;
     }
 
@@ -1462,12 +1462,13 @@ void SVideoAssetsWidget::SearchVideoFileByName(const FText& InputFileName)
 
     // URL encoding of the search file name 对搜索文件名进行 URL 编码
     FString EncodedSearchFileName = FGenericPlatformHttp::UrlEncode(SearchFileName);
+    //UE_LOG(LogTemp, Log, TEXT("Video Encoded Search File Name: %s"), *EncodedSearchFileName)
 
     UGetVideoAssetLibraryListInfoApi* VideoFileApi = NewObject<UGetVideoAssetLibraryListInfoApi>();
     if (VideoFileApi)
     {
         FOnGetVideoAssetLibraryListInfoResponse OnGetVideoAssetLibraryListInfoResponse;
-        OnGetVideoAssetLibraryListInfoResponse.BindLambda([this, EncodedSearchFileName](const FGetVideoAssetLibraryListInfoData* VideoAssetData)
+        OnGetVideoAssetLibraryListInfoResponse.BindLambda([this](const FGetVideoAssetLibraryListInfoData* VideoAssetData)
         {
             if (VideoAssetData && VideoAssetData->data.Num() > 0)
             {
@@ -1484,8 +1485,7 @@ void SVideoAssetsWidget::SearchVideoFileByName(const FText& InputFileName)
 
         SetUserAndProjectParams();
         FString ParentId = GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentVideoParentID();
-
-        // 发送 API 请求
+        
         VideoFileApi->SendGetVideoAssetLibraryListInfoRequest(Ticket, ProjectNo, ParentId, EncodedSearchFileName, OnGetVideoAssetLibraryListInfoResponse);
     }
 }

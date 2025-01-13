@@ -125,6 +125,8 @@ void SAudioTagWidget::Construct(const FArguments& InArgs)
 
     FetchTagList();
 
+    ReloadSelectedTags();
+
     TagButtonStyle.SetNormal(FSlateColorBrush(FLinearColor(0.12f, 0.6f, 0.3f, 0.2f)));  
     TagButtonStyle.SetHovered(FSlateColorBrush(FLinearColor(0.12f, 0.6f, 0.3f, 0.2f)));
     TagButtonStyle.SetPressed(FSlateColorBrush(FLinearColor(0.12f, 0.6f, 0.3f, 0.2f)));
@@ -133,6 +135,35 @@ void SAudioTagWidget::Construct(const FArguments& InArgs)
     ImportButtonStyle.SetNormal(TransparentBrush);
     ImportButtonStyle.SetHovered(*FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.ImportHover"));
     ImportButtonStyle.SetPressed(*FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.Importclicked"));
+}
+
+void SAudioTagWidget::ReloadSelectedTags()
+{
+    FString ThisTag = GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentAudioTagname();
+
+    // 清空当前容器
+    SelectedTagsContainer->ClearChildren();
+
+    // 判断 ThisTag 是否为空
+    if (!ThisTag.IsEmpty())
+    {
+        // 添加选中标签的按钮
+        SelectedTagsContainer->AddSlot()
+        .HAlign(HAlign_Left)
+        .AutoWidth()
+        .Padding(5)
+        [
+            SNew(SButton)
+            .ButtonStyle(&TagButtonStyle)
+            .Cursor(EMouseCursor::Hand)
+            .ContentPadding(FMargin(10.f, 5.f))
+            [
+                SNew(STextBlock)
+                .Text(FText::FromString(ThisTag))
+                .Font(FCoreStyle::GetDefaultFontStyle("Regular", 10))
+            ]
+        ];
+    }
 }
 
 
@@ -311,6 +342,8 @@ void SAudioTagWidget::AddTagToSelected(const FString& TagName)
     SelectedTags.Empty();
     
     SelectedTags.Add(TagName);
+
+    GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentAudioTagname(TagName);
 
     SelectedTagsContainer->ClearChildren();
 

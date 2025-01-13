@@ -801,6 +801,7 @@ FReply SProjectWidget::OnConceptDesignClicked()
 	ResetToggleTagContainer();
 	ButtonClick = EButtonClick::ConceptDesign;
 	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentConceptFolderID("");
+	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentConceptTagname("");
 	
 	bIsConceptFirstPage = true;
 
@@ -812,6 +813,7 @@ FReply SProjectWidget::OnConceptDesignClicked()
 		ExpandedStateMap[EButtonClick::ConceptDesign] = false;
 		ConceptDesignTreeContainer->ClearChildren();
 		ResetExpandedState(EButtonClick::ConceptDesign);
+		BisConceptExpansion = false;
 
 		ResetSlateWidgets();
 		InitializeConceptButtonStyle();
@@ -825,6 +827,8 @@ FReply SProjectWidget::OnConceptDesignClicked()
 	else
 	{
 		ExpandedStateMap.Add(EButtonClick::ConceptDesign, true);
+
+		BisConceptExpansion = true;
 
 		// If the ConceptDesignWidget is not initialized, it is created 如果 ConceptDesignWidget 未初始化，则创建它
 		if (!ConceptDesignWidget.IsValid())
@@ -872,6 +876,7 @@ FReply SProjectWidget::OnAudioAssetsClicked()
 	ResetToggleTagContainer();
 	ButtonClick = EButtonClick::AudioAssets;
 	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentAudioGroupID("");
+	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentAudioTagname("");
 
 	bIsAudioFirstPage = true;
 	SetUserAndProjectParams();
@@ -882,6 +887,7 @@ FReply SProjectWidget::OnAudioAssetsClicked()
 		ExpandedStateMap[EButtonClick::AudioAssets] = false;
 		AudioTreeContainer->ClearChildren();
 		ResetExpandedState(EButtonClick::AudioAssets);
+		BisAudioExpansion = false;
 
 		ResetSlateWidgets();
 		InitializeAudioButtonStyle();
@@ -889,6 +895,8 @@ FReply SProjectWidget::OnAudioAssetsClicked()
 	else
 	{
 		ExpandedStateMap.Add(EButtonClick::AudioAssets, true);
+		
+		BisAudioExpansion = true;
 
 		if (!AudioAssetsWidget.IsValid())
 		{
@@ -1145,6 +1153,7 @@ FReply SProjectWidget::OnModelAssetsClicked()
 	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentModelRootID(-1);
 	CurrentActiveWidget = EActiveWidget::ModelAssets;
 	ButtonClick = EButtonClick::ModelAssets;
+	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentModelTagname("");
 
 	SetUserAndProjectParams();
 
@@ -1164,6 +1173,7 @@ void SProjectWidget::HandleModelRootDirectory(EButtonClick ButtonType)
 		ResetExpandedState(ButtonType);
 		ResetSlateWidgets();
 		InitializeModelButtonStyle();
+		BisModelExpansion = false;
 		
 		if (ModelAssetsWidget.IsValid())
 		{
@@ -1173,6 +1183,7 @@ void SProjectWidget::HandleModelRootDirectory(EButtonClick ButtonType)
 	else
 	{
 		ExpandedStateMap.Add(ButtonType, true);
+		BisModelExpansion = true;
 
 		if (!ModelAssetsWidget.IsValid())
 		{
@@ -1193,7 +1204,7 @@ void SProjectWidget::HandleModelRootDirectory(EButtonClick ButtonType)
 		}
 		
 		// Invoke the method that generates the subasset tree 调用生成子资产树的方法
-		GenerateModelAssetTree(0, ModelTreeContainer, 24);
+		GenerateModelAssetTree(-1, ModelTreeContainer, 24);
 
 		ModelButtonStyle.SetNormal(*FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.IconTab.Pressed"));
 		ModelButtonStyle.SetHovered(*FRSAssetLibraryStyle::Get().GetBrush("RSAssetLibrary.IconTab.ButtonPressedHovered"));
@@ -1206,7 +1217,7 @@ void SProjectWidget::GenerateModelAssetTree(int32 CurrentFileId, TSharedPtr<SVer
     ResetDetailBar();
 
     // If it is the root directory, clear the empty subdirectory status data 如果是根目录，清空子目录状态数据
-    if (CurrentFileId == 0)
+    if (CurrentFileId == -1)
     {
         ModelChildExpandedStateMap.Empty(); 
     }
@@ -1249,7 +1260,7 @@ void SProjectWidget::GenerateModelAssetTree(int32 CurrentFileId, TSharedPtr<SVer
                     return;
                 }
             	
-                if (CurrentFileId != 0)
+                if (CurrentFileId != -1)
                 {
                     ModelChildExpandedStateMap.Add(CurrentFileId, true);
                 }
@@ -1333,6 +1344,8 @@ void SProjectWidget::GenerateModelAssetTree(int32 CurrentFileId, TSharedPtr<SVer
                         ChildBox.ToSharedRef()
                     ];
                 }
+            	
+            	GEditor->GetEditorSubsystem<UUSMSubsystem>()->SetCurrentModelParentID(CurrentFileId);
             }
         });
 
@@ -2387,6 +2400,8 @@ void SProjectWidget::OnProjectSelected()
 
 void SProjectWidget::OnSearchTextCommitted(const FText& Text, ETextCommit::Type CommitType)
 {
+	int64 TagIDNone = *"";
+	FString ConceptTagIDNone = "";
 	if (CommitType == ETextCommit::OnEnter)
 	{
 		// Get the search term and remove the Spaces before and after 获取搜索关键词并去掉前后空格
@@ -2416,14 +2431,83 @@ void SProjectWidget::OnSearchTextCommitted(const FText& Text, ETextCommit::Type 
 
 		case EActiveWidget::AudioAssets:
 			// UE_LOG(LogTemp, Log, TEXT("当前音频页不支持搜索！"));
+
+			if (AudioAssetsWidget)
+			{
+				if (SearchKeyword.IsEmpty())
+				{
+					// UE_LOG(LogTemp, Warning, TEXT("搜索关键词为空，恢复默认显示。"));
+					if (bIsAudioFirstPage)
+					{
+						if (!GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentFirstPageAudioFolderItems().IsEmpty())
+						{
+							AudioAssetsWidget->UpdateTagPageAudioAssets(GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentFirstPageAudioFolderItems());
+						}
+					}
+					else
+					{
+						if (!GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentAudioFolderItems().IsEmpty())
+						{
+							AudioAssetsWidget->UpdateAudioAssets(GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentAudioFolderItems(), TagIDNone);
+						}
+						UpdateRightContentBox(AudioAssetsWidget.ToSharedRef());
+					}
+					
+					break;
+				}
+				AudioAssetsWidget->SearchAudioFileByName(Text);
+				UpdateRightContentBox(AudioAssetsWidget.ToSharedRef()); // Update the display to ensure that search results are displayed correctly 更新显示以确保搜索结果显示正确
+			}
 			break;
 
 		case EActiveWidget::ConceptDesign:
 			// UE_LOG(LogTemp, Log, TEXT("当前概设页不支持搜索！"));
+
+			if (ConceptDesignWidget)
+			{
+				if (SearchKeyword.IsEmpty())
+				{
+					// UE_LOG(LogTemp, Warning, TEXT("搜索关键词为空，恢复默认显示。"));
+					if (bIsConceptFirstPage)
+					{
+						if (!GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentFirstPageConceptItems().IsEmpty())
+						{
+							ConceptDesignWidget->UpdateConceptDesignTagPageAssets(GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentFirstPageConceptItems());
+						}
+					}
+					else
+					{
+						if (!GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentConceptFolderItems().IsEmpty())
+						{
+							ConceptDesignWidget->UpdateConceptDesignAssets(GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentConceptFolderItems(), ConceptTagIDNone);
+						}
+						UpdateRightContentBox(ConceptDesignWidget.ToSharedRef());
+					}
+					
+					break;
+				}
+				ConceptDesignWidget->SearchConceptFileByName(Text);
+				UpdateRightContentBox(ConceptDesignWidget.ToSharedRef()); // Update the display to ensure that search results are displayed correctly 更新显示以确保搜索结果显示正确
+			}
 			break;
 
 		case EActiveWidget::ModelAssets:
 			// UE_LOG(LogTemp, Log, TEXT("当前模型页不支持搜索！"));
+
+			if (ModelAssetsWidget)
+			{
+				if (SearchKeyword.IsEmpty())
+				{
+					// UE_LOG(LogTemp, Warning, TEXT("搜索关键词为空，恢复默认显示。"));
+					ModelAssetsWidget->UpdateModelAssets(GEditor->GetEditorSubsystem<UUSMSubsystem>()->GetCurrentModelItems());
+					
+					UpdateRightContentBox(ModelAssetsWidget.ToSharedRef());
+					
+					break;
+				}
+				ModelAssetsWidget->SearchModelFileByName(Text);
+				UpdateRightContentBox(ModelAssetsWidget.ToSharedRef()); // Update the display to ensure that search results are displayed correctly 更新显示以确保搜索结果显示正确
+			}
 			break;
 
 		default:
@@ -2442,50 +2526,56 @@ FReply SProjectWidget::OnTagButtonClicked()
     switch (CurrentActiveWidget)
     {
     case EActiveWidget::ConceptDesign:
-    	MainTagButton->SetEnabled(false);
-        // UE_LOG(LogTemp, Warning, TEXT("Active Widget: ConceptDesignWidget"));
+    	if(BisConceptExpansion)
+    	{
+    		MainTagButton->SetEnabled(false);
+    		// UE_LOG(LogTemp, Warning, TEXT("Active Widget: ConceptDesignWidget"));
         
-        if (TagContainer.IsValid())
-        {
-            TagContainer->SetContent(
-                SAssignNew(ConceptTagWidget, SConceptTagWidget)
-                .ConceptDesignWidget(ConceptDesignWidget)
-                .OnClearConceptTagFilter(FOnClearConceptTagFilter::CreateSP(this, &SProjectWidget::ClearConceptTagFilter))
-                .OnConceptTagClickClearWidget(FOnConceptTagClickClearWidget::CreateLambda([this]()
-				{
-					ResetDetailBar();
-				}))
-				.OnConceptTagDataReceived(FOnConceptTagDataReceived::CreateLambda([this]()
-				{
-					MainTagButton->SetEnabled(true);
-				})));
+    		if (TagContainer.IsValid())
+    		{
+    			TagContainer->SetContent(
+					SAssignNew(ConceptTagWidget, SConceptTagWidget)
+					.ConceptDesignWidget(ConceptDesignWidget)
+					.OnClearConceptTagFilter(FOnClearConceptTagFilter::CreateSP(this, &SProjectWidget::ClearConceptTagFilter))
+					.OnConceptTagClickClearWidget(FOnConceptTagClickClearWidget::CreateLambda([this]()
+					{
+						ResetDetailBar();
+					}))
+					.OnConceptTagDataReceived(FOnConceptTagDataReceived::CreateLambda([this]()
+					{
+						MainTagButton->SetEnabled(true);
+					})));
 
-            // Toggle window visibility and start animation 切换窗口的可见性并启动动画
-            ToggleTagContainerVisibility();
-        }
+    			// Toggle window visibility and start animation 切换窗口的可见性并启动动画
+    			ToggleTagContainerVisibility();
+    		}
+    	}
         break;
         
     case EActiveWidget::AudioAssets:
-    	MainTagButton->SetEnabled(false);
-        // UE_LOG(LogTemp, Warning, TEXT("Active Widget: AudioAssetsWidget"));
+    	if(BisAudioExpansion)
+    	{
+    		MainTagButton->SetEnabled(false);
+    		// UE_LOG(LogTemp, Warning, TEXT("Active Widget: AudioAssetsWidget"));
         
-        if (TagContainer.IsValid())
-        {
-            TagContainer->SetContent(
-				SAssignNew(AudioTagWidget, SAudioTagWidget)
-                .AudioAssetWidget(AudioAssetsWidget)
-                .OnClearAudioTagFilter(FOnClearAudioTagFilter::CreateSP(this, &SProjectWidget::ClearAudioTagFilter))
-                .OnAudioTagClickClearWidget(FOnAudioTagClickClearWidget::CreateLambda([this]()
-				{
-					ResetDetailBar();
-				}))
-        		.OnAudioTagDataReceived(FOnAudioTagDataReceived::CreateLambda([this]()
-				{
-					MainTagButton->SetEnabled(true);
-				})));
+    		if (TagContainer.IsValid())
+    		{
+    			TagContainer->SetContent(
+					SAssignNew(AudioTagWidget, SAudioTagWidget)
+					.AudioAssetWidget(AudioAssetsWidget)
+					.OnClearAudioTagFilter(FOnClearAudioTagFilter::CreateSP(this, &SProjectWidget::ClearAudioTagFilter))
+					.OnAudioTagClickClearWidget(FOnAudioTagClickClearWidget::CreateLambda([this]()
+					{
+						ResetDetailBar();
+					}))
+					.OnAudioTagDataReceived(FOnAudioTagDataReceived::CreateLambda([this]()
+					{
+						MainTagButton->SetEnabled(true);
+					})));
         	
-            ToggleTagContainerVisibility();
-        }
+    			ToggleTagContainerVisibility();
+    		}
+    	}
         break;
         
     case EActiveWidget::VideoAssets:
@@ -2558,26 +2648,30 @@ FReply SProjectWidget::OnTagButtonClicked()
         
     case EActiveWidget::ModelAssets:
         // UE_LOG(LogTemp, Warning, TEXT("Active Widget: ModelAssetsWidget"));
-    	MainTagButton->SetEnabled(false);
-        if (TagContainer.IsValid())
-        {
+    	if(BisModelExpansion)
+    	{
+    		MainTagButton->SetEnabled(false);
+    		if (TagContainer.IsValid())
+    		{
            
-            TagContainer->SetContent(
-                SNew(SModelTagWidget)
-                .ModelAssetsWidget(ModelAssetsWidget)
-                .OnClearModelTagFilter(FOnClearModelTagFilter::CreateSP(this, &SProjectWidget::ClearModelTagFilter))
-                .OnModelTagDataReceived(FOnModelTagDataReceived::CreateLambda([this]()
-				{
-					MainTagButton->SetEnabled(true);
-				}))
-                .OnModelTagClickClearWidget(FOnModelTagClickClearWidget::CreateLambda([this]()
-				{
-					ResetDetailBar();
-				})));
+    			TagContainer->SetContent(
+					SNew(SModelTagWidget)
+					.ModelAssetsWidget(ModelAssetsWidget)
+					.OnClearModelTagFilter(FOnClearModelTagFilter::CreateSP(this, &SProjectWidget::ClearModelTagFilter))
+					.OnModelTagDataReceived(FOnModelTagDataReceived::CreateLambda([this]()
+					{
+						MainTagButton->SetEnabled(true);
+					}))
+					.OnModelTagClickClearWidget(FOnModelTagClickClearWidget::CreateLambda([this]()
+					{
+						ResetDetailBar();
+					})));
 
 
-            ToggleTagContainerVisibility();
-        }
+    			ToggleTagContainerVisibility();
+        	
+    		}
+    	} 
         break;
         
     case EActiveWidget::None:
@@ -3462,6 +3556,9 @@ void SProjectWidget::CloseAllOpenedWindows()
         // Determine whether the plug-in is related to the window 判断是否是插件相关窗口
         if (WindowTitle.EqualTo(FText::FromString(TEXT("传输列表")))
 			|| WindowTitle.EqualTo(FText::FromString(TEXT("提示")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("视频播放")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("音频播放")))
+			|| WindowTitle.EqualTo(FText::FromString(TEXT("图片预览")))
             || WindowTitle.EqualTo(FText::FromString(TEXT("Video Player")))
             || WindowTitle.EqualTo(FText::FromString(TEXT("Audio Player")))
             || WindowTitle.EqualTo(FText::FromString(TEXT("Image Preview")))

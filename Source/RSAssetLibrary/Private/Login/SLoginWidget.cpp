@@ -57,8 +57,8 @@ void SLoginWidget::ResetLoginMsg()
 {
     if (LoginStatusMessageText)
     {
-        FString StatusMessage = TEXT("");
-        LoginStatusMessageText->SetText(FText::FromString(StatusMessage));
+        FText StatusMessage = LOCTEXT("LoginInvalid", "");  // 使用 LOCTEXT 初始化 FText;
+        LoginStatusMessageText->SetText(StatusMessage);
         LoginStatusMessageText->SetVisibility(EVisibility::Hidden);
     }
 }
@@ -131,9 +131,9 @@ FReply SLoginWidget::OnLoginButtonClicked()
                     LoginButton->SetEnabled(false);
                     if (LoginStatusMessageText.IsValid())
                     {
-                        FString StatusMessage = TEXT("Login successful");
+                        FText StatusMessage = LOCTEXT("Loginsuccessful", "Login Successful");
                         LoginStatusMessageText->SetColorAndOpacity(FSlateColor(FLinearColor(0.0f, 1.0f, 0.0f, 1.0f)));
-                        LoginStatusMessageText->SetText(FText::FromString(StatusMessage));
+                        LoginStatusMessageText->SetText(StatusMessage);
                         LoginStatusMessageText->SetVisibility(EVisibility::Visible);
                     }
                     
@@ -179,9 +179,9 @@ FReply SLoginWidget::OnLoginButtonClicked()
                 {
                     if (LoginStatusMessageText.IsValid())
                     {
-                        FString StatusMessage = TEXT("Login failed. Retry.");
+                        FText StatusMessage = LOCTEXT("LoginfailedRetry.", "Login Failed. Retry.");
                         LoginStatusMessageText->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.0f, 0.0f, 1.0f)));
-                        LoginStatusMessageText->SetText(FText::FromString(StatusMessage));
+                        LoginStatusMessageText->SetText(StatusMessage);
                         LoginStatusMessageText->SetVisibility(EVisibility::Visible);
                     }
                     LoginButton->SetEnabled(true);

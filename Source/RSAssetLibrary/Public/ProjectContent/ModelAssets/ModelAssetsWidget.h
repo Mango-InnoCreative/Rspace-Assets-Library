@@ -59,6 +59,8 @@ public:
 	void OnDownloadCompleted(const FString& AssetFileName);
 
 	void OnVersionSelected(TSharedPtr<FString> SelectedVersion, ESelectInfo::Type SelectInfo);
+
+	void SearchModelFileByName(const FText& InputFileName);
 	
 	void ClearModelContent();
 
